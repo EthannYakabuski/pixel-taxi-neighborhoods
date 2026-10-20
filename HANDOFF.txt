@@ -1,0 +1,50 @@
+PIXEL TAXI NEIGHBORHOODS - LOCAL TEST HANDOFF
+Status: READY FOR OWNER LOCAL TEST REVIEW (2026-10-20T11:28:24.024171+00:00).
+
+APK: build/android/game-debug.apk (183,761,556 bytes)
+SHA256: 1691b5b6fe158a15e6b5f74f412a705f078ca4b975ff85d37f430746bc1a00c1
+APK plus matching licenses: build/android/pixel-taxi-neighborhoods-test-package.zip
+ZIP SHA256: deb805fe5aef8296af0b23d1968b4962bb4da652a8d21cb49e5735527f25c6ae
+Keep LICENSES with redistributed binaries. Build/run instructions are in README;
+exact source hashes and results are in docs/LOCAL_TEST_RESULTS.json.
+
+WHAT IS READY
+Connected industrial/downtown/suburban city driving, manual controls and optional
+route following, pickup/delivery fares, passenger journal and rare guests, cars
+and upgrades, daily gifts/quests, driver levels, local/offline saves,16 achievement
+and4 leaderboard definitions, audio/settings and Web export. Android uses official
+Google test ads; production Play Games is disabled until owner configuration.
+Store art/copy and nine actual normal-play Android captures are included.
+
+VERIFICATION
+15,895 model checks and existing desktop fare/route/input fixtures passed.
+Actual native first fare paid125 coins/74XP. One black test-ad pod correctly
+closed without an earned reward or saved changes. A second real test video earned
+exactly once and saved fare_boost before dismissal, with no immediate money/XP.
+The next fare consumed it:89 base+44 bonus=133 fare income,62XP; wallet+203 includes
+a separate70-coin level bonus. The interstitial appeared after the second fare.
+Daily gift paid80 once; engine upgrade cost120; subpage Back returned Home and
+Home Back correctly stayed in the same process with all24 saved groups unchanged.
+
+Disconnected testing completed three more fares:3,366m,210XP,339 income and444
+wallet coins (including105 level bonus). Twenty snapshots verify actual network
+absence. All24 saved groups survived cold launch/restart; network/display restored.
+Nine strict current-APK normal-play views were reviewed. Lower Home navigation
+requires normal scrolling and is accessible.
+
+SOURCE / WEB
+Current recorded source hashes match the normalized post-export versions.
+The historical Web byte-identity guard remains FALSE: only project.godot
+serialization changed, with identical parsed settings; seven other inputs were
+unchanged. No blanket byte-stable or reproducible-build claim is made. All nine
+local Web runtime files/static packed checks pass; browser interaction is untested.
+
+LIMITS / OWNER WORK
+One Android11/API30 x86 host-GPU emulator supplies1080x1920 frames with logical
+7/10-inch overrides; these are not physical tablets. Audio is disabled in the
+emulator, so audible sound remains unverified. Short checks do not establish all
+content, balance, midnight rollover, seven-day streak or long-session reliability.
+Production IDs/backend/consent, final real-service and physical/human testing,
+release signing/AAB/current Play eligibility, privacy/audience/store details and
+owner Play submission remain. Public repos/push/hosted CI/Pages remain paused;
+the externally published package is incomplete. No production acceptance claimed.

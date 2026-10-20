@@ -1,0 +1,42 @@
+{
+  "key": "phone-home",
+  "file": "phone-home.png",
+  "sha256": "b390362245eb2537bcfd29697aec607759ad927af42be3eb109f2aa014dfdd86",
+  "dimensions": [
+    1080,
+    1920
+  ],
+  "raw_file": "raw/phone-home.png",
+  "raw_sha256": "f3b1235025c58e7dbf7b913e670b2ed98751abf5c3784bc9bdd5ee906e1616a6",
+  "raw_dimensions": [
+    1920,
+    1080
+  ],
+  "capture_metadata_file": "provenance/phone-home.json",
+  "source_apk_sha256": "1691b5b6fe158a15e6b5f74f412a705f078ca4b975ff85d37f430746bc1a00c1",
+  "source_apk_bytes": 183761556,
+  "platform": "Android emulator",
+  "android_api": "30",
+  "android_version": "11",
+  "abi": "x86",
+  "requested_logical_size": [
+    1080,
+    1920
+  ],
+  "actual_framebuffer_size": [
+    1080,
+    1920
+  ],
+  "physical_device_test": false,
+  "physical_tablet_test": false,
+  "viewport_description": "Phone emulated viewport",
+  "capture_source": "Actual emulator framebuffer screenshot of normally launched Android game; no Godot capture/test fixture arguments",
+  "orientation_correction": "90 degrees clockwise to Android display orientation; no crop/content changes",
+  "pixel_processing": "Byte-for-byte copy of the approved portrait PNG and original raw framebuffer PNG; no resizing, crop, overlays, framing, or fabricated content.",
+  "logical_tablet_limitation": "Phone-shaped emulator framebuffer; not a physical phone test.",
+  "game_state": "Normal Pixel Taxi shift menu and connected-city overview with genuine saved fare progress; ordinary menu scrolling exposes lower navigation.",
+  "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+  "fatal_runtime_diagnostic_present": false,
+  "display_restoration_verified": true,
+  "metadata_scope": "Public image provenance summary; original private capture and host records are excluded."
+}

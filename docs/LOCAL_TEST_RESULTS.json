@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "status": "READY_FOR_OWNER_LOCAL_TEST_REVIEW",
+  "recorded_utc": "2026-10-20T11:28:24.024171+00:00",
+  "android": {
+    "file": "build/android/game-debug.apk",
+    "sha256": "1691b5b6fe158a15e6b5f74f412a705f078ca4b975ff85d37f430746bc1a00c1",
+    "bytes": 183761556,
+    "debug": true,
+    "test_package": "build/android/pixel-taxi-neighborhoods-test-package.zip",
+    "test_package_sha256": "deb805fe5aef8296af0b23d1968b4962bb4da652a8d21cb49e5735527f25c6ae",
+    "test_package_bytes": 183817314
+  },
+  "source_hashes": {
+    "export_presets.cfg": "e2431d48b32dd7c0022d5fbb5e5b64fe3e8d6304244717200029dac83b2ddd0d",
+    "game/catalog.json": "3847a7922262b973cb0cc7efc8061c9e931e28ace36231d99af189a485ab001b",
+    "game/city.gd": "8ce4a0e14457c97f1caf62dc1bee32a06766be1a5b47fe067a24d79c5f72252a",
+    "game/main.gd": "e36a3e20a62a9fcaea6739fb8287da665b155c94f52414e44a86766da7993145",
+    "game/model.gd": "7a057a8703e392c749f1cd99be8ec4068fd592d61fdf898b49610b8400ae1dee",
+    "platform/config.json": "a568588a8b0210b01e2c15f467f11b50a21910d9818d9039e12b2f49777b6078",
+    "platform/services.gd": "4b4c6e6751524097dee623825b3384192ac0be5251f2829fcfaadd293cf03356",
+    "project.godot": "89abf4eb84bea77b116eb66c293045736fc96034d98eef2fccdbf0158669b27f"
+  },
+  "source_coverage": "Current recorded inputs match normalized after-export hashes. Historical Web byte-identity guard is FALSE: only project.godot serialized, with identical parsed settings;7/8 other inputs unchanged. No eight-input byte-stability or reproducible APK claim.",
+  "core_tests": {
+    "model_checks": 15895,
+    "existing_desktop_checks": "Fare/route/input fixtures passed; actual native flows are recorded separately.",
+    "failures": 0,
+    "limits": "Does not establish every passenger/car/upgrade or human gameplay balance."
+  },
+  "native": {
+    "report": "docs/NATIVE_QA.json",
+    "report_sha256": "980dbcfa56ec594adeff8fc7d3fea3c763248a18257b3612e6cbcbb100122c30",
+    "coordinator_receipt_sha256": "8e0cd15ad9a891348a5c6d85d8a3e6f258aaedd199a00fd1911c00927d090aa1",
+    "reward": {
+      "context": "next_fare_bonus",
+      "rewarded_presentations": 2,
+      "rewarded_dismissals": 2,
+      "accepted_native_grants": 1,
+      "entitlement": "saved fare_boost false to true",
+      "immediate_coins": 0,
+      "immediate_xp": 0,
+      "immediate_income": 0,
+      "saved_before_close": true,
+      "return_preservation": {
+        "version": true,
+        "coins": true,
+        "xp": true,
+        "jobs": true,
+        "distance": true,
+        "income": true,
+        "rare": true,
+        "player_node": true,
+        "car": true,
+        "owned_cars": true,
+        "upgrades": true,
+        "visits": true,
+        "active_job": true,
+        "unlocked": true,
+        "journal": true,
+        "day": true,
+        "daily_jobs": true,
+        "daily_distance": true,
+        "daily_rare": true,
+        "daily_claimed": true,
+        "login_day": true,
+        "login_streak": true,
+        "fare_boost": true,
+        "sound": true
+      },
+      "consumed_after_one_fare": true,
+      "base_next_fare": 89,
+      "bonus_coins": 44,
+      "boosted_income_delta": 133,
+      "level_bonus_coins": 70,
+      "gross_wallet_delta": 203,
+      "fare_xp_delta": 62,
+      "claim_limit": "One saved boolean entitlement is consumed by the next completed fare; no persistent ad receipt or unique round ID is claimed.",
+      "negative_attempt": "First test-ad pod displayed black media and closed without an earned callback; all24 saved groups stayed unchanged. The second real media attempt earned once and saved the entitlement."
+    },
+    "daily": {
+      "gift_coins": 80,
+      "xp_delta": 0,
+      "login_day": "2026-10-20",
+      "streak": 1,
+      "repeat_no_change": true
+    },
+    "upgrade": {
+      "kind": "engine",
+      "level_before_after": [
+        0,
+        1
+      ],
+      "cost": 120,
+      "xp_delta": 0
+    },
+    "back": "Subpage Back returns Home; Home Back is a no-op with the same process and all24 groups preserved. No Android exit is claimed.",
+    "interstitial": "One actual test interstitial presented after the second delivered fare in the same process and was dismissed; saved paid receipt and normal navigation returned.",
+    "offline_progress": {
+      "jobs": 3,
+      "distance": 3365.99999957084,
+      "xp": 210,
+      "income": 339,
+      "coins": 444
+    },
+    "cold_restart_required_groups": 24,
+    "actual_network_none_snapshots": 20,
+    "restoration_verified": true
+  },
+  "captures": {
+    "manifest": "marketing/screenshots/capture-manifest.json",
+    "manifest_sha256": "6959e87daee4a15c7fa99b31fdcac87086282678dc2d7cbec207234915a0b811",
+    "count": 9,
+    "actual_framebuffer": [
+      1080,
+      1920
+    ],
+    "logical_tablet_overrides_only": true,
+    "physical_device_testing": false,
+    "root_visual_review": "Phone play, logical7 Home and logical10 Driver Journal inspected clean; native owner reviewed all nine. Home lower navigation is reached by normal scrolling."
+  },
+  "web": {
+    "file": "build/web/index.html",
+    "html_sha256": "2b310803f5202f32e20c9364787c1b45d990cfd96ab79a89de5ac592745db2a2",
+    "pck_sha256": "6b6ff6df39b934e9bb0a11e54487a165b43933ca4eff35712bf51db30080a928",
+    "runtime_files": 9,
+    "packed_entries": 417,
+    "interactive_browser_verified": false
+  },
+  "licenses": {
+    "source_index": "LICENSES/INDEX.txt",
+    "android_index": "build/android/LICENSES/INDEX.txt",
+    "web_index": "build/web/LICENSES/INDEX.txt",
+    "matching_test_zip_notices": 21
+  },
+  "publication": {
+    "status": "paused",
+    "repository_push": false,
+    "hosted_ci_run": false,
+    "pages_deployed": false
+  },
+  "owner_work": [
+    "Human content/balance/long-session and audible sound review",
+    "Physical phone/tablet testing",
+    "Production AdMob/UMP and Play Games IDs/backend/final service testing",
+    "Release signing/AAB/current Play eligibility and privacy/audience/Data Safety/store details; owner submission"
+  ],
+  "known_minor_issues": [
+    "Home lower navigation requires normal scrolling; all tested controls remain accessible."
+  ],
+  "limits": [
+    "Official Google test IDs only; production IDs/backend/consent/signing/store setup remain owner work.",
+    "One API30 emulator with physical1080x1920 framebuffer and logical tablet overrides; no physical-device acceptance.",
+    "The first black test-ad pod did not earn; a subsequent real media attempt did. No broad ad-fill/reliability claim.",
+    "Short QA does not establish every passenger/car/upgrade, long-term economy, midnight rollover, seven-day streak or many-session reliability.",
+    "Hosted CI/Pages and production Play Games integration remain separate; no external publication is established.",
+    "The emulator uses -no-audio; audible Android sound remains unverified.",
+    "Browser interaction/audio/WebGL are unverified; hosted CI and Pages remain paused."
+  ],
+  "scope": "Public summary of recorded local verification; private logs, actual save snapshots and machine/coordinator evidence are not published."
+}

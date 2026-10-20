@@ -1,0 +1,4 @@
+Pixel Taxi Neighborhoods
+Copyright 2026 EthannYakabuski.
+Original project code is licensed under Apache License 2.0.
+Third-party assets and plugins retain the licenses and required notices included alongside them.

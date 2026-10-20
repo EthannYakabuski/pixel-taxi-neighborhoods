@@ -1,0 +1,210 @@
+{
+  "game": "Pixel Taxi Neighborhoods",
+  "version": 1,
+  "achievements": [
+    {
+      "key": "taxi_first_fare",
+      "title": "First friendly fare",
+      "name": "First friendly fare",
+      "description": "Deliver your first passenger.",
+      "stat": "jobs",
+      "threshold": 1,
+      "icon": "marketing/achievements/taxi_first_fare.png"
+    },
+    {
+      "key": "taxi_regular",
+      "title": "Neighborhood regular",
+      "name": "Neighborhood regular",
+      "description": "Complete 5 fares.",
+      "stat": "jobs",
+      "threshold": 5,
+      "icon": "marketing/achievements/taxi_regular.png"
+    },
+    {
+      "key": "taxi_local_legend",
+      "title": "Local legend",
+      "name": "Local legend",
+      "description": "Complete 25 fares.",
+      "stat": "jobs",
+      "threshold": 25,
+      "icon": "marketing/achievements/taxi_local_legend.png"
+    },
+    {
+      "key": "taxi_century",
+      "title": "A hundred stories",
+      "name": "A hundred stories",
+      "description": "Complete 100 fares.",
+      "stat": "jobs",
+      "threshold": 100,
+      "icon": "marketing/achievements/taxi_century.png"
+    },
+    {
+      "key": "taxi_city_miles",
+      "title": "City miles",
+      "name": "City miles",
+      "description": "Drive 5 kilometers.",
+      "stat": "distance",
+      "threshold": 5000,
+      "icon": "marketing/achievements/taxi_city_miles.png"
+    },
+    {
+      "key": "taxi_scenic_route",
+      "title": "The scenic route",
+      "name": "The scenic route",
+      "description": "Drive 25 kilometers.",
+      "stat": "distance",
+      "threshold": 25000,
+      "icon": "marketing/achievements/taxi_scenic_route.png"
+    },
+    {
+      "key": "taxi_special_guest",
+      "title": "A special guest",
+      "name": "A special guest",
+      "description": "Deliver a rare passenger.",
+      "stat": "rare",
+      "threshold": 1,
+      "icon": "marketing/achievements/taxi_special_guest.png"
+    },
+    {
+      "key": "taxi_star_company",
+      "title": "Star company",
+      "name": "Star company",
+      "description": "Deliver 5 rare passengers.",
+      "stat": "rare",
+      "threshold": 5,
+      "icon": "marketing/achievements/taxi_star_company.png"
+    },
+    {
+      "key": "taxi_all_districts",
+      "title": "Across the city",
+      "name": "Across the city",
+      "description": "Deliver passengers to all 3 districts.",
+      "stat": "districts",
+      "threshold": 3,
+      "icon": "marketing/achievements/taxi_all_districts.png"
+    },
+    {
+      "key": "taxi_good_company",
+      "title": "Good company",
+      "name": "Good company",
+      "description": "Meet 6 different passengers.",
+      "stat": "passengers",
+      "threshold": 6,
+      "icon": "marketing/achievements/taxi_good_company.png"
+    },
+    {
+      "key": "taxi_first_upgrade",
+      "title": "A little tune-up",
+      "name": "A little tune-up",
+      "description": "Buy a vehicle upgrade.",
+      "stat": "upgrades",
+      "threshold": 1,
+      "icon": "marketing/achievements/taxi_first_upgrade.png"
+    },
+    {
+      "key": "taxi_pride",
+      "title": "Pride of the garage",
+      "name": "Pride of the garage",
+      "description": "Purchase 6 upgrade levels.",
+      "stat": "upgrades",
+      "threshold": 6,
+      "icon": "marketing/achievements/taxi_pride.png"
+    },
+    {
+      "key": "taxi_new_color",
+      "title": "A fresh coat",
+      "name": "A fresh coat",
+      "description": "Own 2 cab colors.",
+      "stat": "cars",
+      "threshold": 2,
+      "icon": "marketing/achievements/taxi_new_color.png"
+    },
+    {
+      "key": "taxi_driver_level_5",
+      "title": "Level five driver",
+      "name": "Level five driver",
+      "description": "Reach driver level 5.",
+      "stat": "level",
+      "threshold": 5,
+      "icon": "marketing/achievements/taxi_driver_level_5.png"
+    },
+    {
+      "key": "taxi_driver_level_10",
+      "title": "The city knows you",
+      "name": "The city knows you",
+      "description": "Reach driver level 10.",
+      "stat": "level",
+      "threshold": 10,
+      "icon": "marketing/achievements/taxi_driver_level_10.png"
+    },
+    {
+      "key": "taxi_earned",
+      "title": "Honest work",
+      "name": "Honest work",
+      "description": "Earn 10,000 coins from fares.",
+      "stat": "income",
+      "threshold": 10000,
+      "icon": "marketing/achievements/taxi_earned.png"
+    }
+  ],
+  "leaderboards": [
+    {
+      "key": "taxi_jobs",
+      "title": "Fares delivered",
+      "name": "Fares delivered",
+      "description": "Lifetime completed passenger deliveries.",
+      "stat": "jobs",
+      "sort": "descending",
+      "icon": "marketing/leaderboards/taxi_jobs.png"
+    },
+    {
+      "key": "taxi_distance",
+      "title": "City miles",
+      "name": "City miles",
+      "description": "Lifetime road distance in meters.",
+      "stat": "distance",
+      "sort": "descending",
+      "icon": "marketing/leaderboards/taxi_distance.png"
+    },
+    {
+      "key": "taxi_income",
+      "title": "Fare earnings",
+      "name": "Fare earnings",
+      "description": "Lifetime coins earned from fares.",
+      "stat": "income",
+      "sort": "descending",
+      "icon": "marketing/leaderboards/taxi_income.png"
+    },
+    {
+      "key": "taxi_player_level",
+      "title": "Driver level",
+      "name": "Driver level",
+      "description": "Current driver experience level.",
+      "stat": "level",
+      "sort": "descending",
+      "icon": "marketing/leaderboards/taxi_player_level.png"
+    }
+  ],
+  "ads": {
+    "banner": "home only, reserved bottom56px",
+    "interstitial": "after every2completedfares via Services.round_finished",
+    "rewarded": "one-use +50% next-fare earnings; only grant on earned-reward callback"
+  },
+  "daily": {
+    "clock": "UTC",
+    "quests": [
+      "3 fares",
+      "2 km",
+      "1 rare passenger"
+    ],
+    "login_rewards": [
+      80,
+      110,
+      150,
+      200,
+      260,
+      340,
+      500
+    ]
+  }
+}

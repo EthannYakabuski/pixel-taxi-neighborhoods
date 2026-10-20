@@ -1,0 +1,42 @@
+{
+  "key": "tablet-7-collection",
+  "file": "tablet-7-collection.png",
+  "sha256": "6d2784f1aaea16c8db1e8cc5e5c8a4254d64db4e7c66bf7539652dc62babd65e",
+  "dimensions": [
+    1080,
+    1920
+  ],
+  "raw_file": "raw/tablet-7-collection.png",
+  "raw_sha256": "b058e37a3e53a08eeb70381c58f7110ceb20af49ffd51999b201fbd7a0b87622",
+  "raw_dimensions": [
+    1920,
+    1080
+  ],
+  "capture_metadata_file": "provenance/tablet-7-collection.json",
+  "source_apk_sha256": "1691b5b6fe158a15e6b5f74f412a705f078ca4b975ff85d37f430746bc1a00c1",
+  "source_apk_bytes": 183761556,
+  "platform": "Android emulator",
+  "android_api": "30",
+  "android_version": "11",
+  "abi": "x86",
+  "requested_logical_size": [
+    1200,
+    1920
+  ],
+  "actual_framebuffer_size": [
+    1080,
+    1920
+  ],
+  "physical_device_test": false,
+  "physical_tablet_test": false,
+  "viewport_description": "Approximately 7-inch emulated tablet viewport; not a physical tablet test",
+  "capture_source": "Actual emulator framebuffer screenshot of normally launched Android game; no Godot capture/test fixture arguments",
+  "orientation_correction": "90 degrees clockwise to Android display orientation; no crop/content changes",
+  "pixel_processing": "Byte-for-byte copy of the approved portrait PNG and original raw framebuffer PNG; no resizing, crop, overlays, framing, or fabricated content.",
+  "logical_tablet_limitation": "Logical Android size/density override on the same emulator; actual framebuffer remains 1080x1920. This is not physical 7-inch/10-inch hardware evidence.",
+  "game_state": "Driver Journal reached through normal Home navigation, showing authored achievement cards and local progress; this is not a passenger-roster view.",
+  "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+  "fatal_runtime_diagnostic_present": false,
+  "display_restoration_verified": true,
+  "metadata_scope": "Public image provenance summary; original private capture and host records are excluded."
+}

@@ -1,0 +1,4 @@
+Pixel Taxi Neighborhoods - asset provenance
+Supplied Kenney transparent model previews are used as 2D game art. City building packs supply the distinct industrial, commercial and suburban neighborhoods; car-kit supplies the taxi portrait; mini-characters supplies passenger portraits. UI and interface audio supply click/arrival/reward cues.
+Original corresponding license files are preserved under assets/licenses. The user previously reviewed commercial-use rights; this file preserves provenance and notices rather than reclassifying third-party art as Apache-licensed.
+Original road layout, vehicle drawing, interface/icon SVG and city_evening.wav music were created for this project. Original code is Apache-2.0. Godot Engine remains MIT-licensed.

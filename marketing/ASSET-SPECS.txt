@@ -1,0 +1,15 @@
+APP ICON
+app-icon-512.png: 512x512 RGB PNG, full-square source artwork. Platform/store supplies display mask.
+app-icon-192.png: 192x192 RGB launcher preview.
+
+FEATURE GRAPHIC
+feature-graphic-1024x500.png: 1024x500 RGB PNG. Original brand illustration; not a gameplay screenshot.
+
+ACHIEVEMENTS AND LEADERBOARDS
+Individual named 512x512 RGB PNGs under achievements/ and leaderboards/. Symbolic keys in store-listing.json must map to final console IDs.
+
+REBUILD
+Run python generate_assets.py from this marketing directory with Pillow installed in the existing environment. It reads brand.json and ../game/catalog.json when present; it does not use the network. source_art/ retains the small source extracts needed to regenerate this game artwork. Source fonts are read from the installed Windows font library for rendering and are not redistributed.
+
+LICENSING
+Generated branding/code is part of the original Apache-2.0 project work. Supplied Kenney source art remains under its own provenance/notices. Preserve source_art notices and the root project notices.

@@ -1,0 +1,35 @@
+LOCAL CAPTURE HANDOFF - Pixel Taxi Neighborhoods
+
+CURRENT SOURCE CATALOG
+16 achievements; 4 leaderboards.
+Catalog SHA256: 3847a7922262b973cb0cc7efc8061c9e931e28ace36231d99af189a485ab001b
+Four reviewed source fingerprints are retained in the capture manifest and must
+match main, Services, project and export presets before packaging.
+The coordinator accepted these local APK/source version pairs using reviewed current outputs, serialized export records, frozen main/Services and controlled-write history. Historical Android exports did not retain full pre/post source snapshots; older Powder/Room Web guards covered main and Services only. This is not a claim of reproducible cryptographic APK-to-source build binding.
+These are source definitions; they do not establish configured production services.
+
+ACTUAL APPROVED ANDROID EMULATOR CAPTURES
+Package: com.ethannyakabuski.pixeltaxi
+APK SHA256: 1691b5b6fe158a15e6b5f74f412a705f078ca4b975ff85d37f430746bc1a00c1
+APK bytes: 183761556
+Verified captures: 9
+Roles: phone-collection, phone-home, phone-play, tablet-10-collection, tablet-10-home, tablet-10-play, tablet-7-collection, tablet-7-home, tablet-7-play
+Pending roles: none
+The home/play/collection filenames are role labels. Each game_state records the
+actual normally reached view for this game; no feature or game state is invented.
+Portrait and raw PNGs retain their exact approved bytes. Only a recorded lossless
+90-degree orientation correction is allowed. No resizing, crop, framing or overlays.
+
+The same emulator supplies all three configurations. Actual PNGs are 1080x1920.
+Tablet 7 is logical 1200x1920 at 320 dpi; tablet 10 is logical 1600x2560 at 300 dpi.
+These are viewport checks, not physical phone or tablet evidence. Google Test Ad
+content may appear; this does not establish production-ad or backend acceptance.
+
+SEPARATE RUNTIME / OWNER HANDOFF
+Root owns the separate current-APK offline, progress reload, network restoration,
+Back and actual service receipts. Display-restoration flags in frame metadata do
+not certify those flows. Final physical-device/human testing, production signing,
+service IDs/backends, support/privacy disclosures and Play submission remain owner
+responsibilities. No repository, website or store publication is performed here.
+
+See screenshots/capture-manifest.json and per-frame sanitized provenance.

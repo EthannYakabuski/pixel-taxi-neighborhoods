@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "source_apk_sha256": "1691b5b6fe158a15e6b5f74f412a705f078ca4b975ff85d37f430746bc1a00c1",
+  "metadata_scope": "Public summary of the approved image set; private selection paths and device records are excluded.",
+  "runtime_approval": {
+    "approved": true,
+    "evidence": "Recorded normal Android gameplay and offline save/restart checks were accepted with the limitations in docs/NATIVE_QA.json. This is dated local verification; production, physical-device, audible-audio and interactive-browser acceptance is not claimed."
+  },
+  "captures": [
+    {
+      "key": "phone-home",
+      "file": "phone-home.png",
+      "sha256": "b390362245eb2537bcfd29697aec607759ad927af42be3eb109f2aa014dfdd86",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "game_state": "Normal Pixel Taxi shift menu and connected-city overview with genuine saved fare progress; ordinary menu scrolling exposes lower navigation.",
+      "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+      "runtime_visual_approved": true
+    },
+    {
+      "key": "phone-play",
+      "file": "phone-play.png",
+      "sha256": "255cd989d0867330adbf0f4a5dfc8d6e2318d0e95022b695b3fde18dcae4b681",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "game_state": "Ordinary accepted fare reached through Dispatch, showing the cab, route and real pickup/drop-off driving controls. No fixture or forced result.",
+      "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+      "runtime_visual_approved": true
+    },
+    {
+      "key": "phone-collection",
+      "file": "phone-collection.png",
+      "sha256": "fcb2073e6ad00e20c034f6e7870a52b4fb7c5d7d5a5e02cdfe9f0eead43d9c10",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "game_state": "Driver Journal reached through normal Home navigation, showing authored achievement cards and local progress; this is not a passenger-roster view.",
+      "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+      "runtime_visual_approved": true
+    },
+    {
+      "key": "tablet-7-home",
+      "file": "tablet-7-home.png",
+      "sha256": "b4fc01331c15c42f70d28f497f816b7868e671e157cdd7d9ed4742aa1df94a8b",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "game_state": "Normal Pixel Taxi shift menu and connected-city overview with genuine saved fare progress; ordinary menu scrolling exposes lower navigation.",
+      "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+      "runtime_visual_approved": true
+    },
+    {
+      "key": "tablet-7-play",
+      "file": "tablet-7-play.png",
+      "sha256": "d951f7c5f6f4c07cfd6b247b886bfe69568c124ee0918965a21c69f67f4dadbd",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "game_state": "Ordinary accepted fare reached through Dispatch, showing the cab, route and real pickup/drop-off driving controls. No fixture or forced result.",
+      "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+      "runtime_visual_approved": true
+    },
+    {
+      "key": "tablet-7-collection",
+      "file": "tablet-7-collection.png",
+      "sha256": "6d2784f1aaea16c8db1e8cc5e5c8a4254d64db4e7c66bf7539652dc62babd65e",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "game_state": "Driver Journal reached through normal Home navigation, showing authored achievement cards and local progress; this is not a passenger-roster view.",
+      "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+      "runtime_visual_approved": true
+    },
+    {
+      "key": "tablet-10-home",
+      "file": "tablet-10-home.png",
+      "sha256": "b345a767708df540809cff3749d09e56914c94b6ccd6f597950cb28b9615bce5",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "game_state": "Normal Pixel Taxi shift menu and connected-city overview with genuine saved fare progress; ordinary menu scrolling exposes lower navigation.",
+      "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+      "runtime_visual_approved": true
+    },
+    {
+      "key": "tablet-10-play",
+      "file": "tablet-10-play.png",
+      "sha256": "e32c4f97e8a68d69cf29265f943df3240ae24167c525355d19cb78e03c611419",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "game_state": "Ordinary accepted fare reached through Dispatch, showing the cab, route and real pickup/drop-off driving controls. No fixture or forced result.",
+      "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+      "runtime_visual_approved": true
+    },
+    {
+      "key": "tablet-10-collection",
+      "file": "tablet-10-collection.png",
+      "sha256": "de982dad2a771308afc1ee9c5eb5dd2e4bc2731db3b63b45764a076e4fe32f23",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "game_state": "Driver Journal reached through normal Home navigation, showing authored achievement cards and local progress; this is not a passenger-roster view.",
+      "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+      "runtime_visual_approved": true
+    }
+  ]
+}

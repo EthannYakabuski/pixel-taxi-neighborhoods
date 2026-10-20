@@ -1,0 +1,26 @@
+Pixel Taxi Neighborhoods
+
+SHORT DESCRIPTION (76/80 characters)
+Friendly fares, little city stories, and a taxi that grows with your driver.
+
+LONG DESCRIPTION
+Take a fare. Learn a neighborhood. Bring someone home.
+
+Pixel Taxi Neighborhoods is a friendly top-down driving game set in a little city with three distinct districts. Choose a passenger job, find the pickup curb, and follow the connected streets to the destination. There is no need to turn every journey into a race.
+
+Explore the industrial Foundry, lively Central and leafy Garden neighborhoods across a connected street grid. Tap a destination to route your cab, use the thumb controls, or play with a keyboard in the Web edition. Moving traffic adds a little city life without punishing damage.
+
+Earn fares and driver experience, improve your engine, comfort and radio, and choose a new cab color. Meet different passengers, look out for rare guests, and fill your local journal with the stories of a growing taxi career.
+
+Three daily quests and a seven-day login reward cycle offer small goals for the next shift. Progress saves locally, and the core city remains playable offline.
+
+The Android edition supports optional rewarded ads and ads between completed fares. Google Play Games achievements and leaderboards depend on sign-in and final configuration. The Web edition preserves local play with graceful fallbacks for Android-only services.
+
+CATEGORY
+GAME_SIMULATION
+
+SUGGESTED TAGS
+Casual, Driving, Simulation, Single player, Offline
+
+PUBLICATION NOTE
+This is store copy for the implemented candidate, not a claim of publication or production-service verification. Check feature claims against the final build before uploading. The owner completes backend configuration, final testing, privacy/Data safety declarations, audience/content-rating questionnaires, support/privacy URLs, and Google Play publication.

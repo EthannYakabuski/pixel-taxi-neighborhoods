@@ -1,0 +1,24 @@
+.godot/
+.import/
+.DS_Store
+Thumbs.db
+build/
+dist/
+exports/
+android/build/
+android/.gradle/
+*.apk
+*.aab
+*.keystore
+*.jks
+*.log
+.env
+.env.*
+!.env.example
+credentials*.json
+service-account*.json
+local.properties
+# Local coordinator evidence (public results are in HANDOFF.txt)
+CHECKPOINT.txt
+**/*.stdout.log
+**/*.stderr.log

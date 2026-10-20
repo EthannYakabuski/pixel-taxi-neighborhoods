@@ -1,0 +1,183 @@
+{
+  "title": "Pixel Taxi Neighborhoods",
+  "short_description": "Friendly fares, little city stories, and a taxi that grows with your driver.",
+  "long_description": "Take a fare. Learn a neighborhood. Bring someone home.\n\nPixel Taxi Neighborhoods is a friendly top-down driving game set in a little city with three distinct districts. Choose a passenger job, find the pickup curb, and follow the connected streets to the destination. There is no need to turn every journey into a race.\n\nExplore the industrial Foundry, lively Central and leafy Garden neighborhoods across a connected street grid. Tap a destination to route your cab, use the thumb controls, or play with a keyboard in the Web edition. Moving traffic adds a little city life without punishing damage.\n\nEarn fares and driver experience, improve your engine, comfort and radio, and choose a new cab color. Meet different passengers, look out for rare guests, and fill your local journal with the stories of a growing taxi career.\n\nThree daily quests and a seven-day login reward cycle offer small goals for the next shift. Progress saves locally, and the core city remains playable offline.\n\nThe Android edition supports optional rewarded ads and ads between completed fares. Google Play Games achievements and leaderboards depend on sign-in and final configuration. The Web edition preserves local play with graceful fallbacks for Android-only services.",
+  "category": "GAME_SIMULATION",
+  "suggested_tags": [
+    "Casual",
+    "Driving",
+    "Simulation",
+    "Single player",
+    "Offline"
+  ],
+  "orientation": "portrait",
+  "developer": "EthannYakabuski",
+  "target_platforms": [
+    "Android",
+    "Web where feasible"
+  ],
+  "feature_graphic": "feature-graphic-1024x500.png",
+  "app_icon": "app-icon-512.png",
+  "achievement_icons": [
+    {
+      "key": "taxi_first_fare",
+      "name": "First friendly fare",
+      "description": "Deliver your first passenger.",
+      "threshold": 1,
+      "metric": "jobs",
+      "file": "achievements/taxi_first_fare.png"
+    },
+    {
+      "key": "taxi_regular",
+      "name": "Neighborhood regular",
+      "description": "Complete 5 fares.",
+      "threshold": 5,
+      "metric": "jobs",
+      "file": "achievements/taxi_regular.png"
+    },
+    {
+      "key": "taxi_local_legend",
+      "name": "Local legend",
+      "description": "Complete 25 fares.",
+      "threshold": 25,
+      "metric": "jobs",
+      "file": "achievements/taxi_local_legend.png"
+    },
+    {
+      "key": "taxi_century",
+      "name": "A hundred stories",
+      "description": "Complete 100 fares.",
+      "threshold": 100,
+      "metric": "jobs",
+      "file": "achievements/taxi_century.png"
+    },
+    {
+      "key": "taxi_city_miles",
+      "name": "City miles",
+      "description": "Drive 5 kilometers.",
+      "threshold": 5000,
+      "metric": "distance",
+      "file": "achievements/taxi_city_miles.png"
+    },
+    {
+      "key": "taxi_scenic_route",
+      "name": "The scenic route",
+      "description": "Drive 25 kilometers.",
+      "threshold": 25000,
+      "metric": "distance",
+      "file": "achievements/taxi_scenic_route.png"
+    },
+    {
+      "key": "taxi_special_guest",
+      "name": "A special guest",
+      "description": "Deliver a rare passenger.",
+      "threshold": 1,
+      "metric": "rare",
+      "file": "achievements/taxi_special_guest.png"
+    },
+    {
+      "key": "taxi_star_company",
+      "name": "Star company",
+      "description": "Deliver 5 rare passengers.",
+      "threshold": 5,
+      "metric": "rare",
+      "file": "achievements/taxi_star_company.png"
+    },
+    {
+      "key": "taxi_all_districts",
+      "name": "Across the city",
+      "description": "Deliver passengers to all 3 districts.",
+      "threshold": 3,
+      "metric": "districts",
+      "file": "achievements/taxi_all_districts.png"
+    },
+    {
+      "key": "taxi_good_company",
+      "name": "Good company",
+      "description": "Meet 6 different passengers.",
+      "threshold": 6,
+      "metric": "passengers",
+      "file": "achievements/taxi_good_company.png"
+    },
+    {
+      "key": "taxi_first_upgrade",
+      "name": "A little tune-up",
+      "description": "Buy a vehicle upgrade.",
+      "threshold": 1,
+      "metric": "upgrades",
+      "file": "achievements/taxi_first_upgrade.png"
+    },
+    {
+      "key": "taxi_pride",
+      "name": "Pride of the garage",
+      "description": "Purchase 6 upgrade levels.",
+      "threshold": 6,
+      "metric": "upgrades",
+      "file": "achievements/taxi_pride.png"
+    },
+    {
+      "key": "taxi_new_color",
+      "name": "A fresh coat",
+      "description": "Own 2 cab colors.",
+      "threshold": 2,
+      "metric": "cars",
+      "file": "achievements/taxi_new_color.png"
+    },
+    {
+      "key": "taxi_driver_level_5",
+      "name": "Level five driver",
+      "description": "Reach driver level 5.",
+      "threshold": 5,
+      "metric": "level",
+      "file": "achievements/taxi_driver_level_5.png"
+    },
+    {
+      "key": "taxi_driver_level_10",
+      "name": "The city knows you",
+      "description": "Reach driver level 10.",
+      "threshold": 10,
+      "metric": "level",
+      "file": "achievements/taxi_driver_level_10.png"
+    },
+    {
+      "key": "taxi_earned",
+      "name": "Honest work",
+      "description": "Earn 10,000 coins from fares.",
+      "threshold": 10000,
+      "metric": "income",
+      "file": "achievements/taxi_earned.png"
+    }
+  ],
+  "leaderboard_icons": [
+    {
+      "key": "taxi_jobs",
+      "name": "Fares delivered",
+      "description": "Lifetime completed passenger deliveries.",
+      "metric": "jobs",
+      "file": "leaderboards/taxi_jobs.png"
+    },
+    {
+      "key": "taxi_distance",
+      "name": "City miles",
+      "description": "Lifetime road distance in meters.",
+      "metric": "distance",
+      "file": "leaderboards/taxi_distance.png"
+    },
+    {
+      "key": "taxi_income",
+      "name": "Fare earnings",
+      "description": "Lifetime coins earned from fares.",
+      "metric": "income",
+      "file": "leaderboards/taxi_income.png"
+    },
+    {
+      "key": "taxi_player_level",
+      "name": "Driver level",
+      "description": "Current driver experience level.",
+      "metric": "level",
+      "file": "leaderboards/taxi_player_level.png"
+    }
+  ],
+  "copy_validation": "Draft aligned to the game brief; confirm against actual implemented build before store submission.",
+  "external_services": "Google Play Games IDs/backend and production AdMob account configuration/final tests are supplied by the owner. First-pass ads use test IDs."
+}

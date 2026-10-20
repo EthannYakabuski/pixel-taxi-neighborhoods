@@ -1,0 +1,12 @@
+Noto Sans CJK SC Regular
+
+© 2014-2021 Adobe (http://www.adobe.com/).
+Family: Noto Sans CJK SC
+PostScript name: NotoSansCJKsc-Regular
+Distributed filename: NotoSansSC-Regular.otf
+SHA256: 0832CF607170F42922AAEB8DD590E346174E247800C35AA4137055542462DBFA
+
+Copyright/family/name above are transcribed from the distributed font's OpenType name table.
+License: SIL Open Font License 1.1; full text in NOTO-CJK-OFL-1.1.txt.
+Upstream: https://github.com/notofonts/noto-cjk/tree/main/Sans
+Bundled by the Poing AdMob plugin; distinct from Godot's bundled Google Noto font notices.

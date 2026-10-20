@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "scope": "Public summary of recorded local verification. Original private device logs, save snapshots and coordinator records are excluded; this metadata is not a new test run.",
+  "package": "com.ethannyakabuski.pixeltaxi",
+  "source_apk_sha256": "1691b5b6fe158a15e6b5f74f412a705f078ca4b975ff85d37f430746bc1a00c1",
+  "apk_bytes": 183761556,
+  "diagnostic_hooks": false,
+  "native_touch": "Actual normal dispatch, route, curb pickup/delivery, receipt, daily gift, engine purchase and Back navigation were reviewed with same-PID Godot error guards. Offline completion is separately saved and bound to this capture run.",
+  "interstitial": "One actual test interstitial presented after the second delivered fare in the same process and was dismissed; saved paid receipt and normal navigation returned.",
+  "upgrade": {
+    "kind": "engine",
+    "level_before_after": [
+      0,
+      1
+    ],
+    "cost": 120,
+    "xp_delta": 0
+  },
+  "reward": {
+    "context": "next_fare_bonus",
+    "rewarded_presentations": 2,
+    "rewarded_dismissals": 2,
+    "accepted_native_grants": 1,
+    "entitlement": "saved fare_boost false to true",
+    "immediate_coins": 0,
+    "immediate_xp": 0,
+    "immediate_income": 0,
+    "saved_before_close": true,
+    "consumed_after_one_fare": true,
+    "base_next_fare": 89,
+    "bonus_coins": 44,
+    "boosted_income_delta": 133,
+    "level_bonus_coins": 70,
+    "gross_wallet_delta": 203,
+    "fare_xp_delta": 62,
+    "claim_limit": "One saved boolean entitlement is consumed by the next completed fare; no persistent ad receipt or unique round ID is claimed.",
+    "negative_attempt": "First test-ad pod displayed black media and closed without an earned callback; all24 saved groups stayed unchanged. The second real media attempt earned once and saved the entitlement.",
+    "return_preserved_group_count": 24,
+    "all_return_groups_preserved": true
+  },
+  "daily": {
+    "gift_coins": 80,
+    "xp_delta": 0,
+    "streak": 1,
+    "repeat_no_change": true
+  },
+  "back": {
+    "behavior": "Subpage Back returns Home; Home Back is a no-op with the same process and all24 groups preserved. No Android exit is claimed.",
+    "preserved_group_count": 24,
+    "all_recorded_groups_preserved": true
+  },
+  "offline": {
+    "actual_network_none_snapshots": 20,
+    "gameplay_delta": {
+      "jobs": 3,
+      "distance": 3365.99999957084,
+      "xp": 210,
+      "income": 339,
+      "coins": 444
+    },
+    "network_restored": true,
+    "display_restored": true,
+    "wifi_before_after": [
+      "1",
+      "1"
+    ],
+    "data_before_after": [
+      "1",
+      "1"
+    ],
+    "coldlaunch_preservation": {
+      "group_count": 24,
+      "all_recorded_checks_passed": true
+    },
+    "restart_preservation": {
+      "group_count": 24,
+      "all_recorded_checks_passed": true
+    }
+  },
+  "captures": {
+    "count": 9,
+    "recorded_validation_passed": true,
+    "manifest": "marketing/screenshots/capture-manifest.json",
+    "physical_device_test": false,
+    "physical_tablet_test": false
+  },
+  "limits": [
+    "Official Google test IDs only; production IDs/backend/consent/signing/store setup remain owner work.",
+    "One API30 emulator with physical1080x1920 framebuffer and logical tablet overrides; no physical-device acceptance.",
+    "The first black test-ad pod did not earn; a subsequent real media attempt did. No broad ad-fill/reliability claim.",
+    "Short QA does not establish every passenger/car/upgrade, long-term economy, midnight rollover, seven-day streak or many-session reliability.",
+    "Hosted CI/Pages and production Play Games integration remain separate; no external publication is established.",
+    "The emulator uses -no-audio; audible Android sound remains unverified."
+  ],
+  "audio_and_browser_qualification": "Emulator audio disabled; audible output, interactive browser/WebGL and physical-device acceptance remain unverified. Production services and human balance remain owner work."
+}

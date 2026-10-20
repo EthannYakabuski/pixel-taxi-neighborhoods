@@ -1,0 +1,133 @@
+name: Build and test (Pages held)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot 4.5.1 and matching export templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 -o /tmp/godot.zip https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_linux.x86_64.zip
+          echo '02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  /tmp/godot.zip' | sha256sum --check
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          sudo install -m 755 /tmp/godot/Godot_v4.5.1-stable_linux.x86_64 /usr/local/bin/godot
+          curl --fail --location --retry 3 -o /tmp/templates.tpz https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_export_templates.tpz
+          echo '1998af37f1387684e2c211cdb483daf492fc64dc6b12096bddcdca25b6910c86  /tmp/templates.tpz' | sha256sum --check
+          mkdir -p "$HOME/.local/share/godot/export_templates/4.5.1.stable"
+          unzip -q /tmp/templates.tpz -d /tmp/templates
+          cp -a /tmp/templates/templates/. "$HOME/.local/share/godot/export_templates/4.5.1.stable/"
+          godot --version
+      - name: Import and validate scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot --headless --editor --path . --import 2>&1 | tee /tmp/import.log
+          if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR:' /tmp/import.log; then
+            exit 1
+          fi
+      - name: Verify safe service fallbacks
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 60s godot --headless --path . --script platform/tests/services_smoke.gd 2>&1 | tee /tmp/services-test.log
+          if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR:|Assertion failed' /tmp/services-test.log; then
+            exit 1
+          fi
+      - name: Run game smoke tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t game_tests < <(find tests -maxdepth 1 -type f \( -name 'test_*.gd' -o -name '*_test.gd' -o -name 'smoke.gd' \) | sort)
+          if [ "${#game_tests[@]}" -eq 0 ]; then
+            echo 'No game tests were discovered.' >&2
+            exit 1
+          fi
+          for script in "${game_tests[@]}"; do
+            log="/tmp/game-$(basename "$script").log"
+            timeout 120s godot --headless --path . --script "$script" 2>&1 | tee "$log"
+            if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR:|Assertion failed' "$log"; then
+              exit 1
+            fi
+          done
+      - name: Build single-threaded Web export
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/web
+          godot --headless --path . --export-release Web build/web/index.html 2>&1 | tee /tmp/web-export.log
+          if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR:' /tmp/web-export.log; then
+            exit 1
+          fi
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+      - name: Prepare Android SDK and test signing identity
+        shell: bash
+        run: |
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;28.1.13356709" "cmake;3.10.2.4988404"
+          mkdir -p "$HOME/.android" "$HOME/.config/godot" build/android
+          if [ ! -f "$HOME/.android/debug.keystore" ]; then
+            keytool -genkeypair -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey -keypass android -dname 'CN=Android Debug,O=Android,C=US' -keyalg RSA -keysize 2048 -validity 10000
+          fi
+          printf '[gd_resource type="EditorSettings" format=3]\n\n[resource]\nexport/android/android_sdk_path = "%s"\nexport/android/java_sdk_path = "%s"\n' "$ANDROID_HOME" "$JAVA_HOME" > "$HOME/.config/godot/editor_settings-4.5.tres"
+      - name: Build Android debug APK with native integrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot --headless --path . --install-android-build-template --export-debug Android build/android/game-debug.apk 2>&1 | tee /tmp/android-export.log
+          if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR:' /tmp/android-export.log; then
+            exit 1
+          fi
+      - name: Include accompanying license notices
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s LICENSES/INDEX.txt
+          mkdir -p build/android/LICENSES build/web/LICENSES
+          cp -a LICENSES/. build/android/LICENSES/
+          cp -a LICENSES/. build/web/LICENSES/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-debug-apk
+          path: |
+            build/android/*.apk
+            build/android/LICENSES/
+          retention-days: 7
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    # Live Pages activation is held pending separate authorization.
+    if: false
+    needs: validate-and-build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy playable Web build
+        id: deployment
+        uses: actions/deploy-pages@v4

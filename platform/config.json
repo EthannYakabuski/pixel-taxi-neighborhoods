@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "admob": {
+    "test_mode": true,
+    "app_id": "ca-app-pub-3940256099942544~3347511713",
+    "banner_unit_id": "ca-app-pub-3940256099942544/6300978111",
+    "interstitial_unit_id": "ca-app-pub-3940256099942544/1033173712",
+    "rewarded_unit_id": "ca-app-pub-3940256099942544/5224354917",
+    "tag_for_under_age_of_consent": false
+  },
+  "play_games": {
+    "enabled": false,
+    "game_id": "",
+    "achievements": {
+      "taxi_first_fare": "",
+      "taxi_regular": "",
+      "taxi_local_legend": "",
+      "taxi_century": "",
+      "taxi_city_miles": "",
+      "taxi_scenic_route": "",
+      "taxi_special_guest": "",
+      "taxi_star_company": "",
+      "taxi_all_districts": "",
+      "taxi_good_company": "",
+      "taxi_first_upgrade": "",
+      "taxi_pride": "",
+      "taxi_new_color": "",
+      "taxi_driver_level_5": "",
+      "taxi_driver_level_10": "",
+      "taxi_earned": ""
+    },
+    "leaderboards": {
+      "taxi_jobs": "",
+      "taxi_distance": "",
+      "taxi_income": "",
+      "taxi_player_level": ""
+    }
+  }
+}

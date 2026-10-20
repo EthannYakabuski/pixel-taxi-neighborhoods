@@ -1,0 +1,371 @@
+[
+  {
+    "file": "achievements/taxi_all_districts.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "6401d77cf5283fbbebd1416a50bb1d2d3062de211b0f5de824e71ce52a2aa80b"
+  },
+  {
+    "file": "achievements/taxi_century.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "07793c526e34d0769ac6c810412c588e58c94bbaa7a80ece3f298178e3550b59"
+  },
+  {
+    "file": "achievements/taxi_city_miles.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "a3a87b70aca0b811828e332c5ceb3e412061de1594a48ef2eb2841f3812d364b"
+  },
+  {
+    "file": "achievements/taxi_driver_level_10.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "735818f766ff34683f181c7330cc434e71a2071c7c0942dc1408f05b2f2069b3"
+  },
+  {
+    "file": "achievements/taxi_driver_level_5.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "d63bae913e29f7bde09b475bc69c4426b55c333a9650a2cbb3799f616eb0e361"
+  },
+  {
+    "file": "achievements/taxi_earned.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "c42db518930b3c8773c815a8bdbff20e2740f06bca446060e7a66fc0bcd4e0a7"
+  },
+  {
+    "file": "achievements/taxi_first_fare.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "3803d597745527fa1c70b1c9ba0c74cf44f5efb6fe21d3776be6426fe963c819"
+  },
+  {
+    "file": "achievements/taxi_first_upgrade.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "9cdeef763dcaac4e0618d560d91b98aea5745e2dedfd74ebf41bbdaf43fe1223"
+  },
+  {
+    "file": "achievements/taxi_good_company.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "cfb4272204774bb2e9de30dab42a89d013e3fac3d95b6ea29011a07188020e59"
+  },
+  {
+    "file": "achievements/taxi_local_legend.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "ee2307af580d91356002d8ce8f9085fe9e49ee81797c3ab11c67652b1a5de8e6"
+  },
+  {
+    "file": "achievements/taxi_new_color.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "5fe138c343bf161de52a5e33ae55687364cbecd8a7258c2d9d448f90cd5c4439"
+  },
+  {
+    "file": "achievements/taxi_pride.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "14bf93c53efd5cef542d8fbefa2217c641ce0c4daee87f74e640080064a84d2a"
+  },
+  {
+    "file": "achievements/taxi_regular.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "3d9197bdd28b651d3f9c82e5ddc25be07e001a2b30aa79f47b9e696ff2fd542e"
+  },
+  {
+    "file": "achievements/taxi_scenic_route.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "d0dcdca71076c38fc56476cd4e5bdabf9d14e1157ec2d384562f43d007e16bfd"
+  },
+  {
+    "file": "achievements/taxi_special_guest.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "c0895a298ba6bf18a2ac452ac9035a8c67cd107ebdc51d7374b1cc2974870a6a"
+  },
+  {
+    "file": "achievements/taxi_star_company.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "d63bae913e29f7bde09b475bc69c4426b55c333a9650a2cbb3799f616eb0e361"
+  },
+  {
+    "file": "app-icon-192.png",
+    "dimensions": [
+      192,
+      192
+    ],
+    "mode": "RGB",
+    "sha256": "cbae7320e6f528131d78bec1d8409fb3409c7cfcfe0b8139da6caac32c255534"
+  },
+  {
+    "file": "app-icon-512.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "40717d815c8e1ae537b4b782c8930ad59ffa1c583ebf7331ba37688e75cec8ef"
+  },
+  {
+    "file": "feature-graphic-1024x500.png",
+    "dimensions": [
+      1024,
+      500
+    ],
+    "mode": "RGB",
+    "sha256": "ef5a12e5af9f3f554bdfc25272b55809b7525c3783c74582d6d2b1913463e3a8"
+  },
+  {
+    "file": "leaderboards/taxi_distance.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "7790eba834c5c824ce8dc3b149a53b53d4ee46de02079d6175dc6c6a783300db"
+  },
+  {
+    "file": "leaderboards/taxi_income.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "d4011fec55eefd678519316ae63e884cb71939405229843edd8d4af0472fdc76"
+  },
+  {
+    "file": "leaderboards/taxi_jobs.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "69801f0a2fa529b3fd2a014811db3e1dc0cae60a4de1cb7fc09297838975403f"
+  },
+  {
+    "file": "leaderboards/taxi_player_level.png",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "sha256": "8c388f4901f97653be55edcdaae0803a673162d2082d38fdcfd2d7a31ea1b007"
+  },
+  {
+    "file": "screenshots/phone-collection.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "mode": "RGBA",
+    "sha256": "fcb2073e6ad00e20c034f6e7870a52b4fb7c5d7d5a5e02cdfe9f0eead43d9c10"
+  },
+  {
+    "file": "screenshots/phone-home.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "mode": "RGBA",
+    "sha256": "b390362245eb2537bcfd29697aec607759ad927af42be3eb109f2aa014dfdd86"
+  },
+  {
+    "file": "screenshots/phone-play.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "mode": "RGBA",
+    "sha256": "255cd989d0867330adbf0f4a5dfc8d6e2318d0e95022b695b3fde18dcae4b681"
+  },
+  {
+    "file": "screenshots/raw/phone-collection.png",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "mode": "RGBA",
+    "sha256": "d811117ed9ebfa80a57f160b0618730a9f38de8037b86829889f7d3ba2468e8b"
+  },
+  {
+    "file": "screenshots/raw/phone-home.png",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "mode": "RGBA",
+    "sha256": "f3b1235025c58e7dbf7b913e670b2ed98751abf5c3784bc9bdd5ee906e1616a6"
+  },
+  {
+    "file": "screenshots/raw/phone-play.png",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "mode": "RGBA",
+    "sha256": "e1674ddd7352a79ce3746ccb0f03a16f26fc2114cacef2700617d410fbb51c89"
+  },
+  {
+    "file": "screenshots/raw/tablet-10-collection.png",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "mode": "RGBA",
+    "sha256": "a0d638a1a49dd6633194c4259fc9af7bc125a93798e00a235a7fce86fe597328"
+  },
+  {
+    "file": "screenshots/raw/tablet-10-home.png",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "mode": "RGBA",
+    "sha256": "bd81e600975eee99ed32cae4a8bc19b7a56dc00dc74bbf355feda52987a7ee4d"
+  },
+  {
+    "file": "screenshots/raw/tablet-10-play.png",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "mode": "RGBA",
+    "sha256": "efb49469586240f7e2323f661a12944d3a20877507e1fde5417978af9163c610"
+  },
+  {
+    "file": "screenshots/raw/tablet-7-collection.png",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "mode": "RGBA",
+    "sha256": "b058e37a3e53a08eeb70381c58f7110ceb20af49ffd51999b201fbd7a0b87622"
+  },
+  {
+    "file": "screenshots/raw/tablet-7-home.png",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "mode": "RGBA",
+    "sha256": "36cf298c36e62b90b9b4268fa89e5a3fc0ea7119661d524efd0e09512ad93988"
+  },
+  {
+    "file": "screenshots/raw/tablet-7-play.png",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "mode": "RGBA",
+    "sha256": "5feb2395a5f923b94ea024fb53ebeed4e6bd940ad6b1940970fe55d0498689a9"
+  },
+  {
+    "file": "screenshots/tablet-10-collection.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "mode": "RGBA",
+    "sha256": "de982dad2a771308afc1ee9c5eb5dd2e4bc2731db3b63b45764a076e4fe32f23"
+  },
+  {
+    "file": "screenshots/tablet-10-home.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "mode": "RGBA",
+    "sha256": "b345a767708df540809cff3749d09e56914c94b6ccd6f597950cb28b9615bce5"
+  },
+  {
+    "file": "screenshots/tablet-10-play.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "mode": "RGBA",
+    "sha256": "e32c4f97e8a68d69cf29265f943df3240ae24167c525355d19cb78e03c611419"
+  },
+  {
+    "file": "screenshots/tablet-7-collection.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "mode": "RGBA",
+    "sha256": "6d2784f1aaea16c8db1e8cc5e5c8a4254d64db4e7c66bf7539652dc62babd65e"
+  },
+  {
+    "file": "screenshots/tablet-7-home.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "mode": "RGBA",
+    "sha256": "b4fc01331c15c42f70d28f497f816b7868e671e157cdd7d9ed4742aa1df94a8b"
+  },
+  {
+    "file": "screenshots/tablet-7-play.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "mode": "RGBA",
+    "sha256": "d951f7c5f6f4c07cfd6b247b886bfe69568c124ee0918965a21c69f67f4dadbd"
+  }
+]

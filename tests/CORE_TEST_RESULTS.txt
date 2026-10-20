@@ -1,0 +1,46 @@
+PIXEL TAXI NEIGHBORHOODS - CORE VERIFICATION
+Date: 2026-10-20
+Engine: Godot 4.5.1 stable official f62fdbde1, Compatibility renderer.
+Canonical project: <project-root>
+
+PASS: deterministic model suite, 15,895 checks, zero failures.
+Command: Godot --headless --path PROJECT --script tests/test_model.gd
+Coverage: exhaustive 49-by-49 connected street routing and every traversed edge;
+invalid road endpoints; pickup/dropoff curb enforcement; rejected double payments;
+upgrade costs/caps and car ownership; XP levels and one-time level bonuses;
+single-use fare boost; daily and login claim timing/backward-clock protection;
+serialized data and actual test-file round trips; repaired contract geometry;
+rare passenger cadence, passenger variety, and all three districts.
+
+PASS: actual scene runtime smoke after the final startup/journal refresh fix.
+Command: Godot --headless --path PROJECT -- --demo --runtime-smoke
+Expected output: PIXEL_TAXI_RUNTIME_OK: route, pickup, delivery and receipt completed
+The demo does not read or write the player's local save.
+Coordinator Services/Play Games autoloads and native plugins were subsequently
+imported and included in the final core integration smoke.
+
+PASS: eight actual rendered desktop-engine viewport captures, 540 by 960 pixels.
+All exited zero without stderr warnings or errors. Images are in tests/evidence:
+core-home.png, core-drive.png, core-dispatch.png, core-garage.png, core-daily.png,
+core-journal.png, core-receipt.png and core-settings.png.
+Capture command: Godot --path PROJECT --resolution 540x960 -- --demo --view=VIEW --capture=ABSOLUTE.png
+The PNGs show running source in deterministic demo state, not Android/device
+captures, not mockups, and not evidence of Android native integration.
+The screenshot route rejects the headless dummy renderer.
+
+Visual review: menu alignment, connected three-district city, route/curb guidance,
+contract cards, upgrades/colors, daily reward rows, unlocked journal markers,
+receipt payout and optional sponsor action, and settings all inspected.
+
+Core integration contract: get_node_or_null('/root/Services') is optional.
+Home fits its scrollable menu above the bottom reserve reported by Services.menu_bottom_reserve(stage) and refreshes when menu_bottom_reserve_changed fires. The reserve reflects native banner and bottom-safe-area measurements converted to logical units; it is zero off Android or when the menu banner is inactive. This replaces the former fixed 56-pixel description. Native layout acceptance is recorded separately.
+round_finished is called after each completed fare; the adapter controls cadence.
+Only a true reward_requested callback grants the next-fare 50 percent bonus.
+Catalog: game/catalog.json has 16 symbolic achievements and 4 leaderboards.
+
+Coordinator-owned checks still required: native Services/plugin Android behavior;
+Android export/build/install and device touch/back/pause/resume/performance;
+Web export/browser input, audio, persistence and reward-unavailable behavior;
+test-ad consent, earned-reward events and actual Play Games configuration;
+production IDs, signing, CI/repository publishing, marketing and final release QA.
+No Android/Web export or production-service certification is claimed here.

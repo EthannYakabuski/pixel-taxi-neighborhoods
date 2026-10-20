@@ -1,0 +1,42 @@
+{
+  "key": "tablet-10-home",
+  "file": "tablet-10-home.png",
+  "sha256": "b345a767708df540809cff3749d09e56914c94b6ccd6f597950cb28b9615bce5",
+  "dimensions": [
+    1080,
+    1920
+  ],
+  "raw_file": "raw/tablet-10-home.png",
+  "raw_sha256": "bd81e600975eee99ed32cae4a8bc19b7a56dc00dc74bbf355feda52987a7ee4d",
+  "raw_dimensions": [
+    1920,
+    1080
+  ],
+  "capture_metadata_file": "provenance/tablet-10-home.json",
+  "source_apk_sha256": "1691b5b6fe158a15e6b5f74f412a705f078ca4b975ff85d37f430746bc1a00c1",
+  "source_apk_bytes": 183761556,
+  "platform": "Android emulator",
+  "android_api": "30",
+  "android_version": "11",
+  "abi": "x86",
+  "requested_logical_size": [
+    1600,
+    2560
+  ],
+  "actual_framebuffer_size": [
+    1080,
+    1920
+  ],
+  "physical_device_test": false,
+  "physical_tablet_test": false,
+  "viewport_description": "Approximately 10-inch emulated tablet viewport; not a physical tablet test",
+  "capture_source": "Actual emulator framebuffer screenshot of normally launched Android game; no Godot capture/test fixture arguments",
+  "orientation_correction": "90 degrees clockwise to Android display orientation; no crop/content changes",
+  "pixel_processing": "Byte-for-byte copy of the approved portrait PNG and original raw framebuffer PNG; no resizing, crop, overlays, framing, or fabricated content.",
+  "logical_tablet_limitation": "Logical Android size/density override on the same emulator; actual framebuffer remains 1080x1920. This is not physical 7-inch/10-inch hardware evidence.",
+  "game_state": "Normal Pixel Taxi shift menu and connected-city overview with genuine saved fare progress; ordinary menu scrolling exposes lower navigation.",
+  "visual_review": "Actual framebuffer manually reviewed: readable normal game content and reachable controls, without notification, ANR, modal or fullscreen-ad obstruction. Logical tablet views are emulation.",
+  "fatal_runtime_diagnostic_present": false,
+  "display_restoration_verified": true,
+  "metadata_scope": "Public image provenance summary; original private capture and host records are excluded."
+}

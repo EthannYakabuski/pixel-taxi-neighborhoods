@@ -1,0 +1,23 @@
+pixel-taxi-neighborhoods - accompanying license notices
+
+Project/LICENSE.txt and NOTICE.txt cover original project work. Third-party
+assets, plugins, fonts and the engine retain their respective licenses.
+
+Godot Engine 4.5.1: ThirdParty/GODOT-4.5.1-LICENSE.txt, full matching
+COPYRIGHT.txt and AUTHORS.md. https://godotengine.org/license/
+Poing AdMob: ThirdParty/POING-ADMOB-MIT.txt.
+Godot Play Games Services: ThirdParty/PLAY-GAMES-MIT.txt.
+Noto Sans CJK SC Regular: ThirdParty/NOTO-CJK-SC-NOTICE.txt and
+ThirdParty/NOTO-CJK-OFL-1.1.txt (Adobe copyright plus full SIL OFL).
+
+Asset map
+Car/character/city preview art: Kenney Car Kit, Mini Characters, City Kit Commercial/Industrial/Suburban; CC0. UI Audio and Interface Sounds: CC0. Original city_evening.wav, vector art and code: Apache-2.0.
+Pack notices are reproduced under Assets using relative source paths.
+
+This accompanying bundle must travel with the software when this package is
+redistributed. Android SDK notices already embedded in an APK are also preserved
+in its AndroidEmbeddedNotices directory when packaging that APK. A Web bundle
+includes native-plugin notices conservatively because the source shares addons;
+this does not claim native services run in a browser. Production SDK/service
+terms, store setup and channel-specific notice accessibility remain the
+distributor's responsibility. No production approval is implied.
