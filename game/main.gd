@@ -529,7 +529,7 @@ func _settings() -> void:
 	_header("A COMFORTABLE RIDE", "Your cab, your company, your pace.")
 	_panel(Rect2(24, 146, 492, 240), Color("1e3b50"), 18)
 	_label("Around the neighborhood", Rect2(44, 168, 448, 38), 25, Color("fff5dc"))
-	_label("Tap a street intersection to set a route.\nUse the four thumb buttons or arrow keys\nto take over. Pick up and drop off at the\nmarked curb. No fuel, damage or rush.", Rect2(44, 220, 448, 137), 19, MIST)
+	_label("Hold & drag the pad to drive and steer.\nGPS guides; it never drives the cab.\nBrake at gold curbs; hold Reverse to back up.\nCollisions slow you and remove clean tips.\nPrompt, collision-free fares can earn a tip.", Rect2(44, 220, 448, 137), 19, MIST)
 	_button("Sound: ON" if model.sound else "Sound: OFF", Rect2(24, 414, 492, 55), func():
 		model.sound = not model.sound
 		if model.sound: music.play()
