@@ -28,3 +28,7 @@ CHECKPOINT.txt
 /local-backups/
 **/*-stopped-save.json
 **/runtime-receipt.json
+
+# Screenshot editor sidecars are generated metadata, not delivery artwork.
+/marketing/screenshots/**/*.png.import
+/marketing/screenshots/*.png.import

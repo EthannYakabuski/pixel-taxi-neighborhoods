@@ -2,11 +2,11 @@
 
 A little city. A thousand small stories.
 
-Drive a connected city across industrial, downtown and suburban districts. Pick up fares, deliver passengers, meet rare riders, upgrade your cab and grow your driver level.
+Manually drive a real 3D Kenney taxi through connected industrial, downtown and suburban neighborhoods. Accept or decline a single dispatch offer, deliver passengers, earn clean/timely tips, meet rare riders, upgrade your cab and grow your driver level.
 
 ## Play
 
-Choose a job, steer manually or tap a connected road destination, collect the passenger and follow the delivery route. Spend fares on upgrades and check daily jobs and your passenger journal.
+Accept or decline the current dispatch. Hold and drag the drive pad with one thumb to accelerate and steer; separate steering, brake and reverse controls support two-thumb play. Keyboard W/S or arrows accelerate/reverse, A/D or arrows steer, and Space brakes. Stop at the gold curb to pick up or drop off. GPS highlights the weighted shortest road route and recalculates after a wrong turn; it never drives the car. Collisions slow the cab and affect tip eligibility, while banked coins remain safe. Spend fares on upgrades and check daily jobs and your passenger journal.
 
 Touch/mouse portrait play and offline local saves are supported. Android is the primary target; Web retains gameplay and saves when Android services are unavailable. Browser play never grants pretend ad rewards.
 
@@ -19,12 +19,16 @@ Use Godot **4.5.1**, **Compatibility**, matching export templates, Java 17 and t
 ```sh
 godot --headless --editor --path . --import
 godot --headless --path . --script tests/test_model.gd
+godot --headless --path . --script tests/test_city_graph.gd
+godot --headless --path . --script tests/test_taxi_3d.gd
 godot --headless --path . --script platform/tests/services_smoke.gd
 godot --headless --path . --export-release Web build/web/index.html
 godot --headless --path . --install-android-build-template --export-debug Android build/android/game-debug.apk
 ```
 
 Create build/web and build/android first. Android package: `com.ethannyakabuski.pixeltaxi`. Tests and capture helpers are documented under game/ and tests/. No Windows build is supplied.
+
+The ROUND TWO source replaces the former grid/autodrive scene with manual 3D driving, curved connected streets and physical collisions. See [3D update notes](docs/ROUND_TWO_3D.md). The original QA APK remains unchanged; fresh exports, affected native QA and final-build captures are required before accepting this runtime update.
 
 ## Integration and handoff
 

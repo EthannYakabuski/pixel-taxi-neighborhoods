@@ -1,5 +1,22 @@
 PIXEL TAXI NEIGHBORHOODS - LOCAL TEST HANDOFF
-Status: READY FOR OWNER LOCAL TEST REVIEW (2026-10-20T11:28:24.024171+00:00).
+Status: ORIGINAL APK RETAINED; ROUND TWO 3D SOURCE AWAITS REBUILD/NATIVE QA.
+
+ROUND TWO SOURCE - 2026-10-21
+Actual Kenney 3D cars, 450 physically bounded buildings and instanced roads/trees
+replace the former flat grid. There are49 stable addresses and68 curved connected
+streets across three distinct neighborhoods. Third-person driving is manual;
+GPS uses exact road projection/weighted shortest paths and cannot auto-drive.
+Dispatch offers one accept/decline contract; clean, timely driving qualifies for
+a tip. Physical collisions slow the car and affect fare quality. Version-1 saves
+migrate additively, preserving banked progress, accepted fares and earned boosts.
+20,585 graph checks,18,894 model checks and25 integrated actual-physics/input/
+coverage/save checks passed. Actual desktop GPU source views were inspected in
+all three districts. These synthetic source diagnostics are not native evidence.
+Fresh Android/Web exports, affected native QA and final-build captures remain.
+The exact original APK and its earlier native record below remain unchanged.
+See docs/ROUND_TWO_3D.md.
+
+ORIGINAL BUILD RECORD - 2026-10-20T11:28:24.024171+00:00
 
 APK: build/android/game-debug.apk (183,761,556 bytes)
 SHA256: 1691b5b6fe158a15e6b5f74f412a705f078ca4b975ff85d37f430746bc1a00c1

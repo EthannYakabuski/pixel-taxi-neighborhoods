@@ -2,6 +2,7 @@ extends Control
 
 const Model = preload("res://game/model.gd")
 const City = preload("res://game/city.gd")
+const Graph = preload("res://game/city_graph.gd")
 const INK := Color("102638")
 const MIST := Color("b9d1da")
 const GOLD := Color("ffc857")
@@ -18,7 +19,21 @@ var vehicle_position := Vector2(660, 660)
 var vehicle_heading: float = 0.0
 var travel_path: Array[int] = []
 var held_direction := Vector2i.ZERO
-var automatic: bool = false
+var automatic: bool = false # Compatibility field; navigation never drives the car.
+var turn_input := 0.0
+var gas_held := false
+var brake_held := false
+var reverse_held := false
+var pad_anchor := 0.0
+var nav_node := -1
+var nav_goal := -1
+var nav_timer := 0.0
+var navigation: Dictionary = {}
+var application_suspended := false
+var service_was_covering := false
+var resume_required := false
+var discard_frame := false
+var _audio_shutting_down := false
 var pulse_timer: float = 0.0
 var autosave_timer: float = 0.0
 var toast_timer: float = 0.0
@@ -38,6 +53,7 @@ var reward_pending: bool = false
 var boot_view: String = "home"
 
 func _ready() -> void:
+	get_tree().auto_accept_quit = false
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture="): capture_path = argument.trim_prefix("--capture=")
 		if argument.begins_with("--view="): boot_view = argument.trim_prefix("--view=")
@@ -45,7 +61,8 @@ func _ready() -> void:
 		if argument == "--runtime-smoke": runtime_smoke = true
 	if not demo: _load_save()
 	if demo: _demo_state()
-	vehicle_position = Model.point(model.player_node)
+	vehicle_position = model.driving_position
+	vehicle_heading = model.driving_heading
 	catalog = JSON.parse_string(FileAccess.get_file_as_string("res://game/catalog.json"))
 	sfx = AudioStreamPlayer.new()
 	add_child(sfx)
@@ -68,8 +85,16 @@ func _ready() -> void:
 	if runtime_smoke: _runtime_smoke()
 
 func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_PAUSED:
+		application_suspended = true
+		resume_required = screen == "drive"
+		_set_parked()
+	if what == NOTIFICATION_APPLICATION_RESUMED:
+		application_suspended = false
+		discard_frame = true
 	if what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_WM_CLOSE_REQUEST:
 		_save()
+	if what == NOTIFICATION_WM_CLOSE_REQUEST: _quit_cleanly()
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		if screen != "home": _show("home")
 
@@ -77,6 +102,7 @@ func _exit_tree() -> void:
 	_stop_audio()
 
 func _stop_audio() -> void:
+	_audio_shutting_down = true
 	if is_instance_valid(music):
 		music.stop()
 		music.stream = null
@@ -85,50 +111,89 @@ func _stop_audio() -> void:
 		sfx.stream = null
 
 func _process(delta: float) -> void:
+	var services := _services()
+	var covered := application_suspended or (is_instance_valid(services) and services.has_method("is_gameplay_blocked") and bool(services.call("is_gameplay_blocked")))
+	if covered:
+		service_was_covering = true
+		resume_required = screen == "drive"
+		_set_parked()
+	if service_was_covering and not covered:
+		service_was_covering = false
+		discard_frame = true
+	if discard_frame:
+		delta = 0
+		discard_frame = false
+	delta = clampf(delta,0.0,0.08)
 	if toast_timer > 0:
 		toast_timer -= delta
 		if is_instance_valid(toast_label): toast_label.visible = toast_timer > 0
-	if screen == "drive":
-		var keyboard := Vector2i.ZERO
-		if Input.is_physical_key_pressed(KEY_LEFT) or Input.is_physical_key_pressed(KEY_A): keyboard = Vector2i.LEFT
-		elif Input.is_physical_key_pressed(KEY_RIGHT) or Input.is_physical_key_pressed(KEY_D): keyboard = Vector2i.RIGHT
-		elif Input.is_physical_key_pressed(KEY_UP) or Input.is_physical_key_pressed(KEY_W): keyboard = Vector2i.UP
-		elif Input.is_physical_key_pressed(KEY_DOWN) or Input.is_physical_key_pressed(KEY_S): keyboard = Vector2i.DOWN
-		var direction: Vector2i = keyboard if keyboard != Vector2i.ZERO else held_direction
-		if direction != Vector2i.ZERO:
-			automatic = false
-			if travel_path.is_empty(): _manual_step(direction)
-		if not travel_path.is_empty():
-			var destination: Vector2 = Model.point(travel_path[0])
-			var old_position: Vector2 = vehicle_position
-			var effective_speed: float = model.speed()
-			if is_instance_valid(city) and city.traffic_near(vehicle_position): effective_speed *= 0.72
-			vehicle_position = vehicle_position.move_toward(destination, effective_speed * delta)
-			var movement: Vector2 = vehicle_position - old_position
-			model.travel(movement.length() * 0.45)
-			if movement.length_squared() > 0.001: vehicle_heading = lerp_angle(vehicle_heading, movement.angle() + PI / 2, minf(1, delta * 12))
-			if vehicle_position.distance_to(destination) < 0.1:
-				model.player_node = travel_path.pop_front()
-				if not automatic: travel_path.clear()
-				if travel_path.is_empty() and model.objective() == model.player_node and not model.active_job.is_empty():
-					_toast("At the curb. Your passenger is ready.")
-					_play("res://assets/audio/arrival.ogg")
-		if is_instance_valid(city):
-			city.vehicle = vehicle_position
-			city.heading = vehicle_heading
+	if screen == "drive" and is_instance_valid(city) and is_instance_valid(city.world):
+		var world = city.world
+		world.enabled = not covered and not resume_required
+		var turn := turn_input
+		if Input.is_physical_key_pressed(KEY_LEFT) or Input.is_physical_key_pressed(KEY_A): turn -= 1.0
+		if Input.is_physical_key_pressed(KEY_RIGHT) or Input.is_physical_key_pressed(KEY_D): turn += 1.0
+		var accelerator := 1.0 if gas_held or Input.is_physical_key_pressed(KEY_UP) or Input.is_physical_key_pressed(KEY_W) else 0.0
+		if reverse_held or Input.is_physical_key_pressed(KEY_DOWN) or Input.is_physical_key_pressed(KEY_S): accelerator = -1.0
+		world.max_speed = 14.0 + float(model.upgrades.engine)*1.8
+		world.set_controls(turn,accelerator,brake_held or Input.is_physical_key_pressed(KEY_SPACE))
+		_remember_pose()
+		if world.enabled: model.tick_fare(delta)
+		var nearest := Graph.nearest_node(vehicle_position)
+		model.player_node = nearest
+		var goal := model.objective() if not model.active_job.is_empty() else -1
+		nav_timer -= delta
+		if nearest != nav_node or goal != nav_goal or nav_timer <= 0:
+			nav_timer = 0.4
+			nav_node = nearest
+			nav_goal = goal
+			navigation = Graph.guidance(vehicle_position,goal) if goal >= 0 else {}
+			travel_path = navigation.get("route",[])
+			city.guidance = navigation
 			city.route_nodes = travel_path
-			city.taxi_color = Color(Model.CARS[model.car].color)
-			city.objective_node = model.objective() if not model.active_job.is_empty() else -1
-			city.pickup_mode = not bool(model.active_job.get("picked_up", false))
+		city.objective_node = goal
+		city.pickup_mode = not bool(model.active_job.get("picked_up",false))
 	pulse_timer += delta
 	autosave_timer += delta
-	if pulse_timer > 0.35:
+	if pulse_timer > 0.25:
 		pulse_timer = 0
 		if screen == "drive": _refresh_drive()
-	if autosave_timer > 12:
+	if autosave_timer > 8:
 		autosave_timer = 0
 		model.roll_day(Time.get_date_string_from_system(true))
 		_save()
+
+func _remember_pose() -> void:
+	if is_instance_valid(city) and is_instance_valid(city.world) and screen == "drive":
+		vehicle_position = city.world.graph_position()
+		vehicle_heading = city.world.yaw
+		model.driving_position = vehicle_position
+		model.driving_heading = vehicle_heading
+
+func _set_parked() -> void:
+	gas_held = false
+	turn_input = 0
+	brake_held = false
+	reverse_held = false
+	if is_instance_valid(city) and is_instance_valid(city.world):
+		city.world.set_controls(0,0,true)
+		city.world.current_speed = 0
+		city.world.enabled = false
+
+func _resume_driving() -> void:
+	resume_required = false
+	discard_frame = true
+	_refresh_drive()
+
+func _drive_distance(metres: float) -> void:
+	if screen != "drive" or resume_required or application_suspended: return
+	model.travel(metres)
+
+func _drive_impact(_speed: float) -> void:
+	model.note_collision()
+	_play("res://assets/audio/click.ogg")
+	_toast("Bump! Slow down — a clean ride earns a better tip.")
+	_save()
 
 func _fit_stage() -> void:
 	if not is_instance_valid(stage): return
@@ -150,11 +215,16 @@ func _apply_banner_layout(reserve_override: float = -1.0) -> void:
 	menu_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO if reserve > 0.0 else ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	menu_scroll.mouse_filter = Control.MOUSE_FILTER_PASS if reserve > 0.0 else Control.MOUSE_FILTER_IGNORE
 	if reserve <= 0.0: menu_scroll.scroll_vertical = 0
-	if is_instance_valid(toast_label): toast_label.position.y = minf(875.0, menu_scroll.size.y - 60.0)
+	if is_instance_valid(toast_label): toast_label.position.y = 221.0 if screen == "drive" else minf(875.0, menu_scroll.size.y - 60.0)
 
 
 func _show(view: String) -> void:
+	_remember_pose()
+	_set_parked()
 	screen = view
+	nav_node = -1
+	nav_goal = -1
+	resume_required = false
 	held_direction = Vector2i.ZERO
 	if is_instance_valid(stage):
 		stage.hide()
@@ -184,7 +254,7 @@ func _show(view: String) -> void:
 		"settings": _settings()
 		"receipt": _receipt()
 		_: screen = "home"; _home()
-	toast_label = _label("", Rect2(28, 875, 484, 45), 16, Color("102638"), HORIZONTAL_ALIGNMENT_CENTER)
+	toast_label = _label("", Rect2(28, 221 if screen == "drive" else 875, 484, 45), 16, Color("102638"), HORIZONTAL_ALIGNMENT_CENTER)
 	toast_label.add_theme_stylebox_override("normal", _box(GOLD, 12))
 	toast_label.visible = false
 	_fit_stage()
@@ -198,7 +268,7 @@ func _header(title: String, subtitle: String = "") -> void:
 	_label(subtitle, Rect2(25, 69, 380, 28), 14, MIST)
 	coins_label = _label("%d coins" % model.coins, Rect2(365, 30, 150, 28), 19, GOLD, HORIZONTAL_ALIGNMENT_RIGHT)
 	_panel(Rect2(24, 108, 492, 4), Color("315064"), 2)
-	if screen != "home": _button("‹ Home", Rect2(24, 907, 120, 36), func(): _show("home"), true)
+	if screen != "home" and screen != "drive": _button("‹ Home", Rect2(24, 907, 120, 36), func(): _show("home"), true)
 
 func _home() -> void:
 	_header("PIXEL TAXI", "NEIGHBORHOODS  ·  TAKE THE SCENIC FARE")
@@ -217,103 +287,132 @@ func _home() -> void:
 	_panel(Rect2(0, 904, 540, 56), Color("0c1e2c"), 0)
 
 func _dispatch() -> void:
-	_header("THE DISPATCH", "Choose a story. Every neighborhood is connected.")
+	_header("THE DISPATCH", "One offer at a time. Accept it or wait for the next.")
 	if not model.active_job.is_empty():
-		_panel(Rect2(24, 145, 492, 180), Color("1e3b50"), 17)
-		_label("A passenger is waiting", Rect2(44, 166, 450, 34), 25, GOLD)
-		_label(model.active_job.passenger, Rect2(44, 211, 450, 34), 20, Color.WHITE)
-		_button("Resume fare", Rect2(44, 263, 275, 45), func(): _show("drive"))
-		_button("Cancel", Rect2(333, 263, 158, 45), func(): model.cancel_job(); travel_path.clear(); _show("dispatch"), true)
+		_panel(Rect2(24,145,492,180),Color("1e3b50"),17)
+		_label("A passenger is waiting",Rect2(44,166,450,34),25,GOLD)
+		_label(model.active_job.passenger,Rect2(44,211,450,34),20,Color.WHITE)
+		_button("Resume fare",Rect2(44,263,275,45),func(): _show("drive"))
+		_button("Cancel",Rect2(333,263,158,45),func(): model.cancel_job();travel_path.clear();_show("dispatch"),true)
 		return
-	for slot: int in range(3):
-		var job: Dictionary = model.make_job(slot)
-		var y: float = 147 + slot * 213
-		_panel(Rect2(24, y, 492, 193), Color("284756") if job.rare else Color("1d394b"), 18)
-		var person: Texture2D = load("res://assets/people/passenger_%d.png" % ((model.jobs + slot) % 6))
-		_texture(person, Rect2(41, y + 15, 72, 72))
-		_label("SPECIAL GUEST" if job.rare else "NEIGHBORHOOD FARE", Rect2(126, y + 17, 360, 21), 12, GOLD if job.rare else MINT)
-		_label(job.passenger, Rect2(126, y + 45, 360, 32), 22, Color("fff5dc"))
-		_label("%s → %s" % [Model.district(int(job.pickup)), Model.district(int(job.destination))], Rect2(44, y + 94, 440, 27), 18, MIST)
-		_label("%.1f km  ·  %d+ coins" % [float(job.metres) / 1000, job.base_fare], Rect2(44, y + 128, 280, 25), 16, Color.WHITE)
-		_button("Accept →", Rect2(345, y + 133, 145, 43), func():
-			if model.accept_job(job):
-				travel_path.clear()
-				_show("drive")
-				_route_to(model.objective())
-		)
-	_label("Tap streets to guide your cab, or use the thumb buttons.", Rect2(28, 807, 484, 50), 15, MIST, HORIZONTAL_ALIGNMENT_CENTER)
+	var job: Dictionary = model.current_offer()
+	_panel(Rect2(24,146,492,384),Color("284756") if job.rare else Color("1d394b"),22)
+	_texture(load("res://assets/people/passenger_%d.png" % (int(job.id)%6)),Rect2(207,167,126,126))
+	_label("SPECIAL GUEST" if job.rare else "INCOMING FARE",Rect2(44,308,452,23),13,GOLD,HORIZONTAL_ALIGNMENT_CENTER)
+	_label(job.passenger,Rect2(44,343,452,38),25,Color("fff5dc"),HORIZONTAL_ALIGNMENT_CENTER)
+	_label("%s → %s" % [Model.district(int(job.pickup)),Model.district(int(job.destination))],Rect2(44,394,452,30),19,MIST,HORIZONTAL_ALIGNMENT_CENTER)
+	_label("%.1f km · %d+ coins + clean-ride tip" % [float(job.metres)/1000,job.base_fare],Rect2(44,440,452,30),17,Color.WHITE,HORIZONTAL_ALIGNMENT_CENTER)
+	_button("ACCEPT FARE",Rect2(24,562,492,68),func():
+		if model.accept_job(job): travel_path.clear();_show("drive")
+	)
+	_button("Decline · next offer",Rect2(24,653,492,58),func(): model.decline_offer();_show("dispatch"),true)
+	_label("You drive. GPS highlights the shortest connected route.\nTake a wrong turn? Guidance recalculates.\nArrive safely and promptly for a passenger tip.",Rect2(40,744,460,106),17,MIST,HORIZONTAL_ALIGNMENT_CENTER)
 
 func _drive() -> void:
-	_header("ON THE CLOCK", "%s  ·  DRIVER LEVEL %d" % [Model.district(model.player_node).to_upper(), model.level()])
-	_panel(Rect2(18, 129, 504, 99), Color("1e3b50"), 17)
-	info_label = _label("", Rect2(36, 145, 468, 65), 20, Color("fff5dc"))
-	_panel(Rect2(18, 242, 504, 394), Color("bed2bd"), 16)
-	_add_city(Rect2(20, 244, 500, 390), false)
-	city.road_tapped.connect(_route_to)
-	action_button = _button("", Rect2(18, 653, 504, 54), _curb_action)
-	var labels: Array[String] = ["← LEFT", "↓ DOWN", "↑ UP", "RIGHT →"]
-	var directions: Array[Vector2i] = [Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP, Vector2i.RIGHT]
-	for index: int in range(4):
-		var button: Button = _button(labels[index], Rect2(18 + index * 128, 725, 120, 60), func(): pass, true)
-		var direction: Vector2i = directions[index]
-		button.button_down.connect(func(): held_direction = direction; automatic = false)
-		button.button_up.connect(func(): if held_direction == direction: held_direction = Vector2i.ZERO)
-	_button("Follow route", Rect2(18, 804, 244, 51), func():
-		if model.active_job.is_empty(): _show("dispatch")
-		else: _route_to(model.objective())
-	, true)
-	_button("Dispatch", Rect2(278, 804, 244, 51), func(): _show("dispatch"), true)
-	_button("City map", Rect2(169, 907, 147, 36), func(): city.overview = not city.overview, true)
-	_button("Pull over", Rect2(334, 907, 184, 36), func(): travel_path.clear(); held_direction = Vector2i.ZERO; _toast("Parked. Enjoy the neighborhood."), true)
+	_add_city(Rect2(0,112,540,788),false)
+	_header("YOUR CITY, YOUR WHEEL", "MANUAL DRIVE · LEVEL %d" % model.level())
+	_panel(Rect2(18,128,504,84),Color("1e3b50"),17)
+	info_label = _label("",Rect2(32,137,476,66),17,Color("fff5dc"))
+	action_button = _button("",Rect2(18,689,504,58),_curb_action)
+	var left := _button("◀",Rect2(18,772,86,80),func(): pass,true)
+	left.button_down.connect(func(): turn_input=-1)
+	left.button_up.connect(func(): turn_input=0)
+	var right := _button("▶",Rect2(112,772,86,80),func(): pass,true)
+	right.button_down.connect(func(): turn_input=1)
+	right.button_up.connect(func(): turn_input=0)
+	var pedal := _button("HOLD / DRAG\nTO DRIVE",Rect2(208,772,202,80),func(): pass)
+	pedal.gui_input.connect(_steering_pad_event)
+	pedal.button_down.connect(func(): gas_held=true)
+	pedal.button_up.connect(func(): gas_held=false;turn_input=0)
+	var stop := _button("BRAKE",Rect2(420,772,102,80),func(): pass,true)
+	stop.button_down.connect(func(): brake_held=true)
+	stop.button_up.connect(func(): brake_held=false)
+	_label("Hold & drag one thumb, or hold gas + steering with two.",Rect2(18,858,504,30),14,MIST,HORIZONTAL_ALIGNMENT_CENTER)
+	_button("Dispatch",Rect2(24,907,123,36),func(): _show("dispatch"),true)
+	_button("Map",Rect2(162,907,102,36),func(): city.overview=not city.overview,true)
+	var reverse := _button("Reverse",Rect2(279,907,113,36),func(): pass,true)
+	reverse.button_down.connect(func(): reverse_held=true)
+	reverse.button_up.connect(func(): reverse_held=false)
+	_button("Home",Rect2(407,907,110,36),func(): _show("home"),true)
 	_refresh_drive()
+
+func _steering_pad_event(event: InputEvent) -> void:
+	if event is InputEventScreenTouch:
+		gas_held = event.pressed
+		pad_anchor = event.position.x
+		if not event.pressed: turn_input = 0
+	elif event is InputEventScreenDrag:
+		gas_held = true
+		turn_input = clampf((event.position.x-pad_anchor)/72.0,-1,1)
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		gas_held = event.pressed
+		pad_anchor = event.position.x
+		if not event.pressed: turn_input=0
+	elif event is InputEventMouseMotion and gas_held:
+		turn_input = clampf((event.position.x-pad_anchor)/72.0,-1,1)
 
 func _refresh_drive() -> void:
 	if not is_instance_valid(info_label): return
+	var speed := absf(city.world.current_speed) if is_instance_valid(city) and is_instance_valid(city.world) else 0.0
+	if resume_required:
+		info_label.text = "Drive paused while the app was covered.\nYour position and fare are safe."
+		action_button.text = "Resume driving"
+		action_button.disabled = false
+		return
 	if model.active_job.is_empty():
-		info_label.text = "Free drive · %s\nFind a fare whenever you feel like it." % Model.district(model.player_node)
+		info_label.text = "%s · %d km/h\nFree drive — choose a dispatch when ready." % [Model.district(model.player_node),int(speed*3.6)]
 		action_button.text = "Find a passenger"
 		action_button.disabled = false
 	else:
-		var is_pickup: bool = not bool(model.active_job.picked_up)
-		info_label.text = "%s %s\n%s · %.1f km driven" % ["Pick up" if is_pickup else "Drop off", model.active_job.passenger, Model.district(model.objective()), model.distance / 1000]
-		var at_curb: bool = model.player_node == model.objective() and travel_path.is_empty() and vehicle_position.distance_to(Model.point(model.player_node)) < 1
-		action_button.text = ("Pick up passenger" if is_pickup else "Complete fare & get paid") if at_curb else "Follow the highlighted route to the curb"
+		var pickup := not bool(model.active_job.picked_up)
+		var gap := vehicle_position.distance_to(Model.point(model.objective()))*0.45
+		var cue := "ARRIVE AT THE GOLD CURB" if gap < 18 else _navigation_cue()
+		info_label.text = "%s %s · %d km/h\n%s · %dm to curb" % ["Pick up" if pickup else "Deliver",str(model.active_job.passenger).split(" ")[0],int(speed*3.6),cue,int(gap)]
+		var at_curb := gap < 10.0 and speed < 1.6
+		action_button.text = ("Pick up passenger" if pickup else "Complete fare & receive tip") if at_curb else "Brake at the gold passenger curb"
 		action_button.disabled = not at_curb
 	if is_instance_valid(coins_label): coins_label.text = "%d coins" % model.coins
 
+func _navigation_cue() -> String:
+	if travel_path.is_empty(): return "Follow the gold GPS line"
+	var next := Model.point(travel_path[0])
+	var direction := (next-vehicle_position).normalized()
+	var desired: float = float(navigation.get("bearing",atan2(direction.x,direction.y)))
+	var angle := wrapf(desired-vehicle_heading,-PI,PI)
+	if absf(angle) > 2.2: return "Turn around when safe"
+	if angle < -0.35: return "Bear RIGHT"
+	if angle > 0.35: return "Bear LEFT"
+	return "Continue ahead"
+
 func _route_to(goal: int) -> void:
 	if screen != "drive": return
-	automatic = true
-	var start: int = model.player_node
-	var new_path: Array[int] = []
-	if not travel_path.is_empty() and vehicle_position.distance_to(Model.point(model.player_node)) > 1:
-		start = travel_path[0]
-		new_path.append(start)
-	new_path.append_array(Model.route(start, goal))
-	travel_path = new_path
-	_toast("Route set. Thumb buttons take over at any time.")
+	# Informational only: no route waypoint ever changes throttle or steering.
+	navigation = Graph.guidance(vehicle_position,goal)
+	travel_path = navigation.get("route",[])
+	if is_instance_valid(city): city.guidance=navigation;city.route_nodes=travel_path
+	_toast("GPS recalculated. You stay at the wheel.")
 
 func _manual_step(direction: Vector2i) -> void:
-	var column: int = model.player_node % 7 + direction.x
-	var row: int = model.player_node / 7 + direction.y
-	if column < 0 or column >= 7 or row < 0 or row >= 7: return
-	travel_path = [row * 7 + column]
+	turn_input = float(direction.x)
 
 func _curb_action() -> void:
-	if model.active_job.is_empty():
-		_show("dispatch")
-		return
+	if resume_required: _resume_driving();return
+	if model.active_job.is_empty(): _show("dispatch");return
+	_remember_pose()
+	if vehicle_position.distance_to(Model.point(model.objective()))*0.45 >= 10.0: return
+	if is_instance_valid(city) and absf(city.world.current_speed) >= 1.6: return
+	model.player_node = model.objective()
 	if not bool(model.active_job.picked_up):
 		if model.pickup():
 			_play("res://assets/audio/arrival.ogg")
 			_route_to(model.objective())
-			_toast("Welcome aboard. Let's take the scenic route.")
+			_toast("Welcome aboard. A prompt, clean ride earns a tip.")
 	else:
 		last_receipt = model.complete_job()
 		if not last_receipt.is_empty():
 			_play("res://assets/audio/reward.ogg")
 			_sync_achievements()
-			var services: Node = _services()
+			var services := _services()
 			if services != null: services.call("round_finished")
 			_show("receipt")
 	_save()
@@ -325,7 +424,7 @@ func _receipt() -> void:
 	_texture(load("res://assets/taxi.png"), Rect2(185, 171, 170, 170))
 	_label("+%d coins" % int(last_receipt.get("fare", 0)), Rect2(44, 344, 452, 58), 45, GOLD, HORIZONTAL_ALIGNMENT_CENTER)
 	_label(str(last_receipt.get("passenger", "Thanks for the ride!")), Rect2(44, 410, 452, 40), 23, Color("fff5dc"), HORIZONTAL_ALIGNMENT_CENTER)
-	_label("%d total fares · Driver level %d" % [model.jobs, model.level()], Rect2(44, 461, 452, 30), 18, MIST, HORIZONTAL_ALIGNMENT_CENTER)
+	_label("Tip +%d · %s" % [int(last_receipt.get("tip",0)),str(last_receipt.get("tip_reason","Thanks for the ride"))], Rect2(44,461,452,30),16,MIST,HORIZONTAL_ALIGNMENT_CENTER)
 	if int(last_receipt.get("level_bonus", 0)) > 0: _label("Level-up bonus: +%d coins" % last_receipt.level_bonus, Rect2(44, 504, 452, 28), 18, MINT, HORIZONTAL_ALIGNMENT_CENTER)
 	_button("NEXT FARE →", Rect2(24, 579, 492, 62), func(): _show("dispatch"))
 	_button("Sponsor next fare · +50% coins", Rect2(24, 662, 492, 58), func(): _request_boost(), true)
@@ -480,6 +579,7 @@ func _sync_achievements() -> void:
 	_save()
 
 func _save() -> void:
+	_remember_pose()
 	if demo: return
 	var file := FileAccess.open(SAVE_PATH + ".tmp", FileAccess.WRITE)
 	if file == null: return
@@ -515,29 +615,23 @@ func _demo_state() -> void:
 		model.accept_job(job)
 		model.pickup()
 		travel_path = Model.route(24, 40)
-		automatic = true
+		automatic = false
 	if boot_view == "receipt": last_receipt = {"fare": 215, "passenger": "Luna · astronaut", "rare": true, "level_bonus": 140}
 
 func _runtime_smoke() -> void:
+	# Synthetic keyboard-equivalent throttle: GPS alone must never move the car.
 	await get_tree().create_timer(0.25).timeout
 	if screen != "drive": _show("drive")
-	model.cancel_job()
-	var job: Dictionary = model.make_job(0)
-	job.pickup = model.player_node
-	job.destination = (model.player_node + 1) % 49
-	model.accept_job(job)
-	_curb_action()
-	await get_tree().create_timer(3.0).timeout
-	if model.player_node != int(model.active_job.destination):
-		push_error("Runtime smoke failed to follow a route")
-		get_tree().quit(1)
-		return
-	_curb_action()
-	if last_receipt.is_empty(): get_tree().quit(1); return
-	print("PIXEL_TAXI_RUNTIME_OK: route, pickup, delivery and receipt completed")
-	_stop_audio()
-	await get_tree().create_timer(0.1).timeout
-	get_tree().quit(0)
+	var before := vehicle_position
+	_route_to(32)
+	await get_tree().create_timer(0.25).timeout
+	assert(vehicle_position.distance_to(before)<0.5,"GPS must not auto-drive")
+	gas_held = true
+	await get_tree().create_timer(1.0).timeout
+	gas_held = false
+	assert(vehicle_position.distance_to(before)>1.0,"Manual throttle must move actual car")
+	print("PIXEL_TAXI_RUNTIME_OK: actual3D manual throttle, GPS never auto-drives")
+	_quit_cleanly()
 
 func _capture_after_frame() -> void:
 	for index: int in range(12): await get_tree().process_frame
@@ -557,15 +651,26 @@ func _add_city(rect: Rect2, overview: bool) -> void:
 	city = City.new()
 	city.position = rect.position
 	city.size = rect.size
-	city.overview = overview
+	city.overview = false # Home is a close 3D car portrait; Map is explicit during driving.
 	city.vehicle = vehicle_position
-	city.camera = Vector2(660, 660) if overview else vehicle_position
-	city.taxi_color = Color(Model.CARS[model.car].color)
+	city.heading = vehicle_heading
+	city.selected_car = model.car
+	city.driving = not overview
 	page_content.add_child(city)
-	if overview: city.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if not overview:
+		city.world.gameplay_guard = func():
+			var services := _services()
+			return not application_suspended and not resume_required and not (is_instance_valid(services) and services.has_method("is_gameplay_blocked") and bool(services.call("is_gameplay_blocked")))
+		city.world.travelled.connect(_drive_distance)
+		city.world.impact.connect(_drive_impact)
+	else:
+		city.world.camera3d.position = city.world.player.position+Vector3(-4.2,2.5,4.8)
+		city.world.camera3d.v_offset = 0.0
+		city.world.camera3d.look_at(city.world.player.position+Vector3(0,0.65,0))
+		city.world.set_physics_process(false)
 
 func _play(path: String) -> void:
-	if not model.sound or DisplayServer.get_name() == "headless" or not is_instance_valid(sfx) or not ResourceLoader.exists(path): return
+	if _audio_shutting_down or not model.sound or DisplayServer.get_name() == "headless" or not is_instance_valid(sfx) or not ResourceLoader.exists(path): return
 	sfx.stream = load(path)
 	sfx.volume_db = -10
 	sfx.play()
@@ -640,3 +745,13 @@ func _progress(rect: Rect2, value: float, color: Color) -> void:
 	var filled: Rect2 = rect
 	filled.size.x *= clampf(value, 0, 1)
 	if filled.size.x > 0: _panel(filled, color, 4)
+
+func _quit_cleanly() -> void:
+	set_process(false)
+	_set_parked()
+	_save()
+	_audio_shutting_down = true
+	await get_tree().create_timer(0.15,true,false,true).timeout
+	_stop_audio()
+	await get_tree().create_timer(0.25,true,false,true).timeout
+	get_tree().quit()

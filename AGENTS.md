@@ -12,6 +12,8 @@ Open this repository root as the single active game project. Start each focused 
 ```sh
 godot --headless --editor --path . --import
 godot --headless --path . --script tests/test_model.gd
+godot --headless --path . --script tests/test_city_graph.gd
+godot --headless --path . --script tests/test_taxi_3d.gd
 godot --headless --path . --script platform/tests/services_smoke.gd
 ```
 
@@ -26,4 +28,8 @@ godot --headless --path . --script platform/tests/services_smoke.gd
 - Stage only reviewed project files. Private QA originals, raw logs, saves, backups, signing material, credentials, generated SDK builds and prebuilt exports stay out of published history. Ignore rules do not protect already tracked paths; inspect each diff.
 - Preserve `LICENSE`, `NOTICE`, `LICENSES/` and asset/plugin terms. Retain notices with distributed binaries.
 - Pages deployment remains disabled; no Library change or Google Play publication is part of ordinary updates. Production configuration, real-service/physical-device testing and human acceptance remain owner work.
-- Work on the requested game/update. The application inventory cap remains ten; do not start another game as part of continuation.
+- Work on the requested game/update. The concurrent awaiting-review queue cap remains ten. A focused continuation does not start another game without a separate owner instruction.
+
+## Current 3D update
+
+Read `docs/ROUND_TWO_3D.md`. Preserve all legacy banked progress, accepted fares and earned fare boosts during version-1 migration. Navigation must never write throttle, steering or car pose. The original APK QA describes the prior build; rebuild and test affected native behavior before refreshing that claim.

@@ -12,6 +12,9 @@ func _initialize() -> void:
 	_test_save_roundtrip()
 	_test_job_variety()
 	_test_file_roundtrip()
+	_test_dispatch_and_tips()
+	_test_legacy_migration()
+	_test_pose_and_fare_metrics()
 	print("PIXEL_TAXI_MODEL_TESTS: %d checks; %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
 
@@ -155,3 +158,89 @@ func finish(model) -> Dictionary:
 	model.pickup()
 	model.player_node = int(job.destination)
 	return model.complete_job()
+
+func _test_dispatch_and_tips() -> void:
+	var model=Model.new("2026-10-20")
+	var offered: Dictionary=model.current_offer()
+	var balance: int=model.coins
+	model.player_node=int(offered.pickup)
+	check(model.current_offer()==offered,"Offered dispatch changed while driving")
+	var saved: Dictionary=JSON.parse_string(JSON.stringify(model.to_data()))
+	var restored=Model.new("2026-10-20")
+	check(restored.from_data(saved,"2026-10-20") and restored.current_offer().id==offered.id,"Single dispatch offer changed on reload")
+	model.decline_offer()
+	check(model.current_offer().id!=offered.id and model.coins==balance,"Declining must rotate one offer without payment")
+	var sequence: int=model.dispatch_sequence
+	model.accept_job(model.current_offer())
+	model.decline_offer()
+	check(model.dispatch_sequence==sequence and model.current_offer().is_empty(),"Active fare must block another dispatch")
+	model.cancel_job()
+	var clean=Model.new("2026-10-20")
+	var clean_receipt: Dictionary=drive_finish(clean,0,false)
+	check(int(clean_receipt.tip)>0 and clean_receipt.clean and clean_receipt.timely,"Fast clean real-distance fare missed its tip")
+	var tipped_balance: int=clean.coins
+	check(clean.complete_job().is_empty() and clean.coins==tipped_balance,"Tip paid twice")
+	var crashed=Model.new("2026-10-20")
+	var crashed_receipt: Dictionary=drive_finish(crashed,1,false)
+	check(int(crashed_receipt.tip)==0 and not crashed_receipt.clean and int(crashed_receipt.base_fare)>0,"Collision should forfeit tip but preserve base fare")
+	var scenic=Model.new("2026-10-20")
+	var scenic_receipt: Dictionary=drive_finish(scenic,0,true)
+	check(int(scenic_receipt.tip)==0 and not scenic_receipt.timely and int(scenic_receipt.base_fare)>0,"Late route should preserve base fare without a fast-drive tip")
+	var teleported=Model.new("2026-10-20")
+	var teleport_receipt: Dictionary=finish(teleported)
+	check(int(teleport_receipt.tip)==0,"A fixture teleport cannot establish qualifying driven distance/time")
+
+func drive_finish(model,crashes: int,late: bool) -> Dictionary:
+	var job: Dictionary=model.current_offer()
+	model.accept_job(job)
+	model.player_node=int(job.pickup)
+	model.pickup()
+	model.tick_fare(float(model.active_job.deadline)+1.0 if late else float(model.active_job.deadline)*0.6)
+	model.travel(float(model.active_job.metres))
+	for unused: int in range(crashes): model.note_collision()
+	model.player_node=int(job.destination)
+	return model.complete_job()
+
+func _test_legacy_migration() -> void:
+	var legacy: Dictionary={"version":1,"coins":8765,"xp":1877,"jobs":17,"distance":12345.5,"income":7331,
+		"rare":3,"player_node":23,"car":2,"owned_cars":[0,1,2],"upgrades":{"engine":3,"comfort":2,"radio":1},
+		"visits":{"Foundry":4,"Central":8,"Garden":5},"active_job":{"id":112,"pickup":5,"destination":32,"passenger":"Maya - baker","rare":false,"base_fare":89,"picked_up":true,"district":"Central","metres":198.0},
+		"unlocked":["taxi_first_fare"],"journal":["Maya - baker","Luna - astronaut"],"day":"2026-10-20","daily_jobs":3,"daily_distance":2200.0,"daily_rare":1,"daily_claimed":["daily_jobs"],"login_day":"2026-10-20","login_streak":4,"fare_boost":true,"sound":false}
+	var restored=Model.new("2026-10-20")
+	check(restored.from_data(legacy,"2026-10-20"),"V1 profile was not migrated")
+	var migrated: Dictionary=restored.to_data()
+	for key: String in legacy:
+		if key in ["version","active_job"]: continue
+		check(migrated[key]==legacy[key],"Migration altered banked profile field "+key)
+	for key: String in legacy.active_job:
+		check(restored.active_job[key]==legacy.active_job[key],"Migration repriced/lost accepted fare field "+key)
+	check(migrated.version==2 and restored.driving_position==Model.point(23),"Migration did not initialize stable-address pose")
+	check(not bool(restored.active_job.tip_eligible),"Legacy unknown collision/time history cannot prove a clean tip")
+	restored.player_node=32
+	var receipt: Dictionary=restored.complete_job()
+	# 89 * (1+.12*comfort2) =110, earned boost55; original198m gives62XP.
+	check(int(receipt.base_fare)==165 and int(receipt.tip)==0 and not restored.fare_boost,"Legacy accepted payout or earned boost entitlement changed")
+	check(restored.xp==1877+62,"Legacy fare XP was repriced using the new map")
+
+func _test_pose_and_fare_metrics() -> void:
+	var model=Model.new("2026-10-20")
+	model.accept_job(model.current_offer())
+	model.tick_fare(10)
+	check(float(model.active_job.elapsed)==0.0,"Pickup leg consumed passenger ride timer")
+	model.player_node=int(model.active_job.pickup)
+	model.pickup()
+	model.tick_fare(12.5)
+	model.travel(88.25)
+	model.note_collision()
+	model.driving_position=Model.point(24)+Vector2(0,5)
+	model.driving_heading=0.75
+	var saved: Dictionary=JSON.parse_string(JSON.stringify(model.to_data()))
+	var restored=Model.new("2026-10-20")
+	check(restored.from_data(saved,"2026-10-20"),"V2 pose/fare metrics did not load")
+	check(restored.driving_position.is_equal_approx(model.driving_position) and is_equal_approx(restored.driving_heading,0.75),"Actual continuous vehicle pose lost on reload")
+	check(is_equal_approx(float(restored.active_job.elapsed),12.5) and int(restored.active_job.collisions)==1 and is_equal_approx(float(restored.active_job.driven_metres),88.25),"Fare time/collision/distance metrics lost on reload")
+	restored.tick_fare(-100)
+	check(is_equal_approx(float(restored.active_job.elapsed),12.5),"Negative time advanced/regressed fare clock")
+	saved.driving_position={"x":INF,"y":-INF}
+	saved.driving_heading=NAN
+	check(restored.from_data(saved,"2026-10-20") and restored.driving_position.is_finite() and is_finite(restored.driving_heading),"Corrupt non-finite pose accepted")

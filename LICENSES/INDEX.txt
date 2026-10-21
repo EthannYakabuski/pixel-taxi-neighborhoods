@@ -21,3 +21,8 @@ includes native-plugin notices conservatively because the source shares addons;
 this does not claim native services run in a browser. Production SDK/service
 terms, store setup and channel-specific notice accessibility remain the
 distributor's responsibility. No production approval is implied.
+
+Round Two 3D city assets
+Kenney Car Kit, City Kit Roads/Suburban/Industrial/Commercial and Nature Kit are CC0.
+Exact original bytes/hashes: assets/3d/SOURCE_MANIFEST.json.
+Unchanged original notices: LICENSES/Assets/<pack>/License.txt.

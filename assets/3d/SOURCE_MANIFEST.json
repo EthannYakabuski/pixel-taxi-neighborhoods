@@ -1,0 +1,431 @@
+{
+  "schema": 1,
+  "scope": "Unchanged supplied models and exact atlas dependencies for the third-person city.",
+  "original_geometry": "Terrain, GPS route ribbons and curb markers are original geometry; actual cars, buildings, road surfaces and trees use supplied Kenney GLBs.",
+  "files": [
+    {
+      "path": "assets/3d/cars/taxi.glb",
+      "source_pack": "kenney_car-kit",
+      "source_file": "Models/GLB format/taxi.glb",
+      "sha256": "3803539718FFD3B84B515DBCE8ED6B489F1FF5BE58EDB1903D2C5DB5C584BDC7",
+      "bytes": 175608,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/cars/Textures/colormap.png",
+      "source_pack": "kenney_car-kit",
+      "source_file": "Models/GLB format/Textures/colormap.png",
+      "sha256": "F3622A03A20C6696065CAE9CBE391351BE873508AF190C2EBD1D420C055787A5",
+      "bytes": 12371,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/cars/hatchback-sports.glb",
+      "source_pack": "kenney_car-kit",
+      "source_file": "Models/GLB format/hatchback-sports.glb",
+      "sha256": "BD5C9D4C3B4BDD254A66B8426563A68B1487AE7A5076DF3A2488E6FFED7BE64F",
+      "bytes": 197804,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/cars/sedan.glb",
+      "source_pack": "kenney_car-kit",
+      "source_file": "Models/GLB format/sedan.glb",
+      "sha256": "B532EA7D2C59F7F6B22B138CF1955218A2C1898F1CEA932AF4D3FD563C3959B7",
+      "bytes": 172216,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/cars/sedan-sports.glb",
+      "source_pack": "kenney_car-kit",
+      "source_file": "Models/GLB format/sedan-sports.glb",
+      "sha256": "2889C428CA1DD9C975C3FF760EB8757883490410555AB60B818F712F583826D6",
+      "bytes": 177676,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/cars/suv.glb",
+      "source_pack": "kenney_car-kit",
+      "source_file": "Models/GLB format/suv.glb",
+      "sha256": "9DF31F6E89E927A8176FC792AA125F0B19DC1BA29D2025BFEF7C4F4D6AB1778A",
+      "bytes": 207572,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/cars/van.glb",
+      "source_pack": "kenney_car-kit",
+      "source_file": "Models/GLB format/van.glb",
+      "sha256": "ED4ED56E8E5ED98DB050AF09ED2062B3B6BB7B93EAB1E563CB6774B387B233A1",
+      "bytes": 175664,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/cars/truck.glb",
+      "source_pack": "kenney_car-kit",
+      "source_file": "Models/GLB format/truck.glb",
+      "sha256": "5E1BC66C343501DD7D5734B57E672DD949BF95D7ABDCE680C6508CEF99D374F8",
+      "bytes": 176360,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/cars/police.glb",
+      "source_pack": "kenney_car-kit",
+      "source_file": "Models/GLB format/police.glb",
+      "sha256": "A617B880594F56239B7AC4CF6FD4D74EBDAE3BA6C5D842E77C76A5906EFF352A",
+      "bytes": 195336,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/roads/road-straight.glb",
+      "source_pack": "kenney_city-kit-roads",
+      "source_file": "Models/GLB format/road-straight.glb",
+      "sha256": "F8F744FB6FC96DEDD5AD1F763B550166F2624A3757BF36B4B39969D2E7CACAC5",
+      "bytes": 5248,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/roads/Textures/colormap.png",
+      "source_pack": "kenney_city-kit-roads",
+      "source_file": "Models/GLB format/Textures/colormap.png",
+      "sha256": "A48E2962661AE44368FFDDF3054F80ED8491D082B757DCC3011184CD9A98B185",
+      "bytes": 11428,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/roads/road-crossroad.glb",
+      "source_pack": "kenney_city-kit-roads",
+      "source_file": "Models/GLB format/road-crossroad.glb",
+      "sha256": "2DC52A28CF89EC88025A047C0F6FFF4C643F16B0F50F0E9A1140F16230C28B12",
+      "bytes": 10084,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/roads/road-intersection.glb",
+      "source_pack": "kenney_city-kit-roads",
+      "source_file": "Models/GLB format/road-intersection.glb",
+      "sha256": "FDF4F213ABE41DDFE2A7E798A0EF1C3DE5B7A68143E21C44F1893985EC6AAE58",
+      "bytes": 7900,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/roads/road-curve.glb",
+      "source_pack": "kenney_city-kit-roads",
+      "source_file": "Models/GLB format/road-curve.glb",
+      "sha256": "D076717BFE3493DFD5A4B4207A7825E4AFF1876273F0D58F5E16E8E8670906F7",
+      "bytes": 23912,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/roads/road-roundabout.glb",
+      "source_pack": "kenney_city-kit-roads",
+      "source_file": "Models/GLB format/road-roundabout.glb",
+      "sha256": "6BDE41E46040FA35C90F86A524FE5FF344EDE07F50F077E1732762B82F8E2D66",
+      "bytes": 105876,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/roads/road-bridge.glb",
+      "source_pack": "kenney_city-kit-roads",
+      "source_file": "Models/GLB format/road-bridge.glb",
+      "sha256": "5E2BDAABDDF39B309A3B5D109D7C6423CD68829A8E63960FCC2D23D62C8425B0",
+      "bytes": 24796,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/roads/bridge-pillar.glb",
+      "source_pack": "kenney_city-kit-roads",
+      "source_file": "Models/GLB format/bridge-pillar.glb",
+      "sha256": "71C8D9DBAA502E63BF803C6873165873DF4601F7285E1FE040D0F03ACAB3F0EC",
+      "bytes": 5468,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/roads/light-curved.glb",
+      "source_pack": "kenney_city-kit-roads",
+      "source_file": "Models/GLB format/light-curved.glb",
+      "sha256": "154DCCE9D58EC2CD165E26C91A89C97BDD2838CF06D255099B3570DF84F82EC6",
+      "bytes": 9492,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/roads/road-sign-empty.glb",
+      "source_pack": "kenney_city-kit-roads",
+      "source_file": "Models/GLB format/road-sign-empty.glb",
+      "sha256": "7681EE84C5363E2C95A37593FC3BDD0AFB81B23FA46AE6BE1C0939A112A4306A",
+      "bytes": 5968,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/suburban/building-type-a.glb",
+      "source_pack": "kenney_city-kit-suburban_20",
+      "source_file": "Models/GLB format/building-type-a.glb",
+      "sha256": "49F32E20B9DCD24B1C8F6D6488807B8C8CB684CBB595BFB0BB36AD903E470FAA",
+      "bytes": 98604,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/suburban/Textures/colormap.png",
+      "source_pack": "kenney_city-kit-suburban_20",
+      "source_file": "Models/GLB format/Textures/colormap.png",
+      "sha256": "9B5DE86078C25EF02351A80D35FF3C978693A1044565B73EEDD9AE9B5B80665D",
+      "bytes": 11784,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/suburban/building-type-b.glb",
+      "source_pack": "kenney_city-kit-suburban_20",
+      "source_file": "Models/GLB format/building-type-b.glb",
+      "sha256": "A964A10C51BB334BE677657FD8FA483531974DD15B4243575990192818E2300E",
+      "bytes": 146720,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/suburban/building-type-c.glb",
+      "source_pack": "kenney_city-kit-suburban_20",
+      "source_file": "Models/GLB format/building-type-c.glb",
+      "sha256": "86A69F30F1A09461283E158514945AE5CC9D56357B0DDC83A9A3F0EECD113591",
+      "bytes": 99592,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/suburban/building-type-d.glb",
+      "source_pack": "kenney_city-kit-suburban_20",
+      "source_file": "Models/GLB format/building-type-d.glb",
+      "sha256": "A41CD28265B2B224E700373C3A8356562619699998B7FA4D70ED41DE629A6731",
+      "bytes": 147368,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/suburban/building-type-e.glb",
+      "source_pack": "kenney_city-kit-suburban_20",
+      "source_file": "Models/GLB format/building-type-e.glb",
+      "sha256": "9EC43994C8C332B1AE5B058D8B9646255831FD91047C1A35B1FC1ECAE4C082FC",
+      "bytes": 145512,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/suburban/building-type-f.glb",
+      "source_pack": "kenney_city-kit-suburban_20",
+      "source_file": "Models/GLB format/building-type-f.glb",
+      "sha256": "6F778F50D7F03C86F9A018E428CF8FFDD9E918DF09954C0651D1C9559584A22B",
+      "bytes": 138536,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/suburban/tree-small.glb",
+      "source_pack": "kenney_city-kit-suburban_20",
+      "source_file": "Models/GLB format/tree-small.glb",
+      "sha256": "5F63359E5F392609D7617CC98070855CA1FFD4F4B4BC3978A5FF56ECE88A58D6",
+      "bytes": 5812,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/suburban/tree-large.glb",
+      "source_pack": "kenney_city-kit-suburban_20",
+      "source_file": "Models/GLB format/tree-large.glb",
+      "sha256": "16D1F95C149BC727A953A473CF20BF21DE9BF1A88747C4F9D2EEB4AC7D43E291",
+      "bytes": 5812,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/suburban/planter.glb",
+      "source_pack": "kenney_city-kit-suburban_20",
+      "source_file": "Models/GLB format/planter.glb",
+      "sha256": "A876E87D908F0397DCAF94B7705835447825C4C5B39195319535415386542C17",
+      "bytes": 20368,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/commercial/building-a.glb",
+      "source_pack": "kenney_city-kit-commercial_2.1",
+      "source_file": "Models/GLB format/building-a.glb",
+      "sha256": "5CF220F90EE3F21E7ABE38055CA409A48AA8EF1D5FFAB6E2DEB99E5A5E1ED5E0",
+      "bytes": 108936,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/commercial/Textures/colormap.png",
+      "source_pack": "kenney_city-kit-commercial_2.1",
+      "source_file": "Models/GLB format/Textures/colormap.png",
+      "sha256": "191BEC3889AAACA5018380038FECC129EBB5C2182879A099B7B538B3FA050B5D",
+      "bytes": 11002,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/commercial/building-b.glb",
+      "source_pack": "kenney_city-kit-commercial_2.1",
+      "source_file": "Models/GLB format/building-b.glb",
+      "sha256": "3B5D3AC0799C024781D92BB15971D42F4F8E380554DC5CF6A40C2F07D948947A",
+      "bytes": 106408,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/commercial/building-c.glb",
+      "source_pack": "kenney_city-kit-commercial_2.1",
+      "source_file": "Models/GLB format/building-c.glb",
+      "sha256": "F6887608A95A165503561730252C30506938803731C6546EFCA12BD47B1666BD",
+      "bytes": 102788,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/commercial/building-d.glb",
+      "source_pack": "kenney_city-kit-commercial_2.1",
+      "source_file": "Models/GLB format/building-d.glb",
+      "sha256": "40605608E9ACA0C98E294ACFF4AF0F74AFA417A51D589BE490CA98F33CE4C2F5",
+      "bytes": 95160,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/commercial/building-e.glb",
+      "source_pack": "kenney_city-kit-commercial_2.1",
+      "source_file": "Models/GLB format/building-e.glb",
+      "sha256": "EDBE5B49858A3C83E72D3CF496129C06082EF3A3D6005769F8883138E275B456",
+      "bytes": 128208,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/commercial/building-f.glb",
+      "source_pack": "kenney_city-kit-commercial_2.1",
+      "source_file": "Models/GLB format/building-f.glb",
+      "sha256": "633A25F7FB3CCF98E304A885A36ED900AECEE5BDE7ECD554729DEC753CCEEA78",
+      "bytes": 148952,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/commercial/detail-awning-wide.glb",
+      "source_pack": "kenney_city-kit-commercial_2.1",
+      "source_file": "Models/GLB format/detail-awning-wide.glb",
+      "sha256": "D37BA34BE414CEF84DB966E548E2C558088AEC3FDF68763565B9CAF95C11AC5F",
+      "bytes": 5544,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/industrial/building-a.glb",
+      "source_pack": "kenney_city-kit-industrial_2.0",
+      "source_file": "Models/GLB format/building-a.glb",
+      "sha256": "0E6EF8EB1E1BDBB9D06B5496B5DAF3066E00EAF74B3FCD61B74072116A1C86CF",
+      "bytes": 177316,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/industrial/Textures/colormap.png",
+      "source_pack": "kenney_city-kit-industrial_2.0",
+      "source_file": "Models/GLB format/Textures/colormap.png",
+      "sha256": "950F4F891EBD05A2AFFAC810E6EEB0FEA1511BC39039B65A3CBF2E17D17BC6A2",
+      "bytes": 11986,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/industrial/building-b.glb",
+      "source_pack": "kenney_city-kit-industrial_2.0",
+      "source_file": "Models/GLB format/building-b.glb",
+      "sha256": "2AE65BD9166449F0BEF438FBEFB75D57451CB15C16659D7F22A7D895296A46AF",
+      "bytes": 212040,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/industrial/building-c.glb",
+      "source_pack": "kenney_city-kit-industrial_2.0",
+      "source_file": "Models/GLB format/building-c.glb",
+      "sha256": "94EB05ACEF8D8E4C1D817EB12E1C2A1287FFED625879170663A8C4F48786B465",
+      "bytes": 175844,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/industrial/building-d.glb",
+      "source_pack": "kenney_city-kit-industrial_2.0",
+      "source_file": "Models/GLB format/building-d.glb",
+      "sha256": "72B9E9E29986DF0778FFA7C56E2F92FCFADFAA0F89BF167603877DB4F38A789E",
+      "bytes": 100768,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/industrial/building-e.glb",
+      "source_pack": "kenney_city-kit-industrial_2.0",
+      "source_file": "Models/GLB format/building-e.glb",
+      "sha256": "D61FED5E9502AF9C698367AB69D5BC50B673375929E51C22AF247DFB1DB6CD16",
+      "bytes": 129400,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/industrial/building-f.glb",
+      "source_pack": "kenney_city-kit-industrial_2.0",
+      "source_file": "Models/GLB format/building-f.glb",
+      "sha256": "05A91AB02F424CA4F4819C1749E014BC4404CDF2A75242190C066BB24B59CDE7",
+      "bytes": 134916,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/industrial/detail-tank.glb",
+      "source_pack": "kenney_city-kit-industrial_2.0",
+      "source_file": "Models/GLB format/detail-tank.glb",
+      "sha256": "9E955732E4EF9CCFF4A4D6967D29D8A7D2F9ED16C903923F2568216D9F0B50D2",
+      "bytes": 31436,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/industrial/detail-tank-large.glb",
+      "source_pack": "kenney_city-kit-industrial_2.0",
+      "source_file": "Models/GLB format/detail-tank-large.glb",
+      "sha256": "2FBF65DFBAE114235DEC65CC8730A870CF7D29DD76F9473218E96EE83E9F5F43",
+      "bytes": 47452,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/nature/tree_oak.glb",
+      "source_pack": "kenney_nature-kit",
+      "source_file": "Models/GLTF format/tree_oak.glb",
+      "sha256": "D7FD8773674928C50C11B66D12C636D49BDCC15A8B1C7FBB98E6F63A3439A3F3",
+      "bytes": 14644,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/nature/tree_pineRoundA.glb",
+      "source_pack": "kenney_nature-kit",
+      "source_file": "Models/GLTF format/tree_pineRoundA.glb",
+      "sha256": "7DC9711F31585EAFDCB965D0649C30AF5E19F2DEF1955F7A915081D30759EF8E",
+      "bytes": 14488,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/nature/tree_palm.glb",
+      "source_pack": "kenney_nature-kit",
+      "source_file": "Models/GLTF format/tree_palm.glb",
+      "sha256": "27BBB23D26ED788D84DE6DF2F7FAB0ACC3FE0FF16C7D08CDCFA1FFFCB11DE324",
+      "bytes": 13616,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/nature/plant_bush.glb",
+      "source_pack": "kenney_nature-kit",
+      "source_file": "Models/GLTF format/plant_bush.glb",
+      "sha256": "AE7B1BEB39E242B13F5F29E3EC23EF21034B814F82297B8AA00A9BF4E1B09590",
+      "bytes": 4396,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/nature/rock_largeA.glb",
+      "source_pack": "kenney_nature-kit",
+      "source_file": "Models/GLTF format/rock_largeA.glb",
+      "sha256": "6DD15390FD96501DCD1454765A17BA61DBBD8D47705DFE5149C8DD92B353CE25",
+      "bytes": 7552,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/nature/flower_purpleA.glb",
+      "source_pack": "kenney_nature-kit",
+      "source_file": "Models/GLTF format/flower_purpleA.glb",
+      "sha256": "F6FC34C96A03420A74FE36D4C2D0EC88F15204FCAD99CD1416C3C4ECB22E48C4",
+      "bytes": 7112,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/nature/fence_simple.glb",
+      "source_pack": "kenney_nature-kit",
+      "source_file": "Models/GLTF format/fence_simple.glb",
+      "sha256": "ECAF6C29532AA9FD305A8EF71DF769D60748BD797F2EB1C63BDEFC4EDB8062A7",
+      "bytes": 5712,
+      "license": "CC0-1.0"
+    }
+  ]
+}

@@ -428,3 +428,6 @@ func _exit_tree() -> void:
 		_interstitial.destroy()
 	if is_instance_valid(_rewarded):
 		_rewarded.destroy()
+
+func is_gameplay_blocked() -> bool:
+	return _reward_showing or _interstitial_showing
