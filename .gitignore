@@ -22,3 +22,9 @@ local.properties
 CHECKPOINT.txt
 **/*.stdout.log
 **/*.stderr.log
+# Private local continuation records and preserved evidence
+/INITIAL_VECTOR_PROMPT.txt
+/LOCAL_ONLY/
+/local-backups/
+**/*-stopped-save.json
+**/runtime-receipt.json

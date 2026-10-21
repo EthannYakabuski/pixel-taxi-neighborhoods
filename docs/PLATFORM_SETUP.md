@@ -34,7 +34,7 @@ Android debug builds log `NATIVE_AD_EVENT` only from actual SDK presentation, di
 
 ## Build
 
-Install/reuse Godot4.5.1, its matching export templates, Java17 and Android SDK platform35/build tools35, NDK28.1.13356709. The existing PC already supplies these tools; the hosted workflow provisions its own isolated runner dependencies.
+Install/reuse Godot4.5.1, its matching export templates, Java17 and Android SDK platform35/build tools35, NDK28.1.13356709. A new workstation must have these dependencies available; the hosted workflow provisions its own isolated runner dependencies.
 
 ```sh
 godot --headless --editor --path . --import
@@ -45,11 +45,11 @@ godot --headless --path . --export-release Web build/web/index.html
 
 Create output directories first. A debug APK is installable test software; it is not a production-signed release. The preset includes x86 for the existing API30 emulator and ARM64 for current phones. Release/AAB signing is performed only when the owner supplies signing configuration. `android/build` is generated from matching Godot templates and must not be committed with machine-local SDK paths/caches/keys.
 
-The Android preset intentionally uses `runnable=false`. CLI exports still work; this prevents Godot's editor shutdown path from stopping the shared ADB server during a Web export. No global editor setting is changed. The API30 emulator also needs `rendering/shader_compiler/shader_cache/enabled.android=false` for its observed GL program-binary failure; retain the coordinator's project setting.
+The Android preset intentionally uses `runnable=false`. CLI exports still work; this prevents Godot's editor shutdown path from stopping the shared ADB server during a Web export. No global editor setting is changed. The API30 emulator also needs `rendering/shader_compiler/shader_cache/enabled.android=false` for its observed GL program-binary failure; retain the existing project setting unless an affected-device regression justifies changing it.
 
 Enable `rendering/textures/vram_compression/import_etc2_astc=true` in project settings before importing assets for Android. Keep desktop texture import enabled for Web. Tests, test-only platform scripts, captures, marketing packages, helper scripts, logs and documentation are excluded from shipping resource packs. Copy the app icon to `platform/app-icon-512.png` and point the project icon setting there so excluding `marketing/` does not remove its runtime resource. Game catalogs and runtime art/audio remain included.
 
-Hosted Actions verifies pinned Godot download digests, builds the native Android APK, validates Web/editor service fallback behavior, discovers and runs `tests/test_*.gd`, `tests/*_test.gd`, and `tests/smoke.gd` (requiring at least one), exports Web, retains Android artifacts seven days, and deploys Pages. Test processes have bounded timeouts; logs containing script/parse/assertion errors fail even if Godot exits0. CI does not substitute for human playtesting or verify unpublished Google service IDs. The repository's Pages source must be GitHub Actions.
+Hosted Actions verifies pinned Godot download digests, builds the native Android APK, validates Web/editor service fallback behavior, discovers and runs `tests/test_*.gd`, `tests/*_test.gd`, and `tests/smoke.gd` (requiring at least one), exports Web, retains Android artifacts seven days, and uploads Web artifacts. Pages deployment is disabled; no live site is configured by this workflow. Test processes have bounded timeouts; logs containing script/parse/assertion errors fail even if Godot exits0. CI does not substitute for human playtesting or verify unpublished Google service IDs. Do not enable Pages as part of ordinary updates.
 
 ## Vendored dependencies and notices
 
@@ -60,3 +60,11 @@ Hosted Actions verifies pinned Godot download digests, builds the native Android
 - Original project code uses Apache2.0; third-party components retain their own licenses. Preserve notices in the repository and distributed game's credits/licenses screen.
 
 Public upstream references: https://github.com/poingstudios/godot-admob-plugin and https://github.com/godot-sdk-integrations/godot-play-game-services .
+
+## Continue service configuration
+
+This game has **16 achievement** and **4 leaderboard** definitions in `game/catalog.json`. Use their symbolic keys in `platform/config.json` under `play_games.achievements` and `play_games.leaderboards`; the existing keys must remain unchanged when inserting console IDs. Play Games is currently disabled and its IDs are blank. Set `play_games.game_id`, and set the same numeric value in the Android export preset at `godot_play_game_services/game_id` in `export_presets.cfg`, before enabling the configured service. Configure the package, OAuth signing fingerprints and authorized testers in the owner consoles.
+
+`platform/config.json` also supplies banner/interstitial/rewarded unit IDs. Its `admob.app_id` is a reference value, not the Android manifest input: set the manifest App ID through Godot Project Settings `admob/general/android/app_id`, serialized as `general/android/app_id` under `[admob]` in `project.godot`, and keep the JSON reference consistent. The missing override is normal while the plugin default is Google's sample App ID. `test_mode` in this adapter only changes the displayed status wording; it does not substitute sample unit IDs or register test devices. Keep Google sample IDs for development, or explicitly configure and verify SDK test devices before using production units.
+
+Run tests with disposable, process-local user-data roots. On Windows, redirect `APPDATA` and `LOCALAPPDATA` for the test child process; do not change the owner's global environment. Include `user://platform_pending_v1.json` in that isolation. A mocked callback or successful build does not establish native/production behavior. Follow `HANDOFF.txt` for the accepted local QA APK and remaining verification.

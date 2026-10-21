@@ -34,7 +34,19 @@ Marketing text, icons, feature art and screenshot provenance are in marketing/. 
 
 ## CI and Web
 
-Hosted GitHub Actions imports resources, runs game/service tests, exports Web and an Android debug APK, and deploys Web through Pages. Build outputs, caches and signing keys are excluded from source. Confirm actual run results in HANDOFF.txt; workflow presence alone is not a passing CI claim.
+GitHub Actions imports resources, runs game/service tests with strict error checks, exports Web and an Android debug APK, and uploads artifacts with the accompanying license notices. **Pages deployment is disabled**; this workflow does not publish a live site or submit to Google Play. Current build/test status is recorded below and in `HANDOFF.txt`. A passing run does not verify production services, physical devices or browser interaction.
+
+## Continue development
+
+Open this repository root as the game's Codex project and start a focused task for the requested change. Read `AGENTS.md`, this README, `HANDOFF.txt` and `docs/PLATFORM_SETUP.md` first; a new task must obtain its context from these files and the current Git diff, rather than assume it inherits an earlier chat. This is the active development copy; older publication/export staging copies are archival.
+
+Recorded public CI baseline (2026-10-21): `60cdbe341252e9543381bc731fd828fbb6056488`; [successful build/test run](https://github.com/EthannYakabuski/pixel-taxi-neighborhoods/actions/runs/39526337592).
+
+This game has **16 achievement** and **4 leaderboard** definitions in `game/catalog.json`. Use their symbolic keys in `platform/config.json` under `play_games.achievements` and `play_games.leaderboards`; the existing keys must remain unchanged when inserting console IDs. Play Games is currently disabled and its IDs are blank. Set `play_games.game_id`, and set the same numeric value in the Android export preset at `godot_play_game_services/game_id` in `export_presets.cfg`, before enabling the configured service. Configure the package, OAuth signing fingerprints and authorized testers in the owner consoles.
+
+`platform/config.json` also supplies banner/interstitial/rewarded unit IDs. Its `admob.app_id` is a reference value, not the Android manifest input: set the manifest App ID through Godot Project Settings `admob/general/android/app_id`, serialized as `general/android/app_id` under `[admob]` in `project.godot`, and keep the JSON reference consistent. The missing override is normal while the plugin default is Google's sample App ID. `test_mode` in this adapter only changes the displayed status wording; it does not substitute sample unit IDs or register test devices. Keep Google sample IDs for development, or explicitly configure and verify SDK test devices before using production units. See [platform setup](docs/PLATFORM_SETUP.md).
+
+Preserve original local packages and QA evidence. The accepted local APK hash is in `HANDOFF.txt`; hosted CI archives contain separately built binaries that have not received that local native QA. Documentation-only changes do not require rebuilding or replacing the original QA APK. Run tests with isolated process-local user-data directories, including the platform pending-service store, so the owner's real saves cannot be changed. Preserve notices and inspect explicit file diffs before staging.
 
 ## Future extension
 
@@ -48,10 +60,8 @@ Android or Web build; original-code Apache licensing does not replace third-part
 terms. CI copies these notices beside both exports and includes them with the
 Android artifact.
 
-## Public source and deployment status
+## Public source and local artifacts
 
-This repository publishes the existing local-test source package. The recorded HANDOFF and docs describe their dated local verification; they do not establish production service, physical-device, audio, browser or human acceptance.
+Public repository: [Pixel Taxi Neighborhoods](https://github.com/EthannYakabuski/pixel-taxi-neighborhoods). Current source and this continuation documentation are tracked here. Prebuilt exports, real saves, private QA records, credentials and signing material stay outside the published source history. Local artifact availability is described in `HANDOFF.txt`; a fresh clone does not contain the original debug APK.
 
-GitHub-hosted build/test/artifact CI is configured. The Pages deployment job is explicitly skipped pending separate authorization; no live Pages site is claimed. No real saves, private coordinator evidence, credentials, signing identities or prebuilt APK/Web exports are committed. Build outputs remain CI artifacts.
-
-Apache-2.0 covers original project work. Third-party assets, fonts, engine and plugins retain their own terms in LICENSES and source notices; where present, Creature Mixer custom terms exclude NFT/blockchain projects and are not CC0.
+Original work is Apache-2.0; assets, fonts, engine and plugins retain their own terms in `LICENSES/`, `NOTICE` and source notices. Creature Mixer assets, where used, have custom non-NFT/non-blockchain terms and are not CC0.
