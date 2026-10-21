@@ -150,7 +150,7 @@
       192
     ],
     "mode": "RGB",
-    "sha256": "cbae7320e6f528131d78bec1d8409fb3409c7cfcfe0b8139da6caac32c255534"
+    "sha256": "2de73446205e1da30db2d70b34036fb3b67112c5910ca4cb465b0d6046144953"
   },
   {
     "file": "app-icon-512.png",
@@ -159,7 +159,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "40717d815c8e1ae537b4b782c8930ad59ffa1c583ebf7331ba37688e75cec8ef"
+    "sha256": "2d7a03bcf24179c927e8de0325681bdf2fbdcea8fd121ba06442db22f6d85c28"
   },
   {
     "file": "feature-graphic-1024x500.png",
@@ -168,7 +168,7 @@
       500
     ],
     "mode": "RGB",
-    "sha256": "ef5a12e5af9f3f554bdfc25272b55809b7525c3783c74582d6d2b1913463e3a8"
+    "sha256": "b1caf34ff66c665059608b6e4d1366fff72764465921bcc3d730975f6c424ea4"
   },
   {
     "file": "leaderboards/taxi_distance.png",

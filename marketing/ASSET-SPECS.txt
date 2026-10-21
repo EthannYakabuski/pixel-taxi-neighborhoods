@@ -9,7 +9,8 @@ ACHIEVEMENTS AND LEADERBOARDS
 Individual named 512x512 RGB PNGs under achievements/ and leaderboards/. Symbolic keys in store-listing.json must map to final console IDs.
 
 REBUILD
-Run python generate_assets.py from this marketing directory with Pillow installed in the existing environment. It reads brand.json and ../game/catalog.json when present; it does not use the network. source_art/ retains the small source extracts needed to regenerate this game artwork. Source fonts are read from the installed Windows font library for rendering and are not redistributed.
+ROUND TWO branding is individually generated raster illustration. Its approved original PNGs and exact prompts are under source_art/round_two/; hashes/derivations are in ROUND_TWO_BRANDING.json. Reuse those originals for deterministic launcher/feature sizes. Generate requested revisions as distinct new illustrations, retain their prompts and review 512px/64px/title-safe crops.
+The old generate_assets.py is archival procedural artwork tooling and is guarded from overwriting approved ROUND TWO raster art. Do not remove that guard or replace the new illustrations by rerunning the legacy generator.
 
 LICENSING
 Generated branding/code is part of the original Apache-2.0 project work. Supplied Kenney source art remains under its own provenance/notices. Preserve source_art notices and the root project notices.

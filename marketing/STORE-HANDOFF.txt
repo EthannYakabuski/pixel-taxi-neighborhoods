@@ -1,3 +1,7 @@
+ROUND TWO BRANDING UPDATE - 2026-10-21
+The launchers and feature illustration now use the reviewed distinct raster originals in source_art/round_two/, with exact prompts, hashes and deterministic output sizes in ROUND_TWO_BRANDING.json. These are illustrative marketing art, never gameplay screenshots.
+The original native screenshot/build record below is preserved for its earlier APK. The 3D update requires fresh final-build captures and native QA before replacing that record. New individual achievement/leaderboard art is tracked separately when complete.
+
 LOCAL CAPTURE HANDOFF - Pixel Taxi Neighborhoods
 
 CURRENT SOURCE CATALOG

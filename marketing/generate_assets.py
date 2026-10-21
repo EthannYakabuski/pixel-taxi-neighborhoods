@@ -1,4 +1,4 @@
-"""Reproducible store artwork. Python 3 + Pillow only; no network or AI imagery.
+"""Legacy procedural store artwork generator. Superseded by ROUND TWO raster illustrations.
 
 When delivered in a game's marketing directory, run generate_assets.py there.
 Brand artwork is illustrative, never labelled as a gameplay screenshot.
@@ -13,6 +13,9 @@ import shutil
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
+
+if (Path(__file__).resolve().parent / "ROUND_TWO_BRANDING.json").is_file():
+    raise SystemExit("Approved ROUND TWO raster artwork is present; legacy generator cannot overwrite it. See ASSET-SPECS.txt.")
 
 from PIL import Image, ImageDraw, ImageFont
 

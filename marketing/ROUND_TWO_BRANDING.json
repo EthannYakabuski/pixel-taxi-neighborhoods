@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "generation": "Built-in imagegen; one distinct original app icon and feature illustration, exact prompts retained.",
+  "originals": [
+    {
+      "role": "app-icon",
+      "original": "marketing/source_art/round_two/app-icon-original.png",
+      "original_sha256": "F0D180AE10FE4F226DF90C6916D5838C57F6E0F9F5EFBFAEF8A19391289952D4",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "marketing/source_art/round_two/app-icon-prompt.txt",
+      "derivation": "Deterministic Lanczos resize; feature center-fit to required aspect. No generative/creative raster edits."
+    },
+    {
+      "role": "feature",
+      "original": "marketing/source_art/round_two/feature-original.png",
+      "original_sha256": "3A4809E737F8C25156C84097716DC7909B512689293E693DA7B31A0B22CF8526",
+      "original_dimensions": [
+        1794,
+        876
+      ],
+      "prompt": "marketing/source_art/round_two/feature-prompt.txt",
+      "derivation": "Deterministic Lanczos resize; feature center-fit to required aspect. No generative/creative raster edits."
+    }
+  ],
+  "files": [
+    {
+      "path": "marketing/app-icon-192.png",
+      "sha256": "2DE73446205E1DA30DB2D70B34036FB3B67112C5910CA4CB465B0D6046144953",
+      "dimensions": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "marketing/app-icon-512.png",
+      "sha256": "2D7A03BCF24179C927E8DE0325681BDF2FBDCEA8FD121BA06442DB22F6D85C28",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "marketing/feature-graphic-1024x500.png",
+      "sha256": "B1CAF34FF66C665059608B6E4D1366FFF72764465921BCC3D730975F6C424EA4",
+      "dimensions": [
+        1024,
+        500
+      ]
+    },
+    {
+      "path": "platform/app-icon-512.png",
+      "sha256": "2D7A03BCF24179C927E8DE0325681BDF2FBDCEA8FD121BA06442DB22F6D85C28",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "marketing/source_art/round_two/app-icon-original.png",
+      "sha256": "F0D180AE10FE4F226DF90C6916D5838C57F6E0F9F5EFBFAEF8A19391289952D4",
+      "dimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "marketing/source_art/round_two/feature-original.png",
+      "sha256": "3A4809E737F8C25156C84097716DC7909B512689293E693DA7B31A0B22CF8526",
+      "dimensions": [
+        1794,
+        876
+      ]
+    }
+  ],
+  "visual_review": "Agent inspected actual 512px launcher PNGs, native64px previews and1024x500 feature graphics: vehicle silhouette identifiable; exact game title fully inside frame; no UI/screenshot claim. Native launcher mask/device acceptance remains pending."
+}
