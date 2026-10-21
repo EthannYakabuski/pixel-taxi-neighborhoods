@@ -1,0 +1,410 @@
+{
+  "schema": 1,
+  "game": "Pixel Taxi Neighborhoods",
+  "generation": "One distinct built-in imagegen generation per catalog ID; exact prompts and untouched originals retained.",
+  "achievement_count": 16,
+  "leaderboard_count": 4,
+  "files": [
+    {
+      "category": "achievements",
+      "key": "taxi_first_fare",
+      "name": "First friendly fare",
+      "file": "achievements/taxi_first_fare.png",
+      "sha256": "763EB77E7BFDF3FA4A59DF34FA7F57996E3C388B3E946176E15FAED969862D08",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_first_fare-original.png",
+      "original_sha256": "E376F13DA7DB49A9729B10C80452B0E897B134D26FE4CFB5266C4947E5D1D337",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_first_fare-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_regular",
+      "name": "Neighborhood regular",
+      "file": "achievements/taxi_regular.png",
+      "sha256": "2B9779063B286552464C323E8C589C59CE2BF334B8613B7C6146F1C3EE05AF95",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_regular-original.png",
+      "original_sha256": "1F1058B92049E502A30A104EA5CD0AB07E1313721EC6B42680A889169DDB77FE",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_regular-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_local_legend",
+      "name": "Local legend",
+      "file": "achievements/taxi_local_legend.png",
+      "sha256": "3DC281D3912AD6AD3BE2917356CB9CAD77CD3233CB9CA1A32A8114DBAAFF856A",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_local_legend-original.png",
+      "original_sha256": "4DF8969C9A804B4E1E8AD485271A663264CC9F87AABFD8D88B0F2E739D15F488",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_local_legend-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_century",
+      "name": "A hundred stories",
+      "file": "achievements/taxi_century.png",
+      "sha256": "DCA66753D497DFEA199F5A445E355C9EA4F3C2ECB0E2B3ADBA88663329078E6F",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_century-original.png",
+      "original_sha256": "183056FBE1823701CF3B649A9643039D91E51D23DB8FE54876341FBFAC7A421C",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_century-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_city_miles",
+      "name": "City miles",
+      "file": "achievements/taxi_city_miles.png",
+      "sha256": "7F1103330471BE0974A0E5A1CE1CC3C601FAC7B5505E7C895BEB07E8B48A143B",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_city_miles-original.png",
+      "original_sha256": "0030B2E6DDC748E09582FA6207219C1F86E84C729F09886C2D54A3DC4C9B554F",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_city_miles-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_scenic_route",
+      "name": "The scenic route",
+      "file": "achievements/taxi_scenic_route.png",
+      "sha256": "432086647E3BDA048CE877EF458226AAD9AFF848B76CDBAFC6BF27783D82A5E9",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_scenic_route-original.png",
+      "original_sha256": "B0C6CC13E123A91F61FE1C9D970F20472440F62EF7C9DA4843CACA8F26FDA32C",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_scenic_route-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_special_guest",
+      "name": "A special guest",
+      "file": "achievements/taxi_special_guest.png",
+      "sha256": "8DD263930339ADCC9DF6ADE83C723710990BE7DC3BB1F19F5B1AB2E8A4C6FDAE",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_special_guest-original.png",
+      "original_sha256": "36C623E3B36E8DD428A847BD2D5439CF4F6D758A65CF24CD6F4548BA29D1DE40",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_special_guest-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_star_company",
+      "name": "Star company",
+      "file": "achievements/taxi_star_company.png",
+      "sha256": "58BF0E1BCBF12C0D53D5E5F522B6021FD8B57330E87720E35D238DF18EA0F5F7",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_star_company-original.png",
+      "original_sha256": "D380891D538E09E80D34F073B7B677B5E9ECDAF3D14EB48E5DC80446B18E19AC",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_star_company-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_all_districts",
+      "name": "Across the city",
+      "file": "achievements/taxi_all_districts.png",
+      "sha256": "B8FFD5BDF10482A5DD2631318D4CB412A9BE3449C208AA4190946876BC44EDFE",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_all_districts-original.png",
+      "original_sha256": "F2F37A55F192195D5557586B79694635D1D38E8414885847CBE1631C80DF191A",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_all_districts-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_good_company",
+      "name": "Good company",
+      "file": "achievements/taxi_good_company.png",
+      "sha256": "E6B18338A2E71AD29D8723C7292A255A049BC2713D8370CF895EEAFCFFA793C5",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_good_company-original.png",
+      "original_sha256": "14F1942976846BF64F1CABE2AA6A5A3491828059CFDFA8B2608103C8C6068C0E",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_good_company-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_first_upgrade",
+      "name": "A little tune-up",
+      "file": "achievements/taxi_first_upgrade.png",
+      "sha256": "A29BC9675A29431EE3A14C95B777FEE24BC2DEF682D058CBF40A8B7C2BE3FBBD",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_first_upgrade-original.png",
+      "original_sha256": "222127284CF34147DFAA2695DC9A9595AA5FFAA6216D872D98F228816863AA9E",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_first_upgrade-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_pride",
+      "name": "Pride of the garage",
+      "file": "achievements/taxi_pride.png",
+      "sha256": "0AB334C4660A087ECECD3296291202F0F3831AAF740DE8E0FCF0FFCF7578574F",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_pride-original.png",
+      "original_sha256": "CB0877E60A73ACAAC92E06E8AFBD0244DDBC2FD14BF7C81DB0C58A591FBE89F0",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_pride-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_new_color",
+      "name": "A fresh coat",
+      "file": "achievements/taxi_new_color.png",
+      "sha256": "4C278E76631FA8D7FB257E1CF5FC871FAF51F03D99640287F81A1DF0277A575C",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_new_color-original.png",
+      "original_sha256": "3C511BAE1A02562B9516E3D08FAF702BE6A938ECF5494A6B77E67FA35713C7AE",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_new_color-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_driver_level_5",
+      "name": "Level five driver",
+      "file": "achievements/taxi_driver_level_5.png",
+      "sha256": "6320287415CAE221AA08B3BA7795059027BC28B79C39BACA809C520A0DE11AF8",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_driver_level_5-original.png",
+      "original_sha256": "BD031EEC119956268E36CD7DD1381787B02305F2AA6AD5EE1A577A29A16C0D7E",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_driver_level_5-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_driver_level_10",
+      "name": "The city knows you",
+      "file": "achievements/taxi_driver_level_10.png",
+      "sha256": "0390E847408BA44684541E7E49029844179C0E81641CFF92E09A625C64EE0137",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_driver_level_10-original.png",
+      "original_sha256": "1CA577FCF9A7B14388144A05D0B18C6D146050CBD2261E44F183118481149DDF",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_driver_level_10-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "achievements",
+      "key": "taxi_earned",
+      "name": "Honest work",
+      "file": "achievements/taxi_earned.png",
+      "sha256": "4D1AF0B08593B7F5D1A6D612F27E04E6CD1A4DD7D60F6C2E5DC5BFCC31416BA0",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/achievements/taxi_earned-original.png",
+      "original_sha256": "E61AF9A34A45EEA218D3EC152749D209C855CB1819982BCFCBB7800B4E57C5C1",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/achievements/taxi_earned-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "leaderboards",
+      "key": "taxi_jobs",
+      "name": "Fares delivered",
+      "file": "leaderboards/taxi_jobs.png",
+      "sha256": "0F7CED011857E0D5DB1A77BF7CC5972C4453AC11EDE9D6A95A275E317BBC046D",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/leaderboards/taxi_jobs-original.png",
+      "original_sha256": "AF9444B4B632CCDD3D2E77D6ED203553F67317D8AB43E12712525DC50CB65876",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/leaderboards/taxi_jobs-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "leaderboards",
+      "key": "taxi_distance",
+      "name": "City miles",
+      "file": "leaderboards/taxi_distance.png",
+      "sha256": "3948215197A4B87099F5DA9BD43D25E5DFC8C21C7E234EE5366CC8D0A911003F",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/leaderboards/taxi_distance-original.png",
+      "original_sha256": "2B6B889E80D0571D0FF4AB9A9633D077D9DC23172AA5B5FF155870D5EB7570B5",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/leaderboards/taxi_distance-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "leaderboards",
+      "key": "taxi_income",
+      "name": "Fare earnings",
+      "file": "leaderboards/taxi_income.png",
+      "sha256": "2170B4E373558334A80C6EF127BDD5FDDC63D5FC336F7DD2A7C6DCAA2FD2B36D",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/leaderboards/taxi_income-original.png",
+      "original_sha256": "24395C98291BFB0DA089DC6F243030F02471A0FCD9F0CD7977C30381ECEC3F2A",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/leaderboards/taxi_income-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    },
+    {
+      "category": "leaderboards",
+      "key": "taxi_player_level",
+      "name": "Driver level",
+      "file": "leaderboards/taxi_player_level.png",
+      "sha256": "49A839938E55FD46D806649A7F613DCCCF0D96680E3198B2AD41995237EEFB18",
+      "dimensions": [
+        512,
+        512
+      ],
+      "original": "source_art/round_two/badges/leaderboards/taxi_player_level-original.png",
+      "original_sha256": "C9B624DF384856B4CB0C39A87A76148FD81868AEE791E106E986924DDD9C56E0",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "source_art/round_two/badges/leaderboards/taxi_player_level-prompt.txt",
+      "derivation": "Deterministic Lanczos downsample from the distinct original; no icon-sheet cropping.",
+      "visual_review": "Saved original and native64px design preview inspected; main silhouette and dimensional rim remain readable."
+    }
+  ],
+  "runtime_scope": "Marketing/PGS console artwork only. Neither runtime loads these paths; marketing is excluded by both export presets. These art-only changes do not replace native screenshots or require a new APK."
+}

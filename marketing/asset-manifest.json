@@ -6,7 +6,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "6401d77cf5283fbbebd1416a50bb1d2d3062de211b0f5de824e71ce52a2aa80b"
+    "sha256": "b8ffd5bdf10482a5dd2631318d4cb412a9be3449c208aa4190946876bc44edfe"
   },
   {
     "file": "achievements/taxi_century.png",
@@ -15,7 +15,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "07793c526e34d0769ac6c810412c588e58c94bbaa7a80ece3f298178e3550b59"
+    "sha256": "dca66753d497dfea199f5a445e355c9ea4f3c2ecb0e2b3adba88663329078e6f"
   },
   {
     "file": "achievements/taxi_city_miles.png",
@@ -24,7 +24,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "a3a87b70aca0b811828e332c5ceb3e412061de1594a48ef2eb2841f3812d364b"
+    "sha256": "7f1103330471be0974a0e5a1ce1cc3c601fac7b5505e7c895beb07e8b48a143b"
   },
   {
     "file": "achievements/taxi_driver_level_10.png",
@@ -33,7 +33,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "735818f766ff34683f181c7330cc434e71a2071c7c0942dc1408f05b2f2069b3"
+    "sha256": "0390e847408ba44684541e7e49029844179c0e81641cff92e09a625c64ee0137"
   },
   {
     "file": "achievements/taxi_driver_level_5.png",
@@ -42,7 +42,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "d63bae913e29f7bde09b475bc69c4426b55c333a9650a2cbb3799f616eb0e361"
+    "sha256": "6320287415cae221aa08b3ba7795059027bc28b79c39baca809c520a0de11af8"
   },
   {
     "file": "achievements/taxi_earned.png",
@@ -51,7 +51,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "c42db518930b3c8773c815a8bdbff20e2740f06bca446060e7a66fc0bcd4e0a7"
+    "sha256": "4d1af0b08593b7f5d1a6d612f27e04e6cd1a4dd7d60f6c2e5dc5bfcc31416ba0"
   },
   {
     "file": "achievements/taxi_first_fare.png",
@@ -60,7 +60,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "3803d597745527fa1c70b1c9ba0c74cf44f5efb6fe21d3776be6426fe963c819"
+    "sha256": "763eb77e7bfdf3fa4a59df34fa7f57996e3c388b3e946176e15faed969862d08"
   },
   {
     "file": "achievements/taxi_first_upgrade.png",
@@ -69,7 +69,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "9cdeef763dcaac4e0618d560d91b98aea5745e2dedfd74ebf41bbdaf43fe1223"
+    "sha256": "a29bc9675a29431ee3a14c95b777fee24bc2def682d058cbf40a8b7c2be3fbbd"
   },
   {
     "file": "achievements/taxi_good_company.png",
@@ -78,7 +78,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "cfb4272204774bb2e9de30dab42a89d013e3fac3d95b6ea29011a07188020e59"
+    "sha256": "e6b18338a2e71ad29d8723c7292a255a049bc2713d8370cf895eeafcffa793c5"
   },
   {
     "file": "achievements/taxi_local_legend.png",
@@ -87,7 +87,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "ee2307af580d91356002d8ce8f9085fe9e49ee81797c3ab11c67652b1a5de8e6"
+    "sha256": "3dc281d3912ad6ad3be2917356cb9cad77cd3233cb9ca1a32a8114dbaaff856a"
   },
   {
     "file": "achievements/taxi_new_color.png",
@@ -96,7 +96,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "5fe138c343bf161de52a5e33ae55687364cbecd8a7258c2d9d448f90cd5c4439"
+    "sha256": "4c278e76631fa8d7fb257e1cf5fc871faf51f03d99640287f81a1df0277a575c"
   },
   {
     "file": "achievements/taxi_pride.png",
@@ -105,7 +105,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "14bf93c53efd5cef542d8fbefa2217c641ce0c4daee87f74e640080064a84d2a"
+    "sha256": "0ab334c4660a087ececd3296291202f0f3831aaf740de8e0fcf0ffcf7578574f"
   },
   {
     "file": "achievements/taxi_regular.png",
@@ -114,7 +114,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "3d9197bdd28b651d3f9c82e5ddc25be07e001a2b30aa79f47b9e696ff2fd542e"
+    "sha256": "2b9779063b286552464c323e8c589c59ce2bf334b8613b7c6146f1c3ee05af95"
   },
   {
     "file": "achievements/taxi_scenic_route.png",
@@ -123,7 +123,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "d0dcdca71076c38fc56476cd4e5bdabf9d14e1157ec2d384562f43d007e16bfd"
+    "sha256": "432086647e3bda048ce877ef458226aad9aff848b76cdbafc6bf27783d82a5e9"
   },
   {
     "file": "achievements/taxi_special_guest.png",
@@ -132,7 +132,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "c0895a298ba6bf18a2ac452ac9035a8c67cd107ebdc51d7374b1cc2974870a6a"
+    "sha256": "8dd263930339adcc9df6ade83c723710990be7dc3bb1f19f5b1ab2e8a4c6fdae"
   },
   {
     "file": "achievements/taxi_star_company.png",
@@ -141,7 +141,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "d63bae913e29f7bde09b475bc69c4426b55c333a9650a2cbb3799f616eb0e361"
+    "sha256": "58bf0e1bcbf12c0d53d5e5f522b6021fd8b57330e87720e35d238df18ea0f5f7"
   },
   {
     "file": "app-icon-192.png",
@@ -177,7 +177,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "7790eba834c5c824ce8dc3b149a53b53d4ee46de02079d6175dc6c6a783300db"
+    "sha256": "3948215197a4b87099f5da9bd43d25e5dfc8c21c7e234ee5366cc8d0a911003f"
   },
   {
     "file": "leaderboards/taxi_income.png",
@@ -186,7 +186,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "d4011fec55eefd678519316ae63e884cb71939405229843edd8d4af0472fdc76"
+    "sha256": "2170b4e373558334a80c6ef127bdd5fddc63d5fc336f7dd2a7c6dcaa2fd2b36d"
   },
   {
     "file": "leaderboards/taxi_jobs.png",
@@ -195,7 +195,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "69801f0a2fa529b3fd2a014811db3e1dc0cae60a4de1cb7fc09297838975403f"
+    "sha256": "0f7ced011857e0d5db1a77bf7cc5972c4453ac11ede9d6a95a275e317bbc046d"
   },
   {
     "file": "leaderboards/taxi_player_level.png",
@@ -204,7 +204,7 @@
       512
     ],
     "mode": "RGB",
-    "sha256": "8c388f4901f97653be55edcdaae0803a673162d2082d38fdcfd2d7a31ea1b007"
+    "sha256": "49a839938e55fd46d806649a7f613dcccf0d96680e3198b2ad41995237eefb18"
   },
   {
     "file": "screenshots/phone-collection.png",
