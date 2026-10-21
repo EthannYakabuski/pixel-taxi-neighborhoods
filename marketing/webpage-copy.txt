@@ -1,20 +1,20 @@
 Pixel Taxi Neighborhoods
-A little city. A hundred stories to bring home.
+Drive your own 3D taxi, follow the GPS and earn tips across three neighborhoods.
 
-Pixel Taxi Neighborhoods is a friendly top-down driving game set in a little city with three distinct districts. Choose a passenger job, find the pickup curb, and follow the connected streets to the destination. There is no need to turn every journey into a race.
+Take a yellow taxi through a connected 3D city of factory streets, downtown boulevards and leafy neighborhoods. Real turns, curved roads and a camera behind your cab make every pickup a small driving journey.
 
 THREE SELLING CARDS
-Three neighborhoods, one connected city
-Find your way through the Foundry, Central and Garden districts, with a new friendly fare around the corner.
+You drive. GPS guides.
+Follow a gold route through68 connected curved streets across Foundry, Central and Garden. Wrong turns update the directions, while your hands stay on the controls.
 
-Every passenger has a destination
-Choose a job, reach the pickup curb, and bring your passenger home. Unusual guests make a familiar route feel new.
+One offer, one passenger
+Accept or decline a dispatch, stop at the curb and earn a tip for a prompt, collision-free ride.
 
-Make this cab yours
-Grow your driver level, improve the engine, comfort and radio, and pick a color that feels like your taxi.
+A cab and career of your own
+Keep your fares, improve your taxi, meet rare guests and build a journal across many small shifts.
 
-TECHNICAL INFORMATION
-Made with Godot 4.5.1 Compatibility. Portrait Android is primary; a Web build is provided where feasible. Local saves support offline core play. Android services have graceful Web fallbacks. Original code is Apache-2.0; source-asset/plugin notices are preserved. Google Play Games and production ads require the owner's final configuration.
+TECHNICAL / OWNER INFORMATION
+Godot4.5.1 Compatibility. Android primary; Web where feasible. Core play and local saves work offline. Current source has isolated tests and actual desktop GPU review; fresh final-build native QA and browser interaction remain separate acceptance steps. AdMob sample IDs and disabled PGS placeholders remain for development. Original code is Apache-2.0; preserve asset/plugin notices. No live Pages, Library or Google Play publication is included.
 
 FUTURE CONTENT IDEA (NOT IMPLEMENTED)
-Harbor After Dark: a waterfront district with ferry-terminal passengers and night-cab colors.
+Harbor After Dark: additional waterfront routes and night-cab stories.

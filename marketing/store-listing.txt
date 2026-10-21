@@ -1,20 +1,20 @@
 Pixel Taxi Neighborhoods
 
-SHORT DESCRIPTION (76/80 characters)
-Friendly fares, little city stories, and a taxi that grows with your driver.
+SHORT DESCRIPTION (80/80 characters)
+Drive your own 3D taxi, follow the GPS and earn tips across three neighborhoods.
 
 LONG DESCRIPTION
-Take a fare. Learn a neighborhood. Bring someone home.
+Every fare has a story. You are at the wheel.
 
-Pixel Taxi Neighborhoods is a friendly top-down driving game set in a little city with three distinct districts. Choose a passenger job, find the pickup curb, and follow the connected streets to the destination. There is no need to turn every journey into a race.
+Take a yellow taxi through a connected 3D city of factory streets, downtown boulevards and leafy neighborhoods. Real turns, curved roads and a camera behind your cab make every pickup a small driving journey.
 
-Explore the industrial Foundry, lively Central and leafy Garden neighborhoods across a connected street grid. Tap a destination to route your cab, use the thumb controls, or play with a keyboard in the Web edition. Moving traffic adds a little city life without punishing damage.
+Dispatch sends one offer at a time. Accept it or wait for the next passenger, then drive to the gold curb. Hold and drag with one thumb to accelerate and steer, or use the separate steering, brake and reverse controls. GPS marks the shortest connected road route and recalculates when you miss a turn. You do the driving.
 
-Earn fares and driver experience, improve your engine, comfort and radio, and choose a new cab color. Meet different passengers, look out for rare guests, and fill your local journal with the stories of a growing taxi career.
+Bring your passenger home promptly and without a bump to earn a clean-ride tip. Collisions slow the taxi and affect the tip, while the normal fare and your banked coins remain safe. Take a relaxed route when you prefer; there is no need to lose your progress over a difficult corner.
 
-Three daily quests and a seven-day login reward cycle offer small goals for the next shift. Progress saves locally, and the core city remains playable offline.
+Improve the engine, comfort and radio, choose from four cars and grow your driver level. Meet rare guests, fill your passenger journal and return for daily goals and a seven-day gift cycle.
 
-The Android edition supports optional rewarded ads and ads between completed fares. Google Play Games achievements and leaderboards depend on sign-in and final configuration. The Web edition preserves local play with graceful fallbacks for Android-only services.
+Core driving works offline with local saves. Android includes optional rewarded fare bonuses and ads between completed fares. Pick up the next story and make the neighborhood your own.
 
 CATEGORY
 GAME_SIMULATION
@@ -22,5 +22,5 @@ GAME_SIMULATION
 SUGGESTED TAGS
 Casual, Driving, Simulation, Single player, Offline
 
-PUBLICATION NOTE
-This is store copy for the implemented candidate, not a claim of publication or production-service verification. Check feature claims against the final build before uploading. The owner completes backend configuration, final testing, privacy/Data safety declarations, audience/content-rating questionnaires, support/privacy URLs, and Google Play publication.
+OWNER PUBLICATION NOTE
+Draft copy describes the ROUND TWO source candidate. Validate against the final native build before upload. Production Play Games remains disabled until owner console IDs/signing/testers are configured; do not add live online-service claims before verification. The owner completes release signing, current store/privacy/audience details, human acceptance and Google Play submission. Source diagnostics and illustrative artwork are not final-build screenshots.

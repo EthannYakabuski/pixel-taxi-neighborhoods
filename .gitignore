@@ -32,3 +32,6 @@ CHECKPOINT.txt
 # Screenshot editor sidecars are generated metadata, not delivery artwork.
 /marketing/screenshots/**/*.png.import
 /marketing/screenshots/*.png.import
+
+# Generated editor sidecars for excluded original marketing illustrations.
+/marketing/source_art/round_two/**/*.png.import
