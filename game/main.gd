@@ -327,6 +327,7 @@ func _drive() -> void:
 	var stop := _button("BRAKE",Rect2(420,772,102,80),func(): pass,true)
 	stop.button_down.connect(func(): brake_held=true)
 	stop.button_up.connect(func(): brake_held=false)
+	_panel(Rect2(8,854,524,38),INK,8)
 	_label("Hold & drag one thumb, or hold gas + steering with two.",Rect2(18,858,504,30),14,MIST,HORIZONTAL_ALIGNMENT_CENTER)
 	_button("Dispatch",Rect2(24,907,123,36),func(): _show("dispatch"),true)
 	_button("Map",Rect2(162,907,102,36),func(): city.overview=not city.overview,true)
@@ -367,22 +368,25 @@ func _refresh_drive() -> void:
 		var pickup := not bool(model.active_job.picked_up)
 		var gap := vehicle_position.distance_to(Model.point(model.objective()))*0.45
 		var cue := "ARRIVE AT THE GOLD CURB" if gap < 18 else _navigation_cue()
-		info_label.text = "%s %s · %d km/h\n%s · %dm to curb" % ["Pick up" if pickup else "Deliver",str(model.active_job.passenger).split(" ")[0],int(speed*3.6),cue,int(gap)]
+		info_label.text = "%s %s · %d km/h\n%s · Curb: %dm direct" % ["Pick up" if pickup else "Deliver",str(model.active_job.passenger).split(" ")[0],int(speed*3.6),cue,int(gap)]
 		var at_curb := gap < 10.0 and speed < 1.6
-		action_button.text = ("Pick up passenger" if pickup else "Complete fare & receive tip") if at_curb else "Brake at the gold passenger curb"
+		action_button.text = ("Pick up passenger" if pickup else "Complete fare") if at_curb else "Brake at the gold passenger curb"
 		action_button.disabled = not at_curb
 	if is_instance_valid(coins_label): coins_label.text = "%d coins" % model.coins
 
 func _navigation_cue() -> String:
-	if travel_path.is_empty(): return "Follow the gold GPS line"
+	# This describes alignment with the occupied road, not a future junction.
+	# Match the actual world's existing off-street grass slow-down boundary.
+	if float(navigation.get("distance_to_road",0.0))*City.World.WORLD_SCALE > 6.0:
+		return "Return to gold route"
+	if travel_path.is_empty(): return "Follow gold line"
 	var next := Model.point(travel_path[0])
 	var direction := (next-vehicle_position).normalized()
 	var desired: float = float(navigation.get("bearing",atan2(direction.x,direction.y)))
 	var angle := wrapf(desired-vehicle_heading,-PI,PI)
-	if absf(angle) > 2.2: return "Turn around when safe"
-	if angle < -0.35: return "Bear RIGHT"
-	if angle > 0.35: return "Bear LEFT"
-	return "Continue ahead"
+	if angle < -0.35: return "Align RIGHT with gold line"
+	if angle > 0.35: return "Align LEFT with gold line"
+	return "Follow gold line"
 
 func _route_to(goal: int) -> void:
 	if screen != "drive": return

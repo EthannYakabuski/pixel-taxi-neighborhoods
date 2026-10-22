@@ -2,6 +2,7 @@ extends "res://game/drive_kit.gd"
 ## Actual manual-driving city. GPS geometry never controls the vehicle.
 const Graph = preload("res://game/city_graph.gd")
 const WORLD_SCALE := 0.22
+const CAMERA_CLEARANCE := 0.3
 signal travelled(metres: float)
 signal impact(speed: float)
 var player: CharacterBody3D
@@ -28,8 +29,10 @@ var _traffic: Array[Dictionary] = []
 var _elapsed := 0.0
 var _building_count := 0
 var _car_index := -1
+var _camera_probe := SphereShape3D.new()
 
 func _ready() -> void:
+	_camera_probe.radius = CAMERA_CLEARANCE
 	sky_and_sun()
 	get_viewport().msaa_3d = Viewport.MSAA_2X
 	box(self, Vector3(130,-0.3,130), Vector3(1200,0.5,1200), Color("5d8c74"))
@@ -117,14 +120,14 @@ func _physics_process(delta: float) -> void:
 		_tick_traffic(delta)
 	else:
 		current_speed = 0.0
-	_follow(delta)
+	_follow(delta,true)
 	_curb.visible = objective_node >= 0
 	if objective_node >= 0:
 		var at := Graph.point(objective_node)*WORLD_SCALE
 		_curb.position = Vector3(at.x,0.06,at.y)
 		_curb.rotation.y = sin(_elapsed)*0.025
 
-func _follow(delta: float) -> void:
+func _follow(delta: float, constrain: bool = false) -> void:
 	if not is_instance_valid(camera3d) or not is_instance_valid(player): return
 	var forward := Vector3(sin(yaw),0,cos(yaw))
 	var wanted := player.position-forward*11.8+Vector3(0,7.2,0)
@@ -133,8 +136,57 @@ func _follow(delta: float) -> void:
 		wanted = player.position+Vector3(0,95,0.1)
 		target = player.position
 	if camera_shake > 0: wanted.x += sin(_elapsed*70.0)*camera_shake*0.4
-	camera3d.position = camera3d.position.lerp(wanted,minf(1.0,delta*7.0))
-	camera3d.look_at(target)
+	# set_pose/_ready can snap outside a physics step; query space only from
+	# the physics callback. Map keeps its existing unoccluded overhead view.
+	var query_safe := constrain and Engine.is_in_physics_frame() and not overview
+	var target_global := to_global(target)
+	var focus := player.global_position+Vector3(0,1.5,0)
+	if query_safe:
+		var wanted_global := _constrain_camera(focus,to_global(wanted),target_global)
+		if not wanted_global.is_finite():
+			# A failed boom correction needs a separately validated close view.
+			# Shorten look-ahead only here so the taxi stays framed from above.
+			target_global = to_global(player.position+forward*0.5+Vector3(0,0.5,0))
+			wanted_global = _constrain_camera(focus,to_global(player.position+Vector3(0,7.2,0)),target_global)
+		if not wanted_global.is_finite():
+			push_error("No collision-safe chase camera for the current vehicle pose")
+			return
+		wanted = to_local(wanted_global)
+	var candidate := camera3d.position.lerp(wanted,minf(1.0,delta*7.0))
+	if query_safe:
+		# A clear destination alone cannot stop the lerp cutting a corner.
+		var corrected := _constrain_camera(focus,to_global(candidate),target_global)
+		# The desired position was validated with this frame's focus/target.
+		candidate = to_local(corrected) if corrected.is_finite() else wanted
+	camera3d.position = candidate
+	camera3d.look_at(target_global)
+
+func _constrain_camera(focus: Vector3, candidate: Vector3, target: Vector3) -> Vector3:
+	if not Engine.is_in_physics_frame(): return Vector3.INF
+	var space := get_world_3d().direct_space_state
+	var query := PhysicsShapeQueryParameters3D.new()
+	query.shape = _camera_probe
+	query.collision_mask = 4
+	query.exclude = [player.get_rid()]
+	query.margin = 0.03
+	query.transform = Transform3D(Basis.IDENTITY,focus)
+	# cast_motion ignores initial overlaps. A physically valid car leaves this
+	# small focus sphere clear; report a failed constraint for an invalid pose.
+	if not space.intersect_shape(query,1).is_empty(): return Vector3.INF
+	for _iteration in range(4):
+		# Camera3D's offsets move the rendered eye along this look-at basis.
+		# Recheck after shortening because the new position changes that basis.
+		var basis := Basis.looking_at(target-candidate)
+		var eye_offset := basis*Vector3(camera3d.h_offset,camera3d.v_offset,0)
+		var motion := candidate+eye_offset-focus
+		query.motion = motion
+		var fractions := space.cast_motion(query)
+		if fractions.size() != 2: break
+		if fractions[0] >= 1.0: return candidate
+		var length := motion.length()
+		if length < 0.001: break
+		candidate = focus+motion*maxf(0.0,fractions[0]-0.05/length)-eye_offset
+	return Vector3.INF
 
 func _queue(group: String, key: String, at: Vector3, size: Vector3 = Vector3.ONE, angle: float = 0.0) -> void:
 	var id := group+"/"+key
