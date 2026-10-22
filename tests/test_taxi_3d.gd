@@ -21,6 +21,8 @@ func run() -> void:
 	game.demo = true
 	root.add_child(game)
 	game._show("drive")
+	await process_frame # Present/lay out actual controls before synthetic GUI input.
+	await _check_drive_touch_routing(game)
 	var world = game.city.world
 	check(world.player is CharacterBody3D,"actual player is a physical 3D car")
 	check(world.player.get_node("KenneyCar").find_children("*","MeshInstance3D",true,false).size()>0,"actual supplied car meshes are present")
@@ -34,20 +36,15 @@ func run() -> void:
 	await create_timer(0.3).timeout
 	check(world.graph_position().distance_to(before)<0.05,"GPS guidance never drives the car")
 	check(not game.automatic,"no automatic movement mode remains")
-	var press := InputEventScreenTouch.new()
-	press.position = Vector2(100,40)
-	press.pressed = true
-	game._steering_pad_event(press)
-	var drag := InputEventScreenDrag.new()
-	drag.position = Vector2(140,40)
-	game._steering_pad_event(drag)
+	var pad := _drive_point(game,"pad")
+	_touch(0,pad,true)
+	_drag(0,pad+_drive_offset(game,Vector2(40,0)))
 	var before_distance: float = game.model.distance
 	await create_timer(0.6).timeout
 	check(world.graph_position().distance_to(before)>1.0,"one-thumb hold drives actual CharacterBody3D")
 	check(world.yaw < -0.01,"rightward thumb drag steers right in the actual following camera")
 	check(game.model.distance>before_distance,"only actual physical movement advances distance")
-	press.pressed=false
-	game._steering_pad_event(press)
+	_touch(0,pad+_drive_offset(game,Vector2(40,0)),false)
 	game.brake_held=true
 	await create_timer(0.4).timeout
 	check(absf(world.current_speed)<0.1,"brake brings car to a stop")
@@ -87,8 +84,13 @@ func run() -> void:
 		service = CoveredService.new()
 		service.name="Services"
 		root.add_child(service)
+	_touch(90,_drive_point(game,"pad"),true)
+	_touch(91,_drive_point(game,"right"),true)
+	_touch(92,_drive_point(game,"reverse"),true)
+	_touch(93,_drive_point(game,"brake"),true)
 	_set_covered(service,true)
 	game._process(20)
+	check(_controls_clear(game),"ad coverage clears all pointer holds as well as control values")
 	before=world.graph_position()
 	var elapsed: float = game.model.active_job.elapsed
 	await create_timer(0.25).timeout
@@ -97,7 +99,13 @@ func run() -> void:
 	_set_covered(service,false)
 	game._process(20)
 	check(game.resume_required and not world.enabled,"ad return requires explicit Resume")
-	game._resume_driving()
+	_drag(90,_drive_point(game,"pad")+_drive_offset(game,Vector2(40,40)))
+	_touch(94,_drive_point(game,"pad"),true)
+	check(_controls_clear(game),"covered-return drags/new touches cannot rearm before Resume")
+	_mouse_click(game.action_button)
+	_drag(90,_drive_point(game,"pad")+_drive_offset(game,Vector2(50,50)))
+	check(_controls_clear(game),"Resume cannot resurrect discarded touch owners")
+	for index in range(90,95): _touch(index,_drive_point(game,"pad"),false)
 	game._process(20)
 	check(world.graph_position().distance_to(before)<0.01,"covered return delta never moves vehicle")
 	# Wrong-turn guidance uses actual road projection and cannot modify pose/input.
@@ -115,7 +123,11 @@ func run() -> void:
 	var saved_pose: Vector2=world.graph_position()
 	var saved_balance: int=game.model.coins
 	var saved_job: Dictionary=game.model.active_job.duplicate(true)
+	_touch(95,_drive_point(game,"reverse"),true)
+	_touch(96,_drive_point(game,"left"),true)
 	game._stop_audio()
+	root.remove_child(game)
+	check(_controls_clear(game),"tree exit clears owned drive inputs synchronously")
 	game.queue_free()
 	await process_frame
 	await process_frame
@@ -143,3 +155,149 @@ func run() -> void:
 func _set_covered(service: Node, value: bool) -> void:
 	if service is CoveredService: service.covering=value
 	else: service.set("_interstitial_showing",value)
+
+# Route synthetic contacts through Viewport hit-testing/capture and real gui_input
+# signals. These fixtures never call the private drive event handler directly.
+func _drive_point(game, action: String) -> Vector2:
+	var control: Control = game.page_content.get_node("Drive_"+action)
+	return control.get_global_transform_with_canvas()*(control.size*0.5)
+
+func _drive_offset(game, value: Vector2) -> Vector2:
+	return game.stage.get_global_transform_with_canvas().basis_xform(value)
+
+func _touch(index: int, position: Vector2, pressed: bool, canceled: bool = false) -> void:
+	var event := InputEventScreenTouch.new()
+	event.index=index;event.position=position;event.pressed=pressed;event.canceled=canceled
+	root.push_input(event,true)
+
+func _drag(index: int, position: Vector2) -> void:
+	var event := InputEventScreenDrag.new()
+	event.index=index;event.position=position
+	root.push_input(event,true)
+
+func _mouse_button(position: Vector2, pressed: bool, device: int = 0) -> void:
+	if pressed: _mouse_motion(position,0,device)
+	var event := InputEventMouseButton.new()
+	event.position=position;event.global_position=position;event.button_index=MOUSE_BUTTON_LEFT
+	event.pressed=pressed;event.button_mask=MOUSE_BUTTON_MASK_LEFT if pressed else 0;event.device=device
+	root.push_input(event,true)
+
+func _mouse_motion(position: Vector2, mask: int = MOUSE_BUTTON_MASK_LEFT, device: int = 0) -> void:
+	var event := InputEventMouseMotion.new()
+	event.position=position;event.global_position=position;event.button_mask=mask;event.device=device
+	root.push_input(event,true)
+
+func _mouse_click(control: Control) -> void:
+	var at := control.get_global_transform_with_canvas()*(control.size*0.5)
+	_mouse_button(at,true)
+	_mouse_button(at,false)
+
+func _controls_clear(game) -> bool:
+	return game._drive_pointers.is_empty() and not game.gas_held and not game.reverse_held and not game.brake_held and is_zero_approx(game.turn_input)
+
+func _check_drive_touch_routing(game) -> void:
+	# Independent arrow/reverse holds must work in either touch order.
+	for order in [["reverse","right"],["right","reverse"],["reverse","left"],["left","reverse"]]:
+		var a := _drive_point(game,order[0]);var b := _drive_point(game,order[1])
+		_touch(10,a,true);_touch(11,b,true)
+		check(game.reverse_held and absf(game.turn_input)>0.99,"reverse plus arrow works in touch order "+str(order))
+		_mouse_button(a,true,InputEvent.DEVICE_ID_EMULATION)
+		_mouse_button(a,false,InputEvent.DEVICE_ID_EMULATION)
+		check(game.reverse_held and absf(game.turn_input)>0.99,"duplicate emulated mouse cannot release either real finger")
+		_touch(10,a,false)
+		check(game.reverse_held if order[1]=="reverse" else absf(game.turn_input)>0.99,"releasing first finger preserves second hold")
+		_touch(11,b,false)
+		check(_controls_clear(game),"both released contacts leave no drive input")
+	# Pedal/arrow and pedal/brake need the same order-independent ownership.
+	for other in ["left","brake"]:
+		for order in [["pad",other],[other,"pad"]]:
+			var a := _drive_point(game,order[0]);var b := _drive_point(game,order[1])
+			_touch(20,a,true);_touch(21,b,true)
+			check(game.gas_held and (game.brake_held if other=="brake" else game.turn_input<0),"pad plus "+other+" works in both orders")
+			_touch(20,a,false)
+			check(game.gas_held if order[1]=="pad" else (game.brake_held if other=="brake" else game.turn_input<0),"releasing one pad/control finger leaves the other active")
+			_touch(21,b,false)
+			check(_controls_clear(game),"pad/control pair fully releases")
+	for order in [["pad","reverse"],["reverse","pad"]]:
+		var a := _drive_point(game,order[0]);var b := _drive_point(game,order[1])
+		_touch(22,a,true);_touch(23,b,true)
+		game._process(0)
+		check(game.gas_held and game.reverse_held and game.city.world.throttle<0,"manual Reverse overrides independently held gas in either order")
+		_touch(22,a,false)
+		check(game.gas_held if order[1]=="pad" else game.reverse_held,"pad/manual Reverse first release preserves the other finger")
+		_touch(23,b,false)
+		check(_controls_clear(game),"pad/manual Reverse pair fully releases")
+	var pad := _drive_point(game,"pad")
+	_touch(30,pad,true)
+	_drag(30,pad+_drive_offset(game,Vector2(36,20)))
+	check(game.gas_held and not game.reverse_held and game.turn_input>0,"ordinary horizontal drag/vertical jitter remains forward steering")
+	_drag(30,pad+_drive_offset(game,Vector2(36,40)))
+	check(game.reverse_held and not game.gas_held and game.turn_input>0,"one deliberate down/right drag reverses and steers together")
+	_drag(30,pad+_drive_offset(game,Vector2(36,24)))
+	check(game.reverse_held,"reverse hysteresis avoids boundary jitter")
+	_touch(31,pad,true);_drag(31,pad+_drive_offset(game,Vector2(-50,-20)));_touch(31,pad,false)
+	check(game.reverse_held and game.turn_input>0,"second pad finger cannot replace the first anchor or release its hold")
+	_touch(32,_drive_point(game,"reverse"),true)
+	_touch(32,_drive_point(game,"reverse"),false)
+	check(game.reverse_held and game.turn_input>0,"manual Reverse release preserves independent pad reverse")
+	_drag(30,pad+_drive_offset(game,Vector2(36,8)))
+	check(game.gas_held and not game.reverse_held,"returning near press height selects forward without losing steering")
+	_touch(30,pad,false,true)
+	check(_controls_clear(game),"canceled pad contact clears its owned inputs")
+	# An outside press cannot acquire a control merely by dragging over it.
+	var outside: Vector2 = game.stage.get_global_transform_with_canvas()*Vector2(5,700)
+	_touch(40,outside,true);_drag(40,pad);_drag(40,pad+_drive_offset(game,Vector2(40,40)))
+	check(_controls_clear(game),"outside press and reentry cannot acquire an unowned pad")
+	_touch(40,pad,false)
+	_touch(40,pad,true);_drag(40,pad+_drive_offset(game,Vector2(40,80)));_drag(40,pad+_drive_offset(game,Vector2(40,40)))
+	check(game.reverse_held and game.turn_input>0,"owned pad capture survives drag-out and reentry")
+	_touch(40,outside,false)
+	check(_controls_clear(game),"release outside clears the captured owner")
+	_touch(41,_drive_point(game,"left"),true);_touch(42,_drive_point(game,"right"),true)
+	check(is_zero_approx(game.turn_input),"opposing held arrows cancel")
+	_touch(41,_drive_point(game,"left"),false,true)
+	check(game.turn_input>0.99,"canceling left preserves the independently held right")
+	_touch(42,_drive_point(game,"right"),false)
+	# Physical mouse remains separate from raw touch and supports the same pad.
+	_touch(43,_drive_point(game,"reverse"),true)
+	_mouse_button(_drive_point(game,"right"),true)
+	check(game.reverse_held and game.turn_input>0.99,"physical mouse does not replace an active native touch")
+	_mouse_button(_drive_point(game,"right"),false)
+	check(game.reverse_held and is_zero_approx(game.turn_input),"physical mouse release preserves native Reverse")
+	_touch(43,_drive_point(game,"reverse"),false)
+	_mouse_button(pad,true);_mouse_motion(pad+_drive_offset(game,Vector2(40,40)))
+	check(game.reverse_held and game.turn_input>0,"physical mouse pad can deliberately reverse and steer")
+	_mouse_motion(pad,0)
+	check(_controls_clear(game),"missing mouse hold mask safely clears only physical mouse owner")
+	_mouse_button(pad,false)
+	# Keep actual engine movement evidence: one touch can execute a reverse arc.
+	var world = game.city.world
+	game._set_parked();world.set_pose(Graph.point(24),0)
+	var start: Vector2=world.graph_position()
+	_touch(44,pad,true);_drag(44,pad+_drive_offset(game,Vector2(40,40)))
+	await create_timer(0.35).timeout
+	check(world.current_speed<0 and world.throttle<0,"routed one-thumb reverse drives actual physics backward")
+	check(world.graph_position().y<start.y and world.yaw>0.001,"reverse horizontal steering follows unchanged actual car physics")
+	_touch(44,pad,false);game._set_parked();world.set_pose(Graph.point(24),0)
+	# Notifications and Back clear ownership; stale captured events cannot rearm.
+	for notice in [Node.NOTIFICATION_APPLICATION_FOCUS_OUT,Node.NOTIFICATION_WM_WINDOW_FOCUS_OUT,Node.NOTIFICATION_APPLICATION_PAUSED]:
+		_touch(50,pad,true);_touch(51,_drive_point(game,"right"),true)
+		_touch(52,_drive_point(game,"reverse"),true);_touch(53,_drive_point(game,"brake"),true)
+		game.notification(notice)
+		check(_controls_clear(game) and game.resume_required,"focus/pause notification clears all held contacts")
+		_drag(50,pad+_drive_offset(game,Vector2(40,40)));_touch(54,pad,true)
+		check(_controls_clear(game),"paused/focus-lost contacts cannot rearm")
+		game.notification(Node.NOTIFICATION_APPLICATION_RESUMED)
+		_mouse_click(game.action_button)
+		check(not game.resume_required,"actual Resume button remains usable after clearing touch input")
+		_drag(50,pad+_drive_offset(game,Vector2(40,40)))
+		check(_controls_clear(game),"resuming does not resurrect a discarded finger")
+		for index in range(50,55): _touch(index,pad,false)
+	_touch(60,pad,true)
+	game.notification(Node.NOTIFICATION_WM_GO_BACK_REQUEST)
+	check(game.screen=="home" and _controls_clear(game),"Android Back preserves existing Home policy and clears input")
+	game._show("drive")
+	_drag(60,pad+_drive_offset(game,Vector2(40,40)))
+	check(_controls_clear(game),"late old-page drag cannot populate new-page controls")
+	_touch(60,pad,false)
+	await process_frame

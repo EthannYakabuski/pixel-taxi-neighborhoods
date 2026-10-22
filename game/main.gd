@@ -24,7 +24,10 @@ var turn_input := 0.0
 var gas_held := false
 var brake_held := false
 var reverse_held := false
-var pad_anchor := 0.0
+const PAD_REVERSE_START := 32.0
+const PAD_REVERSE_RELEASE := 16.0
+# Touch indices and the physical mouse (-1) own their holds independently.
+var _drive_pointers: Dictionary = {}
 var nav_node := -1
 var nav_goal := -1
 var nav_timer := 0.0
@@ -87,6 +90,7 @@ func _ready() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_PAUSED:
 		application_suspended = true
+	if what in [NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_WINDOW_FOCUS_OUT]:
 		resume_required = screen == "drive"
 		_set_parked()
 	if what == NOTIFICATION_APPLICATION_RESUMED:
@@ -99,6 +103,7 @@ func _notification(what: int) -> void:
 		if screen != "home": _show("home")
 
 func _exit_tree() -> void:
+	_clear_drive_inputs()
 	_stop_audio()
 
 func _stop_audio() -> void:
@@ -148,7 +153,7 @@ func _process(delta: float) -> void:
 			nav_node = nearest
 			nav_goal = goal
 			navigation = Graph.guidance(vehicle_position,goal) if goal >= 0 else {}
-			travel_path = navigation.get("route",[])
+			travel_path.assign(navigation.get("route",[]))
 			city.guidance = navigation
 			city.route_nodes = travel_path
 		city.objective_node = goal
@@ -170,11 +175,15 @@ func _remember_pose() -> void:
 		model.driving_position = vehicle_position
 		model.driving_heading = vehicle_heading
 
-func _set_parked() -> void:
+func _clear_drive_inputs() -> void:
+	_drive_pointers.clear()
 	gas_held = false
 	turn_input = 0
 	brake_held = false
 	reverse_held = false
+
+func _set_parked() -> void:
+	_clear_drive_inputs()
 	if is_instance_valid(city) and is_instance_valid(city.world):
 		city.world.set_controls(0,0,true)
 		city.world.current_speed = 0
@@ -315,42 +324,96 @@ func _drive() -> void:
 	info_label = _label("",Rect2(32,137,476,66),17,Color("fff5dc"))
 	action_button = _button("",Rect2(18,689,504,58),_curb_action)
 	var left := _button("◀",Rect2(18,772,86,80),func(): pass,true)
-	left.button_down.connect(func(): turn_input=-1)
-	left.button_up.connect(func(): turn_input=0)
+	_bind_drive_control(left,"left")
 	var right := _button("▶",Rect2(112,772,86,80),func(): pass,true)
-	right.button_down.connect(func(): turn_input=1)
-	right.button_up.connect(func(): turn_input=0)
-	var pedal := _button("HOLD / DRAG\nTO DRIVE",Rect2(208,772,202,80),func(): pass)
-	pedal.gui_input.connect(_steering_pad_event)
-	pedal.button_down.connect(func(): gas_held=true)
-	pedal.button_up.connect(func(): gas_held=false;turn_input=0)
+	_bind_drive_control(right,"right")
+	var pedal := _button("HOLD / DRAG\nDOWN: REVERSE",Rect2(208,772,202,80),func(): pass)
+	_bind_drive_control(pedal,"pad")
 	var stop := _button("BRAKE",Rect2(420,772,102,80),func(): pass,true)
-	stop.button_down.connect(func(): brake_held=true)
-	stop.button_up.connect(func(): brake_held=false)
+	_bind_drive_control(stop,"brake")
 	_panel(Rect2(8,854,524,38),INK,8)
-	_label("Hold & drag one thumb, or hold gas + steering with two.",Rect2(18,858,504,30),14,MIST,HORIZONTAL_ALIGNMENT_CENTER)
+	_label("Drag left/right to steer; drag down to reverse.",Rect2(18,858,504,30),14,MIST,HORIZONTAL_ALIGNMENT_CENTER)
 	_button("Dispatch",Rect2(24,907,123,36),func(): _show("dispatch"),true)
 	_button("Map",Rect2(162,907,102,36),func(): city.overview=not city.overview,true)
 	var reverse := _button("Reverse",Rect2(279,907,113,36),func(): pass,true)
-	reverse.button_down.connect(func(): reverse_held=true)
-	reverse.button_up.connect(func(): reverse_held=false)
+	_bind_drive_control(reverse,"reverse")
 	_button("Home",Rect2(407,907,110,36),func(): _show("home"),true)
 	_refresh_drive()
 
-func _steering_pad_event(event: InputEvent) -> void:
+func _bind_drive_control(button: Button, action: String) -> void:
+	button.name = "Drive_"+action
+	# BaseButton's mouse-only down/up signals cannot identify separate fingers.
+	button.gui_input.connect(_drive_control_event.bind(action,button))
+
+func _drive_input_blocked() -> bool:
+	if screen != "drive" or application_suspended or resume_required: return true
+	var services := _services()
+	return is_instance_valid(services) and services.has_method("is_gameplay_blocked") and bool(services.call("is_gameplay_blocked"))
+
+func _drive_control_event(event: InputEvent, action: String, button: Control) -> void:
+	# Late events from a hidden/queued previous page cannot own the new controls.
+	if button.get_parent() != page_content or not button.is_visible_in_tree(): return
+	# Android sends both native touch and emulated mouse events. Only native touch
+	# owns that finger; duplicate mouse releases must not clear another hold.
+	if event.device == InputEvent.DEVICE_ID_EMULATION: return
+	var pointer := -1
+	var position := Vector2.ZERO
+	var pressed := false
+	var released := false
 	if event is InputEventScreenTouch:
-		gas_held = event.pressed
-		pad_anchor = event.position.x
-		if not event.pressed: turn_input = 0
+		pointer = event.index
+		position = event.position
+		pressed = event.pressed and not event.canceled
+		released = not pressed
 	elif event is InputEventScreenDrag:
-		gas_held = true
-		turn_input = clampf((event.position.x-pad_anchor)/72.0,-1,1)
+		pointer = event.index
+		position = event.position
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		gas_held = event.pressed
-		pad_anchor = event.position.x
-		if not event.pressed: turn_input=0
-	elif event is InputEventMouseMotion and gas_held:
-		turn_input = clampf((event.position.x-pad_anchor)/72.0,-1,1)
+		position = event.position
+		pressed = event.pressed and not event.canceled
+		released = not pressed
+	elif event is InputEventMouseMotion:
+		position = event.position
+		released = (event.button_mask & MOUSE_BUTTON_MASK_LEFT) == 0
+	else:
+		return
+	if pressed:
+		if _drive_input_blocked() or not Rect2(Vector2.ZERO,button.size).has_point(position): return
+		if _drive_pointers.has(pointer): return
+		if action == "pad":
+			for held: Dictionary in _drive_pointers.values():
+				if held.action == "pad": return
+		_drive_pointers[pointer] = {"action":action,"anchor":position,"position":position,"reverse":false}
+	else:
+		if not _drive_pointers.has(pointer) or _drive_pointers[pointer].action != action: return
+		if released or _drive_input_blocked():
+			_drive_pointers.erase(pointer)
+		elif action == "pad":
+			var held: Dictionary = _drive_pointers[pointer]
+			held.position = position
+			var down: float = position.y-held.anchor.y
+			# Deliberate pull-down selects reverse; hysteresis prevents jitter at
+			# its boundary. Returning near the press height selects forward again.
+			if down >= PAD_REVERSE_START: held.reverse = true
+			elif down <= PAD_REVERSE_RELEASE: held.reverse = false
+	_update_drive_inputs()
+
+func _update_drive_inputs() -> void:
+	gas_held = false
+	reverse_held = false
+	brake_held = false
+	turn_input = 0.0
+	for held: Dictionary in _drive_pointers.values():
+		match held.action:
+			"left": turn_input -= 1.0
+			"right": turn_input += 1.0
+			"brake": brake_held = true
+			"reverse": reverse_held = true
+			"pad":
+				gas_held = gas_held or not held.reverse
+				reverse_held = reverse_held or held.reverse
+				turn_input += clampf((held.position.x-held.anchor.x)/72.0,-1.0,1.0)
+	turn_input = clampf(turn_input,-1.0,1.0)
 
 func _refresh_drive() -> void:
 	if not is_instance_valid(info_label): return
@@ -392,7 +455,7 @@ func _route_to(goal: int) -> void:
 	if screen != "drive": return
 	# Informational only: no route waypoint ever changes throttle or steering.
 	navigation = Graph.guidance(vehicle_position,goal)
-	travel_path = navigation.get("route",[])
+	travel_path.assign(navigation.get("route",[]))
 	if is_instance_valid(city): city.guidance=navigation;city.route_nodes=travel_path
 	_toast("GPS recalculated. You stay at the wheel.")
 
@@ -533,7 +596,7 @@ func _settings() -> void:
 	_header("A COMFORTABLE RIDE", "Your cab, your company, your pace.")
 	_panel(Rect2(24, 146, 492, 240), Color("1e3b50"), 18)
 	_label("Around the neighborhood", Rect2(44, 168, 448, 38), 25, Color("fff5dc"))
-	_label("Hold & drag the pad to drive and steer.\nGPS guides; it never drives the cab.\nBrake at gold curbs; hold Reverse to back up.\nCollisions slow you and remove clean tips.\nPrompt, collision-free fares can earn a tip.", Rect2(44, 220, 448, 137), 19, MIST)
+	_label("Hold & drag: left/right steers; down reverses.\nGPS guides; it never drives the cab.\nBrake at gold curbs, or hold Reverse + steering.\nCollisions slow you and remove clean tips.\nPrompt, collision-free fares can earn a tip.", Rect2(44, 220, 448, 137), 19, MIST)
 	_button("Sound: ON" if model.sound else "Sound: OFF", Rect2(24, 414, 492, 55), func():
 		model.sound = not model.sound
 		if model.sound: music.play()
