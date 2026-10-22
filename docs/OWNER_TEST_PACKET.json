@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "status": "OWNER_TEST_PACKET_COMPLETE_NATIVE_CORE_NOT_READY",
+  "runtime_commit": "1f7e068f7ebfb3594f078d4fe0fc0a424e0a30de",
+  "current_documentation_baseline": "87ff2148105193b03a7c218e4d78398a4a50f2fb",
+  "android": {
+    "file": "build/round-two-1f7e068f-a1/android/pixel-taxi-neighborhoods-debug.apk",
+    "sha256": "3E42A66EF772EAE02B047E3CF75DCABF5E21F49275E527EADFD0708488D7D0CB",
+    "bytes": 187040999,
+    "debug": true
+  },
+  "web": {
+    "entry": "build/round-two-1f7e068f-a1/web/index.html",
+    "html_sha256": "620D07485D884425FC88C6E3816AE9398CF92BC483B03D86976EE8473DA3BAF5",
+    "pck_sha256": "7CBC4BA2779D5B07E6DB83653DD3D2DFE0EBFE917965E76E7A495A546A138D0D",
+    "interactive_browser_qa": false
+  },
+  "runtime_ci": {
+    "commit": "1f7e068f7ebfb3594f078d4fe0fc0a424e0a30de",
+    "url": "https://github.com/EthannYakabuski/pixel-taxi-neighborhoods/actions/runs/39752004038",
+    "conclusion": "success"
+  },
+  "documentation_baseline_ci": {
+    "commit": "87ff2148105193b03a7c218e4d78398a4a50f2fb",
+    "url": "https://github.com/EthannYakabuski/pixel-taxi-neighborhoods/actions/runs/39767568116",
+    "conclusion": "success"
+  },
+  "future_documentation_ci": "Verify the exact final documentation commit separately; earlier source/documentation CI does not validate later commits.",
+  "native_fare_ready": false,
+  "current_fare_completion_verified": false,
+  "current_once_only_payment_verified": false,
+  "settled_payment_reload_verified": false,
+  "captures": {
+    "status": "ROOT_APPROVED_IMAGE_CONTEXT_ONLY",
+    "navigation_count": 18,
+    "per_profile": {
+      "phone": 6,
+      "7inch": 6,
+      "10inch": 6
+    },
+    "auxiliary_current_drive_count": 1,
+    "total_public_images": 19,
+    "manifest": "marketing/screenshots-round-two/capture-manifest.json",
+    "fare_or_handling_acceptance": false
+  },
+  "operator_final_release": "VERIFIED_STOPPED_ORIGINAL_SETTINGS_CONNECTIVITY_AND_GENUINE_BACKUP",
+  "actual_final_capture_save_retention": "All29 genuine groups byte-exact through menu/cold/oneHomeBack and final stopped backup; no restore or save injection.",
+  "actual_display_network_restoration": "Original1080x1920@420/nooverride,airplaneoff/Wi-Fiandmobileon with actual connected network verified.",
+  "manual_checklist": "docs/MANUAL_ANDROID_FARE_QA.md",
+  "historical_native_report": "docs/NATIVE_QA.json; original1691 APK only, not current3E42",
+  "original_apk": {
+    "file": "build/android/game-debug.apk",
+    "sha256": "1691B5B6FE158A15E6B5F74F412A705F078CA4B975FF85D37F430746BC1A00C1",
+    "bytes": 183761556
+  },
+  "original_archive": {
+    "file": "build/android/pixel-taxi-neighborhoods-test-package.zip",
+    "sha256": "DEB805FE5AEF8296AF0B23D1968B4962BB4DA652A8D21CB49E5735527F25C6AE"
+  },
+  "native_full_acceptance": false,
+  "production_release": false,
+  "genuine_profiles_in_owner_packet": false,
+  "limits": [
+    "Native core/fare remains NOT READY: current pickup, delivery, once-only payment and settled payment reload are unverified; the genuine accepted fare remains unpicked and unpaid.",
+    "The eighteen images prove actual non-driving menu/status presentation only. The auxiliary current3D Drive image is before pickup and does not prove fare completion or handling acceptance.",
+    "Home Android Back remained on Home with the process alive; it was not graceful quit or resource/audio cleanup proof.",
+    "Current offline and earned-ad behavior were not exercised. Production services, physical devices, audible output, native simultaneous multitouch, interactive Web and human balance/handling/long sessions remain unverified.",
+    "Broad native log gate is false: one sampled goldfish VP9 codec output-mode diagnostic remains with unproved cause. Zero sampled Godot/resource/FATAL/ANR matches is not whole-log cleanliness.",
+    "Home timing observations include a fixed18-second post-launch wait and screenshot transfer. AndroidTotalTime is a separate framework metric. Two framework Status:timeout responses were followed by actual readable Home; no app-ANR, startup-onset, cause attribution or performance-pass inference."
+  ],
+  "capture_documentation_commit": "Resolve Git HEAD or PACKAGE-MANIFEST handoff_commit; separate from the unchanged runtime.",
+  "broad_native_log_gate": false,
+  "current_native_scope": {
+    "menus_colds_HomeBack_retained_all29_genuine_groups": true,
+    "restoration_or_injection": false,
+    "no_new_driving_claim_purchase_or_reward": true,
+    "Home_Back": "Same Home/live process, source policy, not quit.",
+    "offline_verified": false,
+    "earned_ad_exercised": false,
+    "full_native_gate": false,
+    "broad_native_log_gate": false,
+    "sampled_selected_Godot_resource_FATAL_ANR_matches": 0,
+    "remaining_sanitized_diagnostic": "Goldfish VP9 codec output-mode error -1010; cause unknown."
+  },
+  "startup_observation_method": {
+    "fixed_post_launch_wait_seconds": 18,
+    "Android_TotalTime_ms_successful_framework_reports": [
+      4051,
+      21836,
+      17017
+    ],
+    "later_framework_timeout_count": 2,
+    "actual_Home_subsequently_observed": true,
+    "earliest_Home_onset_measured": false,
+    "app_or_environment_cause_established": false,
+    "performance_pass": false
+  }
+}

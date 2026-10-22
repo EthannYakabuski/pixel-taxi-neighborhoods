@@ -1,0 +1,15 @@
+# Owner-test candidate: native fare NOT READY
+
+This packet is for further human validation of the unchanged3E42 Android candidate, not a completed Round Two native handoff or production release. Runtime source1f7e068f and its accepted Android/Web identities are in OWNER_TEST_PACKET.json and HANDOFF.txt. Passing CI and non-driving screenshots do not prove a fare.
+
+Use the unchanged [manual Android fare checklist](MANUAL_ANDROID_FARE_QA.md). Complete a genuine pickup and delivery, reconcile the real once-only wallet/XP/jobs/income/boost result, then cold-reload without a duplicate grant. Preserve the existing accepted fare and collision history on the test profile. A fresh owner installation may have its own ordinary profile/fare; no private emulator save or prepared progression is included. Never clear or edit a real profile merely to simplify the check.
+
+The actual image set has18 approved non-driving menu/status views plus one separate existing currentphone3D Drive-before-pickup diagnostic. Phone has HomeTOP/LOWER, Garage, DailySTATUS, Journal and Help; logical tablets have Home, Garage, DailySTATUS, JournalTOP/SCROLLED and Help. The actual layouts are not assumed identical. Different normal scroll content is documented; menu/status and world rendering pictures do not establish native driving, payment or human handling.
+
+Capture navigation, profile colds and ONEHomeBack preserved all29 genuine groups byte-exact. HomeBack stayed Home with the process alive, not gracefulquit. Final original display/radios/actualconnectivity and stopped genuine backup were verified privately. No save restoration, private-profile inclusion, new driving, purchase, claim or reward occurred in this capture phase. Broadloggate remainsFALSE for a goldfishVP9 diagnostic; sampledzeroGodot/resource/FATAL/ANR does not prove whole-session cleanliness. Currentoffline/earnedAD were not exercised.
+
+Home frame observation windows include18s deliberate post-launch wait and screenshot transfer; AndroidTotalTime is a separate platform measurement. Two framework Status:timeout responses were followed by observed readableHome. EarliestHomeonset, app-versus-emulatorcause, appANR and performance pass are not established.
+
+Future owner archives are planned under build/round-two-1f7e068f-a1/owner-test-packages/: pixel-taxi-neighborhoods-owner-test-3e42a66e.zip and pixel-taxi-neighborhoods-owner-source-web-3e42a66e.zip. Names are plans, not evidence of archive creation. A later PACKAGE-RECEIPT.json must identify the actual future documentation commit, exact unchanged runtime/artifacts and verified hashes. Original APK/ZIP/Web/captures and history remain untouched. Keep LICENSE/NOTICE/LICENSES with binaries.
+
+AdMob/PGS configuration remains documented in PLATFORM_SETUP.md; no service IDs, export presets or production signing are changed. Godot4.5.1 Compatibility, Android primary/Web secondary, minAPI24/target35 current test constraint; no Windows release. Audible output, physical-device breadth, interactive Web, production services and human balance/long-session acceptance remain unverified.

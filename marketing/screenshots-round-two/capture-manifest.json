@@ -1,0 +1,316 @@
+{
+  "schema": 2,
+  "game": "Pixel Taxi Neighborhoods",
+  "status": "ROOT_APPROVED19_IMAGES_ONLY_NATIVE_FARE_NOT_READY",
+  "runtime_commit": "1f7e068f7ebfb3594f078d4fe0fc0a424e0a30de",
+  "apk_sha256": "3E42A66EF772EAE02B047E3CF75DCABF5E21F49275E527EADFD0708488D7D0CB",
+  "navigation_image_count": 18,
+  "per_profile": {
+    "phone": 6,
+    "7inch": 6,
+    "10inch": 6
+  },
+  "auxiliary_image_count": 1,
+  "total_public_images": 19,
+  "images": [
+    {
+      "file": "phone-01-home.png",
+      "profile": "phone",
+      "role": "Home",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "density_dpi": 420,
+      "bytes": 125570,
+      "sha256": "6B434055493899EFA6FB46F57E9DEA618127EE1F21525790A3460C28FD4F8B4C",
+      "caption": "Actual current Home from preserved genuine profile: 1097 coins, 441 XP, six fares and existing unpicked fare70. No Continue fare input in this capture window.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "phone-02-garage-upgrades-and-fleet.png",
+      "profile": "phone",
+      "role": "Garage upgrades and fleet",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "density_dpi": 420,
+      "bytes": 126597,
+      "sha256": "243056D896B4310456B7EB04166852B7D6BB1AAAD6462D44730E171240292B4F",
+      "caption": "Actual Garage: engine1/5, comfort0/5, Good company0/5, current City Classic and three displayed car prices. No purchase or selection made.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "phone-03-home-lower-navigation.png",
+      "profile": "phone",
+      "role": "Home lower navigation",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "density_dpi": 420,
+      "bytes": 175769,
+      "sha256": "9AA75625752045EBA908C76E95AD7FFDC63C06069CD0ED1FF58B629A104C922D",
+      "caption": "Actual normally scrolled lower Home: saved cab portrait, Continue fare, Garage, Daily, Driver journal and Sound/services. Promoted to selected distinct lower Home context by ROOT; historical NOTSELECTED filename retained unchanged.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "phone-04-daily-status-only.png",
+      "profile": "phone",
+      "role": "Daily status only",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "density_dpi": 420,
+      "bytes": 125982,
+      "sha256": "6FA69BF265A9ED23A5CB54647531C6AC30063882F6A366DBBA27B0212BFE18F3",
+      "caption": "Actual Daily status: seven-day welcome values and three current goals. The visible Collect welcome button was not pressed.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "phone-05-driver-journal.png",
+      "profile": "phone",
+      "role": "Driver journal",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "density_dpi": 420,
+      "bytes": 125149,
+      "sha256": "B015C3CD9CE90209D49CB74DADFEB89306D0D6D3969939F2A42762293096DAC8",
+      "caption": "Actual achievement/progression journal from preserved six-fare profile; no Play Games service button used.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "phone-06-help-and-settings.png",
+      "profile": "phone",
+      "role": "Help and settings",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "density_dpi": 420,
+      "bytes": 142835,
+      "sha256": "4A953DB2D5E04972AB3521A4C63FB7F462DB27B549452BEC614A20F791A2292B",
+      "caption": "Actual driving help, unchanged Sound ON and optional services controls. No toggle, service, privacy or leaderboard action performed.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "7inch-01-home.png",
+      "profile": "7inch",
+      "role": "Home",
+      "dimensions": [
+        1200,
+        1920
+      ],
+      "density_dpi": 320,
+      "bytes": 134823,
+      "sha256": "B5E8B2033E1C72F16A35B6B65FDC5E34752680A6A56F012E0589321398AAC0B2",
+      "caption": "Actual seven-inch Home from unchanged genuine profile; all normal menu entries visible without a separate lower-Home context. No Continue fare input.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "7inch-02-daily-status-only.png",
+      "profile": "7inch",
+      "role": "Daily status only",
+      "dimensions": [
+        1200,
+        1920
+      ],
+      "density_dpi": 320,
+      "bytes": 126883,
+      "sha256": "8C5BDA05B5B419504F2EC1C74670FB8E64681784CBE830EC4CB515F95D6263DC",
+      "caption": "Actual seven-inch Daily status, welcome calendar and current goals. Visible collect button not pressed.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "7inch-03-garage-upgrades-and-fleet.png",
+      "profile": "7inch",
+      "role": "Garage upgrades and fleet",
+      "dimensions": [
+        1200,
+        1920
+      ],
+      "density_dpi": 320,
+      "bytes": 126107,
+      "sha256": "4C747F19D38E8CF056B46876CCA9F7DDFEF8D437146D1610DD15D79C138DCEDC",
+      "caption": "Actual settled Garage replacement for mislabeled Home09; engine1/5, comfort0/5, Good company0/5 and four-car fleet. No purchase or Back to streets input.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "7inch-04-driver-journal-top.png",
+      "profile": "7inch",
+      "role": "Driver journal top",
+      "dimensions": [
+        1200,
+        1920
+      ],
+      "density_dpi": 320,
+      "bytes": 126150,
+      "sha256": "81882548C03EBCBE22856F6F328F8BF319841A8CBA2A792E77D8BB1A7F6DDC76",
+      "caption": "Actual top Journal cards from unchanged genuine profile: fare milestones and distance progress. No Play Games action.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "7inch-05-driver-journal-lower-achievement-cards.png",
+      "profile": "7inch",
+      "role": "Driver journal lower achievement cards",
+      "dimensions": [
+        1200,
+        1920
+      ],
+      "density_dpi": 320,
+      "bytes": 124061,
+      "sha256": "60C9C2A217B2319E5E4486E5D16C6A9CD98954B3DBB5900C533088DEB0FBAC34",
+      "caption": "Actual normally scrolled Journal: vehicle upgrades, cab colors, driver levels and earned-income progress. No achievement/service claim.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "7inch-06-help-and-settings.png",
+      "profile": "7inch",
+      "role": "Help and settings",
+      "dimensions": [
+        1200,
+        1920
+      ],
+      "density_dpi": 320,
+      "bytes": 144717,
+      "sha256": "714889FD746D346A0C22D80D2F86B0FC9269C03627406A616C46335ABF660B66",
+      "caption": "Actual seven-inch driving help and unchanged Sound ON/services controls. No toggles, service buttons or reward action.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "10inch-01-home.png",
+      "profile": "10inch",
+      "role": "Home",
+      "dimensions": [
+        1600,
+        2560
+      ],
+      "density_dpi": 300,
+      "bytes": 180913,
+      "sha256": "3D5D87C662A807E3FCFD8464159D94F5EE840E7AD2464C66588A963F43F9C3A7",
+      "caption": "Actual ten-inch Home, saved cab scene, driver progression and complete navigation. No Continue fare action.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "10inch-02-garage-upgrades-and-fleet.png",
+      "profile": "10inch",
+      "role": "Garage upgrades and fleet",
+      "dimensions": [
+        1600,
+        2560
+      ],
+      "density_dpi": 300,
+      "bytes": 174398,
+      "sha256": "FFECD9A7AFF993558B6752799C8D444E6338C5F90CBF4748A8AE79F122FD2BDD",
+      "caption": "Actual ten-inch Garage with three upgrades and four-car fleet; no purchases or Back to streets action.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "10inch-03-daily-status-only.png",
+      "profile": "10inch",
+      "role": "Daily status only",
+      "dimensions": [
+        1600,
+        2560
+      ],
+      "density_dpi": 300,
+      "bytes": 176867,
+      "sha256": "1A07434E52396F8115AC728ACAD552DB7597E35CFC44ADDF6C1D27565D5C7997",
+      "caption": "Actual ten-inch welcome calendar and three Daily goals. No collect or claim interaction.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "10inch-04-driver-journal-top.png",
+      "profile": "10inch",
+      "role": "Driver journal top",
+      "dimensions": [
+        1600,
+        2560
+      ],
+      "density_dpi": 300,
+      "bytes": 177664,
+      "sha256": "B68947F99EA9D424A8A9261B893484174737CFBCE559EC28ECB69B9457B0757B",
+      "caption": "Actual ten-inch top Journal fare/distance achievement cards; no Play Games interaction.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "10inch-05-driver-journal-scrolled-rare-passenger-and-district-cards.png",
+      "profile": "10inch",
+      "role": "Driver journal scrolled rare-passenger and district cards",
+      "dimensions": [
+        1600,
+        2560
+      ],
+      "density_dpi": 300,
+      "bytes": 180024,
+      "sha256": "9408C79AEC8D911E1C7CD0ECE2E57EFF519FC8B31511F94676930B97C0BCF272",
+      "caption": "Actual normally scrolled Journal: rare-passenger goals, completed district visits and different-passenger progress. This is a middle scroll position, not the bottom of the list.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    },
+    {
+      "file": "10inch-06-help-and-settings.png",
+      "profile": "10inch",
+      "role": "Help and settings",
+      "dimensions": [
+        1600,
+        2560
+      ],
+      "density_dpi": 300,
+      "bytes": 199613,
+      "sha256": "5D3EF1BA6F8BEBDD405BDF4FD709628CD5E5CD6CE667399640055B9AEBA279A2",
+      "caption": "Actual ten-inch driving instructions and unchanged Sound ON/services controls; no service/toggle/privacy action.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "raw_pixels_unchanged": true
+    }
+  ],
+  "auxiliary_images": [
+    {
+      "file": "phone-aux-existing-current-drive-diagnostic.png",
+      "profile": "phone",
+      "role": "Existing current 3D Drive diagnostic before pickup",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "density_dpi": 420,
+      "bytes": 214117,
+      "sha256": "7348677FA8C2392EB6F62CC6577A079AFDFA54A727FAA642C02DE7F09C5E038B",
+      "caption": "Actual current APK city driving view before pickup; fare completion/payout unverified.",
+      "root_review": "APPROVED_IMAGE_CONTEXT_ONLY",
+      "counted_in_required18": false,
+      "raw_pixels_unchanged": true
+    }
+  ],
+  "scope": "Normal menu/status views plus one separately approved existing current-APK city rendering diagnostic. Captions and contexts are actual per-profile views, not assumed uniform layouts.",
+  "physical_device_test": false,
+  "physical_tablet_test": false,
+  "limits": [
+    "Native core/fare remains NOT READY: current pickup, delivery, once-only payment and settled payment reload are unverified; the genuine accepted fare remains unpicked and unpaid.",
+    "The eighteen images prove actual non-driving menu/status presentation only. The auxiliary current3D Drive image is before pickup and does not prove fare completion or handling acceptance.",
+    "Home Android Back remained on Home with the process alive; it was not graceful quit or resource/audio cleanup proof.",
+    "Current offline and earned-ad behavior were not exercised. Production services, physical devices, audible output, native simultaneous multitouch, interactive Web and human balance/handling/long sessions remain unverified.",
+    "Broad native log gate is false: one sampled goldfish VP9 codec output-mode diagnostic remains with unproved cause. Zero sampled Godot/resource/FATAL/ANR matches is not whole-log cleanliness.",
+    "Home timing observations include a fixed18-second post-launch wait and screenshot transfer. AndroidTotalTime is a separate framework metric. Two framework Status:timeout responses were followed by actual readable Home; no app-ANR, startup-onset, cause attribution or performance-pass inference."
+  ]
+}
