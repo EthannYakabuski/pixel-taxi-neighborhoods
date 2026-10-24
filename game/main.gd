@@ -1,6 +1,7 @@
 extends Control
 
 const Model = preload("res://game/model.gd")
+const AtomicSave = preload("res://game/atomic_save.gd")
 const City = preload("res://game/city.gd")
 const Graph = preload("res://game/city_graph.gd")
 const INK := Color("102638")
@@ -10,6 +11,7 @@ const MINT := Color("79d5bd")
 const SAVE_PATH := "user://neighborhoods_v1.json"
 
 var model = Model.new()
+var save_store = AtomicSave.new(SAVE_PATH)
 var stage: Control
 var page_content: Control
 var menu_scroll: ScrollContainer
@@ -106,6 +108,8 @@ func _notification(what: int) -> void:
 		if screen != "home": _show("home")
 
 func _exit_tree() -> void:
+	reward_pending = false
+	reward_request_serial += 1
 	_clear_drive_inputs()
 	_stop_audio()
 
@@ -284,7 +288,7 @@ func _show(view: String) -> void:
 func _header(title: String, subtitle: String = "") -> void:
 	_label(title, Rect2(24, 25, 360, 38), 29, Color("fff5dc"))
 	_label(subtitle, Rect2(25, 69, 380, 28), 14, MIST)
-	coins_label = _label("%d coins" % model.coins, Rect2(365, 30, 150, 28), 19, GOLD, HORIZONTAL_ALIGNMENT_RIGHT)
+	coins_label = _label("Save pending" if model.has_unsaved_fare() else "%d coins" % model.coins, Rect2(365, 30, 150, 28), 19, GOLD, HORIZONTAL_ALIGNMENT_RIGHT)
 	_panel(Rect2(24, 108, 492, 4), Color("315064"), 2)
 	if screen != "home" and screen != "drive": _button("‹ Home", Rect2(24, 907, 120, 36), func(): _show("home"), true)
 
@@ -295,7 +299,7 @@ func _home() -> void:
 	_label("A little city. A lot of stories.", Rect2(24, 506, 492, 38), 25, Color("fff5dc"), HORIZONTAL_ALIGNMENT_CENTER)
 	_label("Driver level %d  ·  %d fares  ·  %.1f km" % [model.level(), model.jobs, model.distance / 1000], Rect2(24, 547, 492, 28), 16, MIST, HORIZONTAL_ALIGNMENT_CENTER)
 	_progress(Rect2(42, 587, 456, 7), model.level_progress(), MINT)
-	_button("CONTINUE FARE" if not model.active_job.is_empty() else "START YOUR SHIFT", Rect2(24, 621, 492, 62), func(): _show("drive"))
+	_button("SAVE COMPLETED FARE" if model.has_unsaved_fare() else "CONTINUE FARE" if not model.active_job.is_empty() else "START YOUR SHIFT", Rect2(24, 621, 492, 62), func(): _show("drive"))
 	_button("Garage & upgrades", Rect2(24, 704, 238, 59), func(): _show("garage"), true)
 	_button("Daily rewards", Rect2(278, 704, 238, 59), func(): _show("daily"), true)
 	_button("Driver journal", Rect2(24, 779, 238, 56), func(): _show("journal"), true)
@@ -310,6 +314,7 @@ func _dispatch() -> void:
 
 func _open_fare_card(mode: String) -> void:
 	if screen != "drive" or reward_pending: return
+	if model.has_pending_double_reward() or model.has_unsaved_fare(): mode = "receipt"
 	_set_parked()
 	fare_card_mode = mode
 	if is_instance_valid(fare_card):
@@ -321,15 +326,17 @@ func _open_fare_card(mode: String) -> void:
 	var before := page_content.get_children()
 	if mode == "receipt":
 		var receipt: Dictionary = model.last_receipt
-		_label("FARE COMPLETE  +%d coins" % int(receipt.get("fare",0)),Rect2(36,286,468,38),25,GOLD,HORIZONTAL_ALIGNMENT_CENTER)
+		_label("FARE AWAITING SAVE" if model.has_unsaved_fare() else "FARE COMPLETE  +%d coins" % int(receipt.get("fare",0)),Rect2(36,286,468,38),25,GOLD,HORIZONTAL_ALIGNMENT_CENTER)
 		_label(str(receipt.get("passenger","Thanks for the ride!")),Rect2(36,329,468,30),18,Color.WHITE,HORIZONTAL_ALIGNMENT_CENTER)
 		_label("Tip +%d  |  %s" % [int(receipt.get("tip",0)),str(receipt.get("tip_reason",""))],Rect2(36,365,468,48),14,MIST,HORIZONTAL_ALIGNMENT_CENTER)
-		var reward_text := "2x received" if not model.can_double_last_fare() else "Watch ad: 2x fare (+%d)" % int(receipt.get("fare",0))
+		var reward_text := "Retry saving completed fare" if model.has_unsaved_fare() else "Retry saving earned reward" if model.has_pending_double_reward() else "2x received" if not model.can_double_last_fare() else "Watch ad: 2x fare (+%d)" % int(receipt.get("fare",0))
 		var reward := _button(reward_text,Rect2(36,423,468,58),_request_completed_bonus,true)
 		reward.name = "DoubleCompletedFare"
 		reward.disabled = reward_pending or not model.can_double_last_fare()
-		_button("NEXT FARE",Rect2(36,496,468,58),_next_fare).name = "NextFare"
-		_label("Optional ad. Your fare is already safely banked.",Rect2(36,570,468,36),14,MIST,HORIZONTAL_ALIGNMENT_CENTER)
+		var next := _button("NEXT FARE",Rect2(36,496,468,58),_next_fare)
+		next.name = "NextFare"
+		next.disabled = model.has_pending_double_reward() or model.has_unsaved_fare()
+		_label("Coins/XP not saved. Keep app open and retry." if model.has_unsaved_fare() else "Earned reward not saved. Keep this app open; retry." if model.has_pending_double_reward() else "Optional ad. Your fare is already safely banked.",Rect2(36,570,468,36),14,MIST,HORIZONTAL_ALIGNMENT_CENTER)
 	elif mode == "active":
 		_label("CURRENT FARE",Rect2(36,298,468,38),26,GOLD,HORIZONTAL_ALIGNMENT_CENTER)
 		_label(str(model.active_job.get("passenger","")),Rect2(36,351,468,38),21,Color.WHITE,HORIZONTAL_ALIGNMENT_CENTER)
@@ -356,7 +363,7 @@ func _open_fare_card(mode: String) -> void:
 	_refresh_drive()
 
 func _close_fare_card() -> void:
-	if reward_pending: return
+	if reward_pending or model.has_pending_double_reward() or model.has_unsaved_fare(): return
 	if is_instance_valid(fare_card):
 		fare_card.hide()
 		fare_card.queue_free()
@@ -367,10 +374,16 @@ func _close_fare_card() -> void:
 	_refresh_drive()
 
 func _next_fare() -> void:
-	if reward_pending: return
+	if reward_pending or model.has_pending_double_reward() or model.has_unsaved_fare(): return
+	var was_open: bool = model.receipt_open
 	model.acknowledge_receipt()
-	_save()
-	_open_fare_card("offer")
+	if not _save():
+		model.receipt_open = was_open
+		_open_fare_card("receipt")
+		_toast("Cannot save next fare. Keep this receipt and retry.")
+		return
+	if model.active_job.is_empty(): _open_fare_card("offer")
+	else: _close_fare_card()
 
 func _drive() -> void:
 	_add_city(Rect2(0,112,540,788),false)
@@ -394,7 +407,7 @@ func _drive() -> void:
 	_bind_drive_control(reverse,"reverse")
 	_button("Home",Rect2(407,907,110,36),func(): _show("home"),true)
 	_refresh_drive()
-	if model.receipt_open: _open_fare_card("receipt")
+	if model.receipt_open or model.has_pending_double_reward() or model.has_unsaved_fare(): _open_fare_card("receipt")
 	elif model.active_job.is_empty(): _open_fare_card("offer")
 
 func _bind_drive_control(button: Button, action: String) -> void:
@@ -403,7 +416,7 @@ func _bind_drive_control(button: Button, action: String) -> void:
 	button.gui_input.connect(_drive_control_event.bind(action,button))
 
 func _drive_input_blocked() -> bool:
-	if screen != "drive" or application_suspended or resume_required or reward_pending or (is_instance_valid(fare_card) and fare_card.visible): return true
+	if screen != "drive" or application_suspended or resume_required or reward_pending or model.has_pending_double_reward() or model.has_unsaved_fare() or (is_instance_valid(fare_card) and fare_card.visible): return true
 	var services := _services()
 	return is_instance_valid(services) and services.has_method("is_gameplay_blocked") and bool(services.call("is_gameplay_blocked"))
 
@@ -484,7 +497,7 @@ func _refresh_drive() -> void:
 		info_label.text = "Cab parked safely.\nYour next journey starts right here."
 		action_button.text = "Choose an action on the fare card"
 		action_button.disabled = true
-		if is_instance_valid(coins_label): coins_label.text = "%d coins" % model.coins
+		if is_instance_valid(coins_label): coins_label.text = "Save pending" if model.has_unsaved_fare() else "%d coins" % model.coins
 		return
 	if model.active_job.is_empty():
 		info_label.text = "%s · %d km/h\nFree drive — choose a dispatch when ready." % [Model.district(model.player_node),int(speed*3.6)]
@@ -498,7 +511,7 @@ func _refresh_drive() -> void:
 		var at_curb := gap < 10.0 and speed < 1.6
 		action_button.text = ("Pick up passenger" if pickup else "Complete fare") if at_curb else "Brake at the gold passenger curb"
 		action_button.disabled = not at_curb
-	if is_instance_valid(coins_label): coins_label.text = "%d coins" % model.coins
+	if is_instance_valid(coins_label): coins_label.text = "Save pending" if model.has_unsaved_fare() else "%d coins" % model.coins
 
 func _navigation_cue() -> String:
 	# This describes alignment with the occupied road, not a future junction.
@@ -542,12 +555,11 @@ func _curb_action() -> void:
 		var completed_passenger: Dictionary = model.active_job.duplicate(true)
 		last_receipt = model.complete_job()
 		if not last_receipt.is_empty():
-			_play("res://assets/audio/reward.ogg")
-			_sync_achievements()
-			var services := _services()
-			if services != null: services.call("round_finished")
 			city.world.passenger_departed(completed_passenger)
+			_retry_completed_fare_save()
 			_open_fare_card("receipt")
+			_refresh_drive()
+			return
 	_save()
 	_refresh_drive()
 
@@ -664,13 +676,48 @@ func _settings() -> void:
 	_button("Privacy options", Rect2(24, 651, 492, 55), func(): _service_call("privacy_options"), true)
 	_label("Progress is saved on this device. Optional Google\nservices handle Android ads and online rankings.\nYou can keep driving offline.", Rect2(32, 742, 476, 94), 17, MIST, HORIZONTAL_ALIGNMENT_CENTER)
 
+func _retry_completed_fare_save() -> bool:
+	if reward_pending or not model.has_unsaved_fare(): return false
+	_set_parked()
+	var notify := not bool(model.last_receipt.get("round_notified",false))
+	model.last_receipt.bank_saved = true
+	model.last_receipt.round_notified = true
+	if not _save():
+		model.last_receipt.bank_saved = false
+		model.last_receipt.round_notified = not notify
+		if screen == "drive": _open_fare_card("receipt")
+		_toast("Fare not saved. Keep app open and tap Retry save.")
+		return false
+	# The exact completion/XP calculation happened once at the curb. Retry
+	# only confirms the held state; cadence is notified once after that save.
+	if notify:
+		_play("res://assets/audio/reward.ogg")
+		_sync_achievements()
+		var services := _services()
+		if services != null: services.call("round_finished")
+	if screen == "drive": _open_fare_card("receipt")
+	return true
+
 func _request_completed_bonus() -> void:
-	if reward_pending or not model.can_double_last_fare(): return
+	if reward_pending: return
+	if model.has_unsaved_fare():
+		_retry_completed_fare_save()
+		return
+	if model.has_pending_double_reward():
+		_retry_earned_reward_save()
+		return
+	if not model.can_double_last_fare(): return
 	var services: Node = _services()
 	if services == null or not bool(services.call("can_reward")):
 		_toast("No ad available. Your completed fare stays banked.")
 		return
 	var receipt_id: int = int(model.last_receipt.id)
+	if not model.begin_double_request(receipt_id): return
+	# Save the original paid fare and request-only marker before opening an ad.
+	if not _save():
+		model.cancel_double_request(receipt_id)
+		_toast("Cannot save progress. No ad opened; free space and retry.")
+		return
 	reward_request_serial += 1
 	var request_serial := reward_request_serial
 	reward_pending = true
@@ -678,11 +725,43 @@ func _request_completed_bonus() -> void:
 	services.call("reward_requested", "completed_fare_%d" % receipt_id, func(granted: bool):
 		if not reward_pending or request_serial != reward_request_serial: return
 		reward_pending = false
-		var extra: int = model.double_last_fare(receipt_id) if granted else 0
-		_save()
-		if screen == "drive": _open_fare_card("receipt")
-		_toast("Fare doubled: +%d coins." % extra if extra > 0 else "No extra reward. Your fare is safe.")
+		if granted and model.mark_double_earned(receipt_id):
+			_retry_earned_reward_save()
+		else:
+			model.cancel_double_request(receipt_id)
+			var saved := _save()
+			if screen == "drive": _open_fare_card("receipt")
+			_toast("No extra reward. Your fare is safe." if saved else "No extra reward. Progress could not be saved.")
 	)
+
+func _retry_earned_reward_save() -> bool:
+	if reward_pending or not model.has_pending_double_reward(): return false
+	_set_parked()
+	# First journal the actual-earned entitlement. If the later credit write
+	# fails, a cold load can still retry without asking for another ad.
+	if not _save():
+		_reward_save_failed()
+		return false
+	var receipt_id: int = int(model.last_receipt.id)
+	var coins_before: int = model.coins
+	var income_before: int = model.income
+	var extra: int = model.double_last_fare(receipt_id)
+	if extra <= 0: return false
+	if not _save():
+		model.coins = coins_before
+		model.income = income_before
+		model.last_receipt.double_claimed = false
+		model.last_receipt.reward_state = "earned"
+		_reward_save_failed()
+		return false
+	_sync_achievements()
+	if screen == "drive": _open_fare_card("receipt")
+	_toast("Fare doubled and saved: +%d coins." % extra)
+	return true
+
+func _reward_save_failed() -> void:
+	if screen == "drive": _open_fare_card("receipt")
+	_toast("Earned reward not saved. Keep app open and tap Retry save.")
 
 func _service_call(method: String, arguments: Array = []) -> void:
 	var services: Node = _services()
@@ -695,6 +774,7 @@ func _services() -> Node:
 	return get_node_or_null("/root/Services")
 
 func _sync_achievements() -> void:
+	if model.has_unsaved_fare(): return # Never publish tentative fare/XP/income after a failed write.
 	var services: Node = _services()
 	for entry: Dictionary in catalog.get("achievements", []):
 		if model.stat(entry.stat) >= int(entry.threshold):
@@ -704,16 +784,10 @@ func _sync_achievements() -> void:
 		for board: Dictionary in catalog.get("leaderboards", []): services.call("submit", board.key, model.stat(board.stat))
 	_save()
 
-func _save() -> void:
+func _save() -> bool:
 	_remember_pose()
-	if demo: return
-	var file := FileAccess.open(SAVE_PATH + ".tmp", FileAccess.WRITE)
-	if file == null: return
-	file.store_string(JSON.stringify(model.to_data()))
-	file.close()
-	var absolute: String = ProjectSettings.globalize_path(SAVE_PATH)
-	if FileAccess.file_exists(SAVE_PATH): DirAccess.copy_absolute(absolute, absolute + ".bak")
-	DirAccess.rename_absolute(absolute + ".tmp", absolute)
+	if demo: return true # Isolated presentation/test fixtures never write profiles.
+	return save_store.write(model.to_data())
 
 func _load_save() -> void:
 	for path: String in [SAVE_PATH, SAVE_PATH + ".bak"]:

@@ -190,7 +190,7 @@ func complete_job() -> Dictionary:
 		rare_delivered+=1
 		daily_rare+=1
 	var level_bonus: int = add_xp(55+int(completed.metres)/25)
-	last_receipt = {"id":jobs,"double_claimed":false,"fare":payout+tip,"base_fare":payout,"tip":tip,"tip_reason":reason,"elapsed":float(completed.elapsed),
+	last_receipt = {"id":jobs,"double_claimed":false,"reward_state":"available","bank_saved":false,"round_notified":false,"fare":payout+tip,"base_fare":payout,"tip":tip,"tip_reason":reason,"elapsed":float(completed.elapsed),
 		"collisions":int(completed.collisions),"clean":clean,"timely":timely,"level_bonus":level_bonus,"passenger":completed.passenger,"rare":completed.rare}
 	receipt_open = true
 	return last_receipt.duplicate(true)
@@ -198,11 +198,33 @@ func complete_job() -> Dictionary:
 func can_double_last_fare() -> bool:
 	return not last_receipt.is_empty() and not bool(last_receipt.get("double_claimed",true)) and int(last_receipt.get("fare",0)) > 0
 
+func has_unsaved_fare() -> bool:
+	return not last_receipt.is_empty() and not bool(last_receipt.get("bank_saved",true))
+
+func has_pending_double_reward() -> bool:
+	return can_double_last_fare() and str(last_receipt.get("reward_state","available")) == "earned"
+
+func begin_double_request(receipt_id: int) -> bool:
+	if not can_double_last_fare() or has_unsaved_fare() or has_pending_double_reward() or receipt_id != int(last_receipt.get("id",-1)): return false
+	last_receipt.reward_state = "requested"
+	return true
+
+func cancel_double_request(receipt_id: int) -> void:
+	if receipt_id == int(last_receipt.get("id",-1)) and str(last_receipt.get("reward_state","")) == "requested":
+		last_receipt.reward_state = "available"
+
+func mark_double_earned(receipt_id: int) -> bool:
+	if not can_double_last_fare() or receipt_id != int(last_receipt.get("id",-1)) or str(last_receipt.get("reward_state","")) != "requested": return false
+	last_receipt.reward_state = "earned"
+	receipt_open = true
+	return true
+
 func double_last_fare(receipt_id: int) -> int:
 	# Only the game's accepted native earned callback calls this; no Web fallback.
 	if not can_double_last_fare() or receipt_id != int(last_receipt.get("id",-1)): return 0
 	var amount: int = int(last_receipt.fare)
 	last_receipt.double_claimed = true
+	last_receipt.reward_state = "claimed"
 	coins += amount
 	income += amount
 	return amount
@@ -360,7 +382,13 @@ func from_data(data: Dictionary, today: String = "") -> bool:
 				"level_bonus":clampi(int(stored_receipt.get("level_bonus",0)),0,10000000),
 				"rare":bool(stored_receipt.get("rare",false)),"elapsed":clampf(float(stored_receipt.get("elapsed",0.0)),0.0,10000000.0),
 				"collisions":clampi(int(stored_receipt.get("collisions",0)),0,10000000),"clean":bool(stored_receipt.get("clean",false)),"timely":bool(stored_receipt.get("timely",false))}
-			receipt_open = bool(data.get("receipt_open",false)) and active_job.is_empty()
+			last_receipt.bank_saved = bool(stored_receipt.get("bank_saved",true))
+			last_receipt.round_notified = bool(stored_receipt.get("round_notified",true))
+			# A request marker alone is never earned proof. Interrupted requests may
+			# be offered again; only a saved actual-earned marker enables safe retry.
+			var state := str(stored_receipt.get("reward_state","available"))
+			last_receipt.reward_state = "claimed" if bool(last_receipt.double_claimed) else "earned" if state == "earned" else "available"
+			receipt_open = (bool(data.get("receipt_open",false)) or has_pending_double_reward() or has_unsaved_fare()) and active_job.is_empty()
 	if today == "": today = Time.get_date_string_from_system(true)
 	roll_day(today)
 	return true
