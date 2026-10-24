@@ -30,6 +30,14 @@ var _elapsed := 0.0
 var _building_count := 0
 var _car_index := -1
 var _camera_probe := SphereShape3D.new()
+var presentation_paused := false
+var passenger: Node3D
+var passenger_phase := ""
+var _passenger_key := ""
+var _passenger_time := 0.0
+var _passenger_from := Vector3.ZERO
+var _passenger_to := Vector3.ZERO
+var _passenger_animation: AnimationPlayer
 
 func _ready() -> void:
 	_camera_probe.radius = CAMERA_CLEARANCE
@@ -120,6 +128,7 @@ func _physics_process(delta: float) -> void:
 		_tick_traffic(delta)
 	else:
 		current_speed = 0.0
+	_tick_passenger(delta)
 	_follow(delta,true)
 	_curb.visible = objective_node >= 0
 	if objective_node >= 0:
@@ -357,3 +366,73 @@ func separate_starting_traffic() -> void:
 			if distance > best_distance: best_distance=distance;best_t=candidate
 		item.t = best_t
 	_tick_traffic(0)
+
+
+func _make_passenger(job: Dictionary) -> void:
+	if is_instance_valid(passenger): passenger.free()
+	var kinds := ["character-female-a","character-male-a","character-female-b","character-male-b"]
+	passenger = model("people",kinds[posmod(int(job.get("id",0)),kinds.size())],self,Vector3.ZERO,Vector3.ONE*1.6)
+	passenger.name = "KenneyPassenger"
+	_passenger_animation = passenger.find_child("AnimationPlayer",true,false) as AnimationPlayer
+
+func _passenger_clip(clip: String) -> void:
+	if not is_instance_valid(_passenger_animation): return
+	for candidate: String in _passenger_animation.get_animation_list():
+		if candidate == clip or candidate.ends_with("/"+clip):
+			_passenger_animation.get_animation(candidate).loop_mode = Animation.LOOP_LINEAR
+			_passenger_animation.play(candidate)
+			return
+
+func set_passenger(job: Dictionary) -> void:
+	if job.is_empty():
+		if passenger_phase not in ["departing",""]:
+			if is_instance_valid(passenger): passenger.hide()
+			passenger_phase = ""
+		_passenger_key = ""
+		return
+	var key := "%s:%s" % [job.get("id",0),job.get("passenger","")]
+	if key != _passenger_key:
+		_passenger_key = key
+		_make_passenger(job)
+		var at := Graph.point(int(job.pickup))*WORLD_SCALE
+		passenger.position = Vector3(at.x+3.0,0,at.y)
+		passenger_phase = "onboard" if bool(job.get("picked_up",false)) else "waiting"
+		passenger.visible = passenger_phase == "waiting"
+		_passenger_clip("idle")
+	if passenger_phase == "waiting" and bool(job.get("picked_up",false)):
+		passenger_phase = "boarding"
+		_passenger_time = 0.0
+		_passenger_from = passenger.position
+		_passenger_to = player.position + Vector3(cos(yaw),0,-sin(yaw))*1.0
+		_passenger_clip("walk")
+
+func passenger_departed(job: Dictionary) -> void:
+	_make_passenger(job)
+	_passenger_key = ""
+	passenger_phase = "departing"
+	_passenger_time = 0.0
+	var side := Vector3(cos(yaw),0,-sin(yaw))
+	var forward := Vector3(sin(yaw),0,cos(yaw))
+	_passenger_from = player.position+side*1.2
+	_passenger_to = _passenger_from+side*42.0+forward*24.0
+	passenger.position = _passenger_from
+	_passenger_clip("walk")
+
+func _tick_passenger(delta: float) -> void:
+	if not is_instance_valid(passenger): return
+	if is_instance_valid(_passenger_animation): _passenger_animation.speed_scale = 0.0 if presentation_paused else 1.0
+	if presentation_paused: return
+	if passenger_phase == "waiting":
+		var direction := player.position-passenger.position
+		if direction.length() > 0.1: passenger.rotation.y = atan2(direction.x,direction.z)
+	elif passenger_phase in ["boarding","departing"]:
+		_passenger_time += delta
+		var direction := _passenger_to-passenger.position
+		passenger.position = passenger.position.move_toward(_passenger_to,delta*2.4)
+		if direction.length() > 0.01: passenger.rotation.y = atan2(direction.x,direction.z)
+		if passenger_phase == "boarding" and (passenger.position.distance_to(_passenger_to)<0.08 or _passenger_time>2.5):
+			passenger.hide()
+			passenger_phase = "onboard"
+		elif passenger_phase == "departing" and _passenger_time>2.0 and not camera3d.is_position_in_frustum(passenger.position+Vector3.UP):
+			passenger.hide()
+			passenger_phase = ""

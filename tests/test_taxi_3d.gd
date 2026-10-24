@@ -21,6 +21,8 @@ func run() -> void:
 	game.demo = true
 	root.add_child(game)
 	game._show("drive")
+	game._close_fare_card() # Choose free drive when returning without an accepted fare.
+	game._close_fare_card() # Explicit free drive, as chosen by a player.
 	await process_frame # Present/lay out actual controls before synthetic GUI input.
 	await _check_drive_touch_routing(game)
 	var world = game.city.world
@@ -297,6 +299,7 @@ func _check_drive_touch_routing(game) -> void:
 	game.notification(Node.NOTIFICATION_WM_GO_BACK_REQUEST)
 	check(game.screen=="home" and _controls_clear(game),"Android Back preserves existing Home policy and clears input")
 	game._show("drive")
+	game._close_fare_card() # Choose free drive when returning without an accepted fare.
 	_drag(60,pad+_drive_offset(game,Vector2(40,40)))
 	check(_controls_clear(game),"late old-page drag cannot populate new-page controls")
 	_touch(60,pad,false)

@@ -43,6 +43,9 @@ var driving_heading: float = 0.0
 var dispatch_sequence: int = 0
 var offered_job: Dictionary = {}
 var collisions_total: int = 0
+# A saved receipt is the sole authority for the optional once-only double payout.
+var last_receipt: Dictionary = {}
+var receipt_open: bool = false
 
 func _init(today: String = "") -> void:
 	if today == "":
@@ -187,8 +190,25 @@ func complete_job() -> Dictionary:
 		rare_delivered+=1
 		daily_rare+=1
 	var level_bonus: int = add_xp(55+int(completed.metres)/25)
-	return {"fare":payout+tip,"base_fare":payout,"tip":tip,"tip_reason":reason,"elapsed":float(completed.elapsed),
+	last_receipt = {"id":jobs,"double_claimed":false,"fare":payout+tip,"base_fare":payout,"tip":tip,"tip_reason":reason,"elapsed":float(completed.elapsed),
 		"collisions":int(completed.collisions),"clean":clean,"timely":timely,"level_bonus":level_bonus,"passenger":completed.passenger,"rare":completed.rare}
+	receipt_open = true
+	return last_receipt.duplicate(true)
+
+func can_double_last_fare() -> bool:
+	return not last_receipt.is_empty() and not bool(last_receipt.get("double_claimed",true)) and int(last_receipt.get("fare",0)) > 0
+
+func double_last_fare(receipt_id: int) -> int:
+	# Only the game's accepted native earned callback calls this; no Web fallback.
+	if not can_double_last_fare() or receipt_id != int(last_receipt.get("id",-1)): return 0
+	var amount: int = int(last_receipt.fare)
+	last_receipt.double_claimed = true
+	coins += amount
+	income += amount
+	return amount
+
+func acknowledge_receipt() -> void:
+	receipt_open = false
 
 func travel(metres: float) -> void:
 	if not is_finite(metres): return
@@ -251,17 +271,17 @@ func stat(key: String) -> int:
 	return 0
 
 func to_data() -> Dictionary:
-	return {"version": 2, "coins": coins, "xp": xp, "jobs": jobs, "distance": distance, "income": income,
+	return {"version": 3, "coins": coins, "xp": xp, "jobs": jobs, "distance": distance, "income": income,
 		"rare": rare_delivered, "player_node": player_node, "car": car, "owned_cars": owned_cars,
 		"upgrades": upgrades, "visits": visits, "active_job": active_job, "unlocked": unlocked,
 		"journal": passenger_journal, "day": day, "daily_jobs": daily_jobs, "daily_distance": daily_distance,
 		"daily_rare": daily_rare, "daily_claimed": daily_claimed, "login_day": login_day, "login_streak": login_streak,
 		"fare_boost": fare_boost, "sound": sound, "driving_position":{"x":driving_position.x,"y":driving_position.y},
-		"driving_heading":driving_heading,"dispatch_sequence":dispatch_sequence,"dispatch_offer":current_offer(),"collisions_total":collisions_total}
+		"driving_heading":driving_heading,"dispatch_sequence":dispatch_sequence,"dispatch_offer":current_offer(),"collisions_total":collisions_total,"last_receipt":last_receipt.duplicate(true),"receipt_open":receipt_open}
 
 func from_data(data: Dictionary, today: String = "") -> bool:
 	var version: int = int(data.get("version",0))
-	if version not in [1,2]: return false
+	if version not in [1,2,3]: return false
 	coins = clampi(int(data.get("coins", 180)), 0, 1000000000)
 	xp = clampi(int(data.get("xp", 0)), 0, 10000000)
 	jobs = clampi(int(data.get("jobs", 0)), 0, 10000000)
@@ -291,13 +311,13 @@ func from_data(data: Dictionary, today: String = "") -> bool:
 			var stored_metres: float = float(stored_job.get("metres",active_job.metres))
 			if is_finite(stored_metres) and stored_metres>0.0 and stored_metres<=10000000.0: active_job.metres=stored_metres
 			active_job.deadline=maxf(60.0,float(active_job.metres)/9.0+35.0)
-			active_job.tip_eligible=bool(stored_job.get("tip_eligible",false)) if version==2 else false
-			if version==2:
+			active_job.tip_eligible=bool(stored_job.get("tip_eligible",false)) if version>=2 else false
+			if version>=2:
 				for key: String in ["elapsed","driven_metres"]:
 					var value: float = float(stored_job.get(key,0.0))
 					active_job[key]=clampf(value,0.0,10000000.0) if is_finite(value) else 0.0
 				active_job.collisions=clampi(int(stored_job.get("collisions",0)),0,10000000)
-	if version==2 and active_job.is_empty():
+	if version>=2 and active_job.is_empty():
 		var stored_offer: Variant = data.get("dispatch_offer",{})
 		if stored_offer is Dictionary and not stored_offer.is_empty() and accept_job(stored_offer):
 			offered_job=active_job.duplicate(true)
@@ -313,11 +333,11 @@ func from_data(data: Dictionary, today: String = "") -> bool:
 	login_streak = clampi(int(data.get("login_streak", 0)), 0, 7)
 	fare_boost = bool(data.get("fare_boost", false))
 	sound = bool(data.get("sound",true))
-	dispatch_sequence=clampi(int(data.get("dispatch_sequence",0)),0,10000000) if version==2 else 0
-	collisions_total=clampi(int(data.get("collisions_total",0)),0,10000000) if version==2 else 0
+	dispatch_sequence=clampi(int(data.get("dispatch_sequence",0)),0,10000000) if version>=2 else 0
+	collisions_total=clampi(int(data.get("collisions_total",0)),0,10000000) if version>=2 else 0
 	driving_position=point(player_node)
 	driving_heading=0.0
-	if version==2:
+	if version>=2:
 		var pose: Variant = data.get("driving_position",{})
 		if pose is Dictionary:
 			var candidate := Vector2(float(pose.get("x",driving_position.x)),float(pose.get("y",driving_position.y)))
@@ -326,6 +346,21 @@ func from_data(data: Dictionary, today: String = "") -> bool:
 				driving_position=candidate if float(road.distance)<=200.0 else Vector2(road.point)
 		var heading: float = float(data.get("driving_heading",0.0))
 		if is_finite(heading): driving_heading=wrapf(heading,-PI,PI)
+	last_receipt = {}
+	receipt_open = false
+	var stored_receipt: Variant = data.get("last_receipt",{})
+	if version >= 3 and stored_receipt is Dictionary:
+		var receipt_id := int(stored_receipt.get("id",-1))
+		var fare := int(stored_receipt.get("fare",0))
+		if receipt_id == jobs and jobs > 0 and fare > 0 and fare <= 2000000:
+			last_receipt = {"id":receipt_id,"fare":fare,"double_claimed":bool(stored_receipt.get("double_claimed",true)),
+				"passenger":str(stored_receipt.get("passenger","Thanks for the ride!")).substr(0,80),
+				"tip":clampi(int(stored_receipt.get("tip",0)),0,fare),"tip_reason":str(stored_receipt.get("tip_reason","")).substr(0,100),
+				"base_fare":clampi(int(stored_receipt.get("base_fare",fare)),0,fare),
+				"level_bonus":clampi(int(stored_receipt.get("level_bonus",0)),0,10000000),
+				"rare":bool(stored_receipt.get("rare",false)),"elapsed":clampf(float(stored_receipt.get("elapsed",0.0)),0.0,10000000.0),
+				"collisions":clampi(int(stored_receipt.get("collisions",0)),0,10000000),"clean":bool(stored_receipt.get("clean",false)),"timely":bool(stored_receipt.get("timely",false))}
+			receipt_open = bool(data.get("receipt_open",false)) and active_job.is_empty()
 	if today == "": today = Time.get_date_string_from_system(true)
 	roll_day(today)
 	return true

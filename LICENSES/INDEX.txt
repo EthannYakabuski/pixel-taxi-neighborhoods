@@ -26,3 +26,5 @@ Round Two 3D city assets
 Kenney Car Kit, City Kit Roads/Suburban/Industrial/Commercial and Nature Kit are CC0.
 Exact original bytes/hashes: assets/3d/SOURCE_MANIFEST.json.
 Unchanged original notices: LICENSES/Assets/<pack>/License.txt.
+
+Round Four passengers: actual animated Kenney Mini Characters GLBs and their colormap; CC0. Original pack notice: Assets/kenney_mini-characters/License.txt; exact hashes in assets/3d/SOURCE_MANIFEST.json.

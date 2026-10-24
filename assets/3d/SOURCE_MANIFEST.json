@@ -426,6 +426,46 @@
       "sha256": "ECAF6C29532AA9FD305A8EF71DF769D60748BD797F2EB1C63BDEFC4EDB8062A7",
       "bytes": 5712,
       "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/people/character-female-a.glb",
+      "source_pack": "kenney_mini-characters",
+      "source_file": "Models/GLB format/character-female-a.glb",
+      "sha256": "8CFCFF43460DA8B421F2A7FDFB43EC177321CAD2746DB9497CBF128D5806E2A8",
+      "bytes": 273448,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/people/character-female-b.glb",
+      "source_pack": "kenney_mini-characters",
+      "source_file": "Models/GLB format/character-female-b.glb",
+      "sha256": "2288438E7BAF9ACC91A870C82DC00D66710BB486592CFC3474EF8ED93A03863A",
+      "bytes": 252140,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/people/character-male-a.glb",
+      "source_pack": "kenney_mini-characters",
+      "source_file": "Models/GLB format/character-male-a.glb",
+      "sha256": "77572792BFE2773B715B8CD8E18644B52B3E1F155FE10450254B50F9C364382A",
+      "bytes": 246916,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/people/character-male-b.glb",
+      "source_pack": "kenney_mini-characters",
+      "source_file": "Models/GLB format/character-male-b.glb",
+      "sha256": "791FC0C203924C175C0A3D5B60D030DAF36797B039506689CF7CD01EF5253B3C",
+      "bytes": 247332,
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "assets/3d/people/Textures/colormap.png",
+      "source_pack": "kenney_mini-characters",
+      "source_file": "Models/GLB format/Textures/colormap.png",
+      "sha256": "0D4947D34FF32ACF4A359C7F22CA784E057E7E72F622170A9A77B6FC88FDB70E",
+      "bytes": 8706,
+      "license": "CC0-1.0"
     }
   ]
 }

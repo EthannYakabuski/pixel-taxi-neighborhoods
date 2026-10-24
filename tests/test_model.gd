@@ -214,7 +214,7 @@ func _test_legacy_migration() -> void:
 		check(migrated[key]==legacy[key],"Migration altered banked profile field "+key)
 	for key: String in legacy.active_job:
 		check(restored.active_job[key]==legacy.active_job[key],"Migration repriced/lost accepted fare field "+key)
-	check(migrated.version==2 and restored.driving_position==Model.point(23),"Migration did not initialize stable-address pose")
+	check(migrated.version==3 and restored.driving_position==Model.point(23),"Migration did not initialize stable-address pose")
 	check(not bool(restored.active_job.tip_eligible),"Legacy unknown collision/time history cannot prove a clean tip")
 	restored.player_node=32
 	var receipt: Dictionary=restored.complete_job()

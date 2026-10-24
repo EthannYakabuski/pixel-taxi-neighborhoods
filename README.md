@@ -4,6 +4,10 @@ A little city. A thousand small stories.
 
 Manually drive a real 3D Kenney taxi through connected industrial, downtown and suburban neighborhoods. Accept or decline a single dispatch offer, deliver passengers, earn clean/timely tips, meet rare riders, upgrade your cab and grow your driver level.
 
+## Round Four gameplay update
+
+Dispatch and completion now stay in the 3D city, with parked in-scene fare cards, animated Kenney passengers, and an optional once-only rewarded ad for 2x the completed fare coins. Existing saves and earned legacy boosts migrate without resetting progress. [Gameplay, save semantics and verification limits](docs/ROUND_FOUR_FARES.md) are documented separately from the Android AAB build update. Rebuilt native fare/ad acceptance remains pending; existing reserved progress is preserved.
+
 ## Play
 
 Accept or decline the current dispatch. Hold and drag the drive pad with one thumb to accelerate and steer; drag down deliberately to reverse while steering. Separate steering, brake and reverse controls support two-thumb play. Releasing the pad coasts; use Brake to stop. Keyboard W/S or arrows accelerate/reverse, A/D or arrows steer, and Space brakes. Stop at the gold curb to pick up or drop off. GPS highlights the weighted shortest road route and recalculates after a wrong turn; it never drives the car. Collisions slow the cab and affect tip eligibility, while banked coins remain safe. Spend fares on upgrades and check daily jobs and your passenger journal.

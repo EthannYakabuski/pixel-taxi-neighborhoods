@@ -44,6 +44,8 @@ var toast_label: Label
 var coins_label: Label
 var info_label: Label
 var action_button: Button
+var fare_card: Panel
+var fare_card_mode := ""
 var progress_label: Label
 var catalog: Dictionary = {}
 var last_receipt: Dictionary = {}
@@ -53,6 +55,7 @@ var capture_path: String = ""
 var demo: bool = false
 var runtime_smoke: bool = false
 var reward_pending: bool = false
+var reward_request_serial: int = 0
 var boot_view: String = "home"
 
 func _ready() -> void:
@@ -134,7 +137,9 @@ func _process(delta: float) -> void:
 		if is_instance_valid(toast_label): toast_label.visible = toast_timer > 0
 	if screen == "drive" and is_instance_valid(city) and is_instance_valid(city.world):
 		var world = city.world
-		world.enabled = not covered and not resume_required
+		world.enabled = not _drive_input_blocked()
+		world.presentation_paused = covered or resume_required
+		world.set_passenger(model.active_job)
 		var turn := turn_input
 		if Input.is_physical_key_pressed(KEY_LEFT) or Input.is_physical_key_pressed(KEY_A): turn -= 1.0
 		if Input.is_physical_key_pressed(KEY_RIGHT) or Input.is_physical_key_pressed(KEY_D): turn += 1.0
@@ -228,6 +233,8 @@ func _apply_banner_layout(reserve_override: float = -1.0) -> void:
 
 
 func _show(view: String) -> void:
+	# Fare dispatch and receipts share the persistent city, never a full-screen page.
+	if view in ["dispatch","receipt"]: view = "drive"
 	_remember_pose()
 	_set_parked()
 	screen = view
@@ -251,6 +258,8 @@ func _show(view: String) -> void:
 	page_content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	menu_scroll.add_child(page_content)
 	city = null
+	fare_card = null
+	fare_card_mode = ""
 	toast_label = null
 	coins_label = null
 	_panel(Rect2(0, 0, 540, 960), INK, 0)
@@ -286,7 +295,7 @@ func _home() -> void:
 	_label("A little city. A lot of stories.", Rect2(24, 506, 492, 38), 25, Color("fff5dc"), HORIZONTAL_ALIGNMENT_CENTER)
 	_label("Driver level %d  ·  %d fares  ·  %.1f km" % [model.level(), model.jobs, model.distance / 1000], Rect2(24, 547, 492, 28), 16, MIST, HORIZONTAL_ALIGNMENT_CENTER)
 	_progress(Rect2(42, 587, 456, 7), model.level_progress(), MINT)
-	_button("CONTINUE FARE" if not model.active_job.is_empty() else "START YOUR SHIFT", Rect2(24, 621, 492, 62), func(): _show("drive" if not model.active_job.is_empty() else "dispatch"))
+	_button("CONTINUE FARE" if not model.active_job.is_empty() else "START YOUR SHIFT", Rect2(24, 621, 492, 62), func(): _show("drive"))
 	_button("Garage & upgrades", Rect2(24, 704, 238, 59), func(): _show("garage"), true)
 	_button("Daily rewards", Rect2(278, 704, 238, 59), func(): _show("daily"), true)
 	_button("Driver journal", Rect2(24, 779, 238, 56), func(): _show("journal"), true)
@@ -296,26 +305,72 @@ func _home() -> void:
 	_panel(Rect2(0, 904, 540, 56), Color("0c1e2c"), 0)
 
 func _dispatch() -> void:
-	_header("THE DISPATCH", "One offer at a time. Accept it or wait for the next.")
-	if not model.active_job.is_empty():
-		_panel(Rect2(24,145,492,180),Color("1e3b50"),17)
-		_label("A passenger is waiting",Rect2(44,166,450,34),25,GOLD)
-		_label(model.active_job.passenger,Rect2(44,211,450,34),20,Color.WHITE)
-		_button("Resume fare",Rect2(44,263,275,45),func(): _show("drive"))
-		_button("Cancel",Rect2(333,263,158,45),func(): model.cancel_job();travel_path.clear();_show("dispatch"),true)
-		return
-	var job: Dictionary = model.current_offer()
-	_panel(Rect2(24,146,492,384),Color("284756") if job.rare else Color("1d394b"),22)
-	_texture(load("res://assets/people/passenger_%d.png" % (int(job.id)%6)),Rect2(207,167,126,126))
-	_label("SPECIAL GUEST" if job.rare else "INCOMING FARE",Rect2(44,308,452,23),13,GOLD,HORIZONTAL_ALIGNMENT_CENTER)
-	_label(job.passenger,Rect2(44,343,452,38),25,Color("fff5dc"),HORIZONTAL_ALIGNMENT_CENTER)
-	_label("%s → %s" % [Model.district(int(job.pickup)),Model.district(int(job.destination))],Rect2(44,394,452,30),19,MIST,HORIZONTAL_ALIGNMENT_CENTER)
-	_label("%.1f km · %d+ coins + clean-ride tip" % [float(job.metres)/1000,job.base_fare],Rect2(44,440,452,30),17,Color.WHITE,HORIZONTAL_ALIGNMENT_CENTER)
-	_button("ACCEPT FARE",Rect2(24,562,492,68),func():
-		if model.accept_job(job): travel_path.clear();_show("drive")
-	)
-	_button("Decline · next offer",Rect2(24,653,492,58),func(): model.decline_offer();_show("dispatch"),true)
-	_label("You drive. GPS highlights the shortest connected route.\nTake a wrong turn? Guidance recalculates.\nArrive safely and promptly for a passenger tip.",Rect2(40,744,460,106),17,MIST,HORIZONTAL_ALIGNMENT_CENTER)
+	# Compatibility for older callers; this is an in-scene card.
+	_open_fare_card("active" if not model.active_job.is_empty() else "offer")
+
+func _open_fare_card(mode: String) -> void:
+	if screen != "drive" or reward_pending: return
+	_set_parked()
+	fare_card_mode = mode
+	if is_instance_valid(fare_card):
+		fare_card.hide()
+		fare_card.queue_free()
+	fare_card = _panel(Rect2(18,270,504,400),Color("152f41"),20)
+	fare_card.name = "InSceneFareCard"
+	# Build in page coordinates, then reparent into the contained card.
+	var before := page_content.get_children()
+	if mode == "receipt":
+		var receipt: Dictionary = model.last_receipt
+		_label("FARE COMPLETE  +%d coins" % int(receipt.get("fare",0)),Rect2(36,286,468,38),25,GOLD,HORIZONTAL_ALIGNMENT_CENTER)
+		_label(str(receipt.get("passenger","Thanks for the ride!")),Rect2(36,329,468,30),18,Color.WHITE,HORIZONTAL_ALIGNMENT_CENTER)
+		_label("Tip +%d  |  %s" % [int(receipt.get("tip",0)),str(receipt.get("tip_reason",""))],Rect2(36,365,468,48),14,MIST,HORIZONTAL_ALIGNMENT_CENTER)
+		var reward_text := "2x received" if not model.can_double_last_fare() else "Watch ad: 2x fare (+%d)" % int(receipt.get("fare",0))
+		var reward := _button(reward_text,Rect2(36,423,468,58),_request_completed_bonus,true)
+		reward.name = "DoubleCompletedFare"
+		reward.disabled = reward_pending or not model.can_double_last_fare()
+		_button("NEXT FARE",Rect2(36,496,468,58),_next_fare).name = "NextFare"
+		_label("Optional ad. Your fare is already safely banked.",Rect2(36,570,468,36),14,MIST,HORIZONTAL_ALIGNMENT_CENTER)
+	elif mode == "active":
+		_label("CURRENT FARE",Rect2(36,298,468,38),26,GOLD,HORIZONTAL_ALIGNMENT_CENTER)
+		_label(str(model.active_job.get("passenger","")),Rect2(36,351,468,38),21,Color.WHITE,HORIZONTAL_ALIGNMENT_CENTER)
+		_label("Follow the gold route and brake at the curb.",Rect2(36,401,468,42),16,MIST,HORIZONTAL_ALIGNMENT_CENTER)
+		_button("BACK TO DRIVING",Rect2(36,468,468,58),_close_fare_card).name = "CloseFareCard"
+		_button("Cancel fare",Rect2(36,548,468,50),func(): model.cancel_job();travel_path.clear();_save();_open_fare_card("offer"),true)
+	else:
+		var job: Dictionary = model.current_offer()
+		_label("INCOMING FARE" if not bool(job.rare) else "SPECIAL GUEST",Rect2(36,286,468,34),24,GOLD,HORIZONTAL_ALIGNMENT_CENTER)
+		_label(str(job.passenger),Rect2(36,332,468,38),22,Color.WHITE,HORIZONTAL_ALIGNMENT_CENTER)
+		_label("%s to %s\n%.1f km  |  %d+ coins + clean-ride tip" % [Model.district(int(job.pickup)),Model.district(int(job.destination)),float(job.metres)/1000,int(job.base_fare)],Rect2(36,380,468,66),17,MIST,HORIZONTAL_ALIGNMENT_CENTER)
+		_button("ACCEPT FARE",Rect2(36,465,468,58),func():
+			if model.accept_job(job):
+				travel_path.clear()
+				_close_fare_card()
+				_save()
+		).name = "AcceptFare"
+		_button("Decline - next offer",Rect2(36,541,468,54),func(): model.decline_offer();_save();_open_fare_card("offer"),true).name = "DeclineFare"
+		_button("Free drive",Rect2(160,602,220,50),_close_fare_card,true)
+	for node: Node in page_content.get_children():
+		if node not in before:
+			node.reparent(fare_card,false)
+			if node is Control: node.position -= fare_card.position
+	_refresh_drive()
+
+func _close_fare_card() -> void:
+	if reward_pending: return
+	if is_instance_valid(fare_card):
+		fare_card.hide()
+		fare_card.queue_free()
+	fare_card = null
+	fare_card_mode = ""
+	_clear_drive_inputs()
+	discard_frame = true
+	_refresh_drive()
+
+func _next_fare() -> void:
+	if reward_pending: return
+	model.acknowledge_receipt()
+	_save()
+	_open_fare_card("offer")
 
 func _drive() -> void:
 	_add_city(Rect2(0,112,540,788),false)
@@ -333,12 +388,14 @@ func _drive() -> void:
 	_bind_drive_control(stop,"brake")
 	_panel(Rect2(8,854,524,38),INK,8)
 	_label("Drag left/right to steer; drag down to reverse.",Rect2(18,858,504,30),14,MIST,HORIZONTAL_ALIGNMENT_CENTER)
-	_button("Dispatch",Rect2(24,907,123,36),func(): _show("dispatch"),true)
+	_button("Fare",Rect2(24,907,123,36),func(): _open_fare_card("active" if not model.active_job.is_empty() else "receipt" if model.receipt_open else "offer"),true)
 	_button("Map",Rect2(162,907,102,36),func(): city.overview=not city.overview,true)
 	var reverse := _button("Reverse",Rect2(279,907,113,36),func(): pass,true)
 	_bind_drive_control(reverse,"reverse")
 	_button("Home",Rect2(407,907,110,36),func(): _show("home"),true)
 	_refresh_drive()
+	if model.receipt_open: _open_fare_card("receipt")
+	elif model.active_job.is_empty(): _open_fare_card("offer")
 
 func _bind_drive_control(button: Button, action: String) -> void:
 	button.name = "Drive_"+action
@@ -346,7 +403,7 @@ func _bind_drive_control(button: Button, action: String) -> void:
 	button.gui_input.connect(_drive_control_event.bind(action,button))
 
 func _drive_input_blocked() -> bool:
-	if screen != "drive" or application_suspended or resume_required: return true
+	if screen != "drive" or application_suspended or resume_required or reward_pending or (is_instance_valid(fare_card) and fare_card.visible): return true
 	var services := _services()
 	return is_instance_valid(services) and services.has_method("is_gameplay_blocked") and bool(services.call("is_gameplay_blocked"))
 
@@ -423,6 +480,12 @@ func _refresh_drive() -> void:
 		action_button.text = "Resume driving"
 		action_button.disabled = false
 		return
+	if is_instance_valid(fare_card) and fare_card.visible:
+		info_label.text = "Cab parked safely.\nYour next journey starts right here."
+		action_button.text = "Choose an action on the fare card"
+		action_button.disabled = true
+		if is_instance_valid(coins_label): coins_label.text = "%d coins" % model.coins
+		return
 	if model.active_job.is_empty():
 		info_label.text = "%s · %d km/h\nFree drive — choose a dispatch when ready." % [Model.district(model.player_node),int(speed*3.6)]
 		action_button.text = "Find a passenger"
@@ -464,7 +527,8 @@ func _manual_step(direction: Vector2i) -> void:
 
 func _curb_action() -> void:
 	if resume_required: _resume_driving();return
-	if model.active_job.is_empty(): _show("dispatch");return
+	if _drive_input_blocked(): return
+	if model.active_job.is_empty(): _open_fare_card("offer");return
 	_remember_pose()
 	if vehicle_position.distance_to(Model.point(model.objective()))*0.45 >= 10.0: return
 	if is_instance_valid(city) and absf(city.world.current_speed) >= 1.6: return
@@ -475,28 +539,20 @@ func _curb_action() -> void:
 			_route_to(model.objective())
 			_toast("Welcome aboard. A prompt, clean ride earns a tip.")
 	else:
+		var completed_passenger: Dictionary = model.active_job.duplicate(true)
 		last_receipt = model.complete_job()
 		if not last_receipt.is_empty():
 			_play("res://assets/audio/reward.ogg")
 			_sync_achievements()
 			var services := _services()
 			if services != null: services.call("round_finished")
-			_show("receipt")
+			city.world.passenger_departed(completed_passenger)
+			_open_fare_card("receipt")
 	_save()
 	_refresh_drive()
 
 func _receipt() -> void:
-	_header("FARE COMPLETE", "One more story, safely delivered.")
-	_panel(Rect2(24, 153, 492, 386), Color("1e3b50"), 22)
-	_texture(load("res://assets/taxi.png"), Rect2(185, 171, 170, 170))
-	_label("+%d coins" % int(last_receipt.get("fare", 0)), Rect2(44, 344, 452, 58), 45, GOLD, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(str(last_receipt.get("passenger", "Thanks for the ride!")), Rect2(44, 410, 452, 40), 23, Color("fff5dc"), HORIZONTAL_ALIGNMENT_CENTER)
-	_label("Tip +%d · %s" % [int(last_receipt.get("tip",0)),str(last_receipt.get("tip_reason","Thanks for the ride"))], Rect2(44,461,452,30),16,MIST,HORIZONTAL_ALIGNMENT_CENTER)
-	if int(last_receipt.get("level_bonus", 0)) > 0: _label("Level-up bonus: +%d coins" % last_receipt.level_bonus, Rect2(44, 504, 452, 28), 18, MINT, HORIZONTAL_ALIGNMENT_CENTER)
-	_button("NEXT FARE →", Rect2(24, 579, 492, 62), func(): _show("dispatch"))
-	_button("Sponsor next fare · +50% coins", Rect2(24, 662, 492, 58), func(): _request_boost(), true)
-	_label("Optional rewarded ad. Your next fare stays available.", Rect2(30, 734, 480, 42), 15, MIST, HORIZONTAL_ALIGNMENT_CENTER)
-	_button("Visit the garage", Rect2(24, 800, 492, 54), func(): _show("garage"), true)
+	_open_fare_card("receipt")
 
 func _garage() -> void:
 	_header("THE GARAGE", "A cab with character. A little better every shift.")
@@ -608,21 +664,24 @@ func _settings() -> void:
 	_button("Privacy options", Rect2(24, 651, 492, 55), func(): _service_call("privacy_options"), true)
 	_label("Progress is saved on this device. Optional Google\nservices handle Android ads and online rankings.\nYou can keep driving offline.", Rect2(32, 742, 476, 94), 17, MIST, HORIZONTAL_ALIGNMENT_CENTER)
 
-func _request_boost() -> void:
-	if reward_pending: return
+func _request_completed_bonus() -> void:
+	if reward_pending or not model.can_double_last_fare(): return
 	var services: Node = _services()
 	if services == null or not bool(services.call("can_reward")):
-		_toast("No sponsor available. Your next fare is ready.")
+		_toast("No ad available. Your completed fare stays banked.")
 		return
+	var receipt_id: int = int(model.last_receipt.id)
+	reward_request_serial += 1
+	var request_serial := reward_request_serial
 	reward_pending = true
-	services.call("reward_requested", "next_fare_bonus", func(granted: bool):
-		if not reward_pending: return
+	_set_parked()
+	services.call("reward_requested", "completed_fare_%d" % receipt_id, func(granted: bool):
+		if not reward_pending or request_serial != reward_request_serial: return
 		reward_pending = false
-		if granted:
-			model.fare_boost = true
-			_save()
-			_toast("Your next fare earns 50% extra coins.")
-		else: _toast("No reward earned. You can keep driving.")
+		var extra: int = model.double_last_fare(receipt_id) if granted else 0
+		_save()
+		if screen == "drive": _open_fare_card("receipt")
+		_toast("Fare doubled: +%d coins." % extra if extra > 0 else "No extra reward. Your fare is safe.")
 	)
 
 func _service_call(method: String, arguments: Array = []) -> void:
@@ -689,6 +748,7 @@ func _runtime_smoke() -> void:
 	# Synthetic keyboard-equivalent throttle: GPS alone must never move the car.
 	await get_tree().create_timer(0.25).timeout
 	if screen != "drive": _show("drive")
+	_close_fare_card() # This isolated smoke fixture explicitly chooses free drive.
 	var before := vehicle_position
 	_route_to(32)
 	await get_tree().create_timer(0.25).timeout
@@ -726,8 +786,7 @@ func _add_city(rect: Rect2, overview: bool) -> void:
 	page_content.add_child(city)
 	if not overview:
 		city.world.gameplay_guard = func():
-			var services := _services()
-			return not application_suspended and not resume_required and not (is_instance_valid(services) and services.has_method("is_gameplay_blocked") and bool(services.call("is_gameplay_blocked")))
+			return not _drive_input_blocked()
 		city.world.travelled.connect(_drive_distance)
 		city.world.impact.connect(_drive_impact)
 	else:
