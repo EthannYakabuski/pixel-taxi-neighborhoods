@@ -100,3 +100,11 @@ do not attribute old screenshots or native results to this runtime update.
 Android architecture/AAB changes and their validation are documented separately
 in `docs/ROUND_FOUR_ANDROID.md`. Physical-device controls, audible output,
 interactive Web and production service/backends remain owner acceptance work.
+
+## Qualified source/export and limited Web checkpoint (2026-10-24)
+
+Public source `8bfa13182abdcfcd66a8ee7e33623aadf6ad6f17` has [passing exact-commit hosted CI](https://github.com/EthannYakabuski/pixel-taxi-neighborhoods/actions/runs/40137388736). `../HANDOFF.txt` records the frozen AAB/Web/test-ZIP component source identities and hashes; this documentation update makes no rebuild or archive change.
+
+Limited interactive Web UI checks in an isolated browser profile on the frozen Web export verified fresh Home, the in-scene Incoming Fare card and acceptance of the initial offer, stationary 3D city/HUD, Map and the in-scene Current Fare card. Returning Home offered Continue fare; these menu actions did not complete a fare, add distance or alter banked coins. There were no driving, cancellation, completion or reward inputs. The waiting passenger and pickup curb were outside the reviewed stationary camera view, so their appearance was not verified. Steering-arrow glyphs rendered as boxes and an aborted startup resource request remains qualified; readable labels/menus do not establish a clean log, driving-control acceptance or native touch behavior.
+
+Still required: owner manual driving/GPS assessment, genuine pickup/dropoff and waiting/walking passenger presentation, completed-fare durable banking/once-only payout and actual earned 2x reward/dismissal/save-retry paths. Browser-restart retention, affected Android/native checks, materially changed current-build Android captures, audible output, intended physical-device and production-service acceptance remain unverified. The reserved owner Android fare was not accessed, driven or cancelled by these Web checks. No new Round Four Android screenshots are accepted. Historical APKs, screenshots and earlier checkpoint text retain only their named source/build scope.

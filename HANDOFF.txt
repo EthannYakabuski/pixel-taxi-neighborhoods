@@ -1,3 +1,23 @@
+ROUND FOUR - QUALIFIED EXPORT-ONLY TEST HANDOFF
+Current Round Four features: Dispatch and fare completion stay in the 3D city with animated passengers; completed-fare and actual-earned 2x rewards confirm only after checked durable saving, with safe retry.
+Updated 2026-10-24. Affected Round Four native gameplay and current Android screenshot acceptance remain pending. Earlier native APKs/captures retain only their original named source/build provenance.
+Verified public source: 8bfa13182abdcfcd66a8ee7e33623aadf6ad6f17
+Exact-commit hosted CI: SUCCESS - https://github.com/EthannYakabuski/pixel-taxi-neighborhoods/actions/runs/40137388736
+Android AAB: build/round-four-aab-001/pixel-taxi-neighborhoods-debug.aab
+AAB SHA256: FDD299EC8D11A2802454977DB727A763B66FC39F575EEF8204CBE9227A1B3FD1
+AAB as-built source: 15b089d696233b38c182630b2218b26479a24e21
+Web: build/round-four-web-002/index.html
+Web HTML SHA256: 5AD6AECD3BD4D2907E1833AAB0CF696428702E6C9DD2DB44B84720BA2595209F
+Web as-built source: 8bfa13182abdcfcd66a8ee7e33623aadf6ad6f17
+Qualified export-test ZIP: build/round-four-export-only-fdd299ec-web002/packages/pixel-taxi-neighborhoods-round-four-export-test.zip
+ZIP SHA256: 5BECE0BF7788FE4985B656E614707E85E901EFCE3346F3295F33BB4BF6169E38
+The existing package passed CRC and every-member size/SHA256 checks, carries complete notices, and omits screenshots. It preserves its frozen component bytes and their separate as-built source identities; a later documentation/UID commit does not rebuild or relabel them.
+The AAB is debug/test signed; release signing, physical-device play, audible output, production services and Google Play acceptance are not established.
+Limited interactive Web UI checks in an isolated browser profile on the frozen Web export verified fresh Home, the in-scene Incoming Fare card and acceptance of the initial offer, stationary 3D city/HUD, Map and the in-scene Current Fare card. Returning Home offered Continue fare; these menu actions did not complete a fare, add distance or alter banked coins. There were no driving, cancellation, completion or reward inputs. The waiting passenger and pickup curb were outside the reviewed stationary camera view, so their appearance was not verified. Steering-arrow glyphs rendered as boxes and an aborted startup resource request remains qualified; readable labels/menus do not establish a clean log, driving-control acceptance or native touch behavior.
+Still required: owner manual driving/GPS assessment, genuine pickup/dropoff and waiting/walking passenger presentation, completed-fare durable banking/once-only payout and actual earned 2x reward/dismissal/save-retry paths. Browser-restart retention, affected Android/native checks, materially changed current-build Android captures, audible output, intended physical-device and production-service acceptance remain unverified. The reserved owner Android fare was not accessed, driven or cancelled by these Web checks.
+No new Round Four Android screenshots are accepted. Current native work is parked; browser frames are not Android/store captures. Earlier native evidence is not transferred to these frozen exports.
+
+PRESERVED EARLIER HANDOFF / DATED EVIDENCE — each passage retains its named source/build scope; current qualification above supersedes earlier readiness statements.
 PIXEL TAXI NEIGHBORHOODS - ROUND TWO CONTINUATION HANDOFF
 Updated: 2026-10-22
 Status: ROUND TWO NATIVE CORE / FARE NOT READY.
