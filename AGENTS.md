@@ -1,5 +1,11 @@
 # Pixel Taxi Neighborhoods: continuation
 
+## Round 4 continuation
+
+Work only on the requested Round 4 changes; do not start new games. The current Android default is Gradle **AAB**, min API **24** / target API **35**, with ARM64, x86 and x86_64. Follow the [Round 4 Android guide](docs/ROUND_FOUR_ANDROID.md) for current export instructions instead of older APK examples in historical guides.
+
+The 2026-10-24 continuation snapshot does not claim passing exact-current-source CI or native acceptance for rebuilt Round 4 binaries. Record later source-bound checks in `HANDOFF.txt`; keep all dated original APK evidence intact. Debug AABs are test-signed bundles, distinct from owner-signed releases. Preserve user configuration and untracked files.
+
 Open this repository root as the single active game project. Start each focused task by reading `README.md`, `HANDOFF.txt` and `docs/PLATFORM_SETUP.md`, then inspect Git status/diff. Do not assume an earlier conversation or use an archival staging copy as a parallel source of truth.
 
 ## Targets and verification
@@ -28,7 +34,7 @@ godot --headless --path . --script platform/tests/services_smoke.gd
 - Stage only reviewed project files. Private QA originals, raw logs, saves, backups, signing material, credentials, generated SDK builds and prebuilt exports stay out of published history. Ignore rules do not protect already tracked paths; inspect each diff.
 - Preserve `LICENSE`, `NOTICE`, `LICENSES/` and asset/plugin terms. Retain notices with distributed binaries.
 - Pages deployment remains disabled; no Library change or Google Play publication is part of ordinary updates. Production configuration, real-service/physical-device testing and human acceptance remain owner work.
-- Work on the requested game/update. The concurrent awaiting-review queue cap remains ten. A focused continuation does not start another game without a separate owner instruction.
+- Work on the requested game/update. This continuation covers Round 4 only and does not authorize new games.
 
 ## Current 3D update
 

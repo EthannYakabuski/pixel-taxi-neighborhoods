@@ -1,5 +1,11 @@
 # Pixel Taxi Neighborhoods
 
+## Round 4 build continuation (2026-10-24)
+
+The Android preset now defaults to **AAB** with Gradle, minimum API **24** and target API **35**. ARM64, x86 and x86_64 are selected; the [Round 4 Android guide](docs/ROUND_FOUR_ANDROID.md) explains the native ABI-pair validator and release-owner steps. These are current preset choices, not permanent engine restrictions.
+
+Round 4 exact-source hosted CI and affected native acceptance are pending in this dated continuation snapshot; consult `HANDOFF.txt` for later source-bound results. An ABI-validated debug AAB is test-signed and does not establish Google Play acceptance. Dated APK hashes and screenshots below retain their original build provenance. This round does not start new games.
+
 A little city. A thousand small stories.
 
 Manually drive a real 3D Kenney taxi through connected industrial, downtown and suburban neighborhoods. Accept or decline a single dispatch offer, deliver passengers, earn clean/timely tips, meet rare riders, upgrade your cab and grow your driver level.
@@ -27,7 +33,7 @@ godot --headless --path . --script tests/test_city_graph.gd
 godot --headless --path . --script tests/test_taxi_3d.gd
 godot --headless --path . --script platform/tests/services_smoke.gd
 godot --headless --path . --export-release Web build/web/index.html
-godot --headless --path . --install-android-build-template --export-debug Android build/android/game-debug.apk
+godot --headless --path . --install-android-build-template --export-debug Android build/android/game-debug.aab
 ```
 
 Create build/web and build/android first. Android package: `com.ethannyakabuski.pixeltaxi`. Tests and capture helpers are documented under game/ and tests/. No Windows build is supplied.
