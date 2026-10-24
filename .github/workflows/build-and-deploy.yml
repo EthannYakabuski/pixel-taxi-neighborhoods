@@ -32,6 +32,8 @@ jobs:
           unzip -q /tmp/templates.tpz -d /tmp/templates
           cp -a /tmp/templates/templates/. "$HOME/.local/share/godot/export_templates/4.5.1.stable/"
           godot --version
+      - name: Check Android bundle preset
+        run: python3 tools/verify_android_bundle.py --preset export_presets.cfg
       - name: Import and validate scripts
         shell: bash
         run: |
@@ -83,20 +85,22 @@ jobs:
       - name: Prepare Android SDK and test signing identity
         shell: bash
         run: |
-          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;28.1.13356709" "cmake;3.10.2.4988404"
+          sdkmanager "platforms;android-35" "platforms;android-36" "build-tools;35.0.0" "ndk;28.1.13356709" "cmake;3.10.2.4988404"
           mkdir -p "$HOME/.android" "$HOME/.config/godot" build/android
           if [ ! -f "$HOME/.android/debug.keystore" ]; then
             keytool -genkeypair -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey -keypass android -dname 'CN=Android Debug,O=Android,C=US' -keyalg RSA -keysize 2048 -validity 10000
           fi
           printf '[gd_resource type="EditorSettings" format=3]\n\n[resource]\nexport/android/android_sdk_path = "%s"\nexport/android/java_sdk_path = "%s"\n' "$ANDROID_HOME" "$JAVA_HOME" > "$HOME/.config/godot/editor_settings-4.5.tres"
-      - name: Build Android debug APK with native integrations
+      - name: Build Android debug AAB with native integrations
         shell: bash
         run: |
           set -euo pipefail
-          godot --headless --path . --install-android-build-template --export-debug Android build/android/game-debug.apk 2>&1 | tee /tmp/android-export.log
+          godot --headless --path . --install-android-build-template --export-debug Android build/android/game-debug.aab 2>&1 | tee /tmp/android-export.log
           if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR:' /tmp/android-export.log; then
             exit 1
           fi
+          python3 tools/verify_android_bundle.py build/android/game-debug.aab
+
       - name: Include accompanying license notices
         shell: bash
         run: |
@@ -107,9 +111,9 @@ jobs:
           cp -a LICENSES/. build/web/LICENSES/
       - uses: actions/upload-artifact@v4
         with:
-          name: android-debug-apk
+          name: android-debug-aab
           path: |
-            build/android/*.apk
+            build/android/*.aab
             build/android/LICENSES/
           retention-days: 7
       - uses: actions/upload-pages-artifact@v3
