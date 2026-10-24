@@ -48,7 +48,7 @@ Marketing text, icons, feature art and screenshot provenance are in marketing/. 
 
 ## CI and Web
 
-GitHub Actions imports resources, runs game/service tests with strict error checks, exports Web and an Android debug APK, and uploads artifacts with the accompanying license notices. **Pages deployment is disabled**; this workflow does not publish a live site or submit to Google Play. Current build/test status is recorded below and in `HANDOFF.txt`. A passing run does not verify production services, physical devices or browser interaction.
+GitHub Actions imports resources, runs game/service tests with strict error checks, exports Web and validates an Android debug AAB, and uploads artifacts with the accompanying license notices. **Pages deployment is disabled**; this workflow does not publish a live site or submit to Google Play. Current build/test status is recorded below and in `HANDOFF.txt`. A passing run does not verify production services, physical devices or browser interaction.
 
 ## Continue development
 
