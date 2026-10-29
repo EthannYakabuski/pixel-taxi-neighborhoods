@@ -71,7 +71,7 @@ func run() -> void:
 	game.gas_held=true
 	await create_timer(0.7).timeout
 	check(hit_count==1,"physical collision has one impact during hit grace")
-	check(game.model.active_job.collisions==collisions+1,"actual impact affects current fare quality")
+	check(game.model.active_job.collisions==collisions,"actual approach impact cannot penalize an absent passenger")
 	check(game.model.coins==bank,"collision preserves banked progression")
 	game._set_parked()
 	wall.queue_free()
@@ -80,6 +80,28 @@ func run() -> void:
 	world.current_speed=0
 	game._curb_action()
 	check(bool(game.model.active_job.picked_up),"stopped actual curb allows pickup")
+	game._process(0.0)
+	world._tick_passenger(3.0)
+	check(world.passenger_phase=="onboard","tip impact fixture waits for the supplied NPC to enter the cab")
+	var onboard_wall := StaticBody3D.new()
+	onboard_wall.collision_layer=4
+	onboard_wall.collision_mask=1
+	world.add_child(onboard_wall)
+	onboard_wall.position=world.player.position+Vector3(0,0,2.1)
+	var onboard_hit := CollisionShape3D.new()
+	var onboard_shape := BoxShape3D.new()
+	onboard_shape.size=Vector3(10,3,1)
+	onboard_hit.position.y=1.5
+	onboard_hit.shape=onboard_shape
+	onboard_wall.add_child(onboard_hit)
+	world.hit_grace=0
+	game.gas_held=true
+	await create_timer(0.7).timeout
+	check(hit_count==2 and int(game.model.active_job.collisions)==1,"actual physical impact with onboard NPC reduces tip exactly once")
+	check(game.toast_label.text.begins_with("Bump"),"onboard physical impact gives the tip warning")
+	game._set_parked()
+	onboard_wall.queue_free()
+	await physics_frame
 	var service: Node = root.get_node_or_null("Services")
 	var owns_service := service==null
 	if owns_service:

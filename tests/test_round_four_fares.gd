@@ -25,6 +25,9 @@ func check(ok: bool,message: String) -> void:
 	if not ok: failures += 1;push_error(message)
 
 func finish(model) -> Dictionary:
+	if model.dispatch_wait_remaining > 0.0:
+		model.last_receipt.bank_saved=true # Isolated fixture confirms its simulated previous base fare.
+		model.tick_dispatch(model.dispatch_wait_remaining)
 	var offer: Dictionary = model.current_offer()
 	model.accept_job(offer)
 	model.player_node = int(offer.pickup)
@@ -39,7 +42,7 @@ func check_card_containment(game) -> void:
 	for child: Node in game.fare_card.get_children():
 		if child is Control:
 			check(bounds.encloses(child.get_rect()),"fare-card child stays within its actual panel: "+child.name)
-	check(game.fare_card.position.y >= 220 and game.fare_card.position.y+game.fare_card.size.y<game.action_button.position.y,"fare card stays below HUD and above drive controls")
+	check(game.fare_card.position.y >= game.drive_hud_panel.get_rect().end.y and game.fare_card.get_rect().end.y <= 896.0,"fare card stays below HUD and above safe feedback; driving controls are replaced")
 
 func run() -> void:
 	var m = Model.new("2026-10-24")
@@ -112,7 +115,8 @@ func run() -> void:
 	game._curb_action()
 	game._process(0.0)
 	check(game.screen=="drive" and game.city.get_instance_id()==city_id,"completed fare preserves exact 3D scene")
-	check(game.fare_card_mode=="receipt" and game.model.active_job.is_empty(),"result controls appear on in-scene card")
+	check(game.fare_card_mode=="" and game.model.active_job.is_empty() and game.model.dispatch_wait_remaining>=5.0,"confirmed dropoff automatically returns free drive")
+	game._open_fare_card("receipt")
 	check_card_containment(game)
 	check(world.passenger_phase=="departing" and world.passenger.visible,"dropoff starts visible walk-away")
 	var passenger_before: Vector3=world.passenger.position
@@ -163,7 +167,10 @@ func run() -> void:
 	game._request_completed_bonus()
 	check(service.callbacks.size()==request_count,"cold return cannot request already-paid result again")
 	game.fare_card.get_node("NextFare").pressed.emit()
-	check(game.city.get_instance_id()==city_id and game.fare_card_mode=="offer","Next fare remains in same city")
+	check(game.city.get_instance_id()==city_id and game.fare_card_mode=="" and game.model.dispatch_wait_remaining>0.0,"Next returns free drive in same city during dispatch wait")
+	game.model.tick_dispatch(game.model.dispatch_wait_remaining)
+	game._open_fare_card("offer")
+	check(game.city.get_instance_id()==city_id and game.fare_card_mode=="offer" and game.model.active_job.is_empty(),"expiry still requires explicit fare acceptance")
 	game._stop_audio()
 	root.remove_child(game)
 	game.queue_free()

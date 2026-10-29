@@ -61,7 +61,8 @@ jobs:
           fi
           for script in "${game_tests[@]}"; do
             log="/tmp/game-$(basename "$script").log"
-            timeout 120s godot --headless --path . --script "$script" 2>&1 | tee "$log"
+            fixture_data="$(mktemp -d /tmp/taxi-test-data.XXXXXX)"
+            DOTS_TEST_ROOT="$fixture_data" XDG_DATA_HOME="$fixture_data/data" XDG_CONFIG_HOME="$fixture_data/config" timeout 120s godot --headless --path . --script "$script" 2>&1 | tee "$log"
             if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR:|Assertion failed' "$log"; then
               exit 1
             fi

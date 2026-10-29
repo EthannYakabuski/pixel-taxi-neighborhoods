@@ -1,8 +1,13 @@
 # Pixel Taxi Neighborhoods: continuation
 
+## Round Five continuation
+
+The current requested scope is dispatch free-drive breaks, explicit fare acceptance, physically onboard-only tip penalties, top driving/bottom Home banners and ten-completed-fare interstitial opportunities. Read `docs/ROUND_FIVE.md` before older round notes. Preserve all owner backend IDs/export settings, genuine profiles and dated artifacts. No source/CI result proves current native driving or services.
+
+
 ## Round 4 continuation
 
-Work only on the requested Round 4 changes; do not start new games. The current Android default is Gradle **AAB**, min API **24** / target API **35**, with ARM64, x86 and x86_64. Follow the [Round 4 Android guide](docs/ROUND_FOUR_ANDROID.md) for current export instructions instead of older APK examples in historical guides.
+Historical Round 4 export guidance follows; the current Round Five scope above supersedes its old task limit. Do not start new games. The current Android default is Gradle **AAB**, min API **24** / target API **35**, with ARM64, x86 and x86_64. Follow the [Round 4 Android guide](docs/ROUND_FOUR_ANDROID.md) for current export instructions instead of older APK examples in historical guides.
 
 The 2026-10-24 continuation snapshot does not claim passing exact-current-source CI or native acceptance for rebuilt Round 4 binaries. Record later source-bound checks in `HANDOFF.txt`; keep all dated original APK evidence intact. Debug AABs are test-signed bundles, distinct from owner-signed releases. Preserve user configuration and untracked files.
 

@@ -1,3 +1,6 @@
+ROUND FIVE SOURCE UPDATE — 2026-10-29
+Dispatch breaks, physical-onboard tip penalties, banner layout and ten-completed-fare interstitial opportunities are implemented. See docs/ROUND_FIVE.md for exact behavior, fixtures and remaining runtime/device checks. Historical binary and genuine-fare evidence below applies only to its recorded builds. No genuine reserved Taxi profile was changed by this source update.
+
 ROUND FOUR - QUALIFIED EXPORT-ONLY TEST HANDOFF
 Current Round Four features: Dispatch and fare completion stay in the 3D city with animated passengers; completed-fare and actual-earned 2x rewards confirm only after checked durable saving, with safe retry.
 Updated 2026-10-24. Affected Round Four native gameplay and current Android screenshot acceptance remain pending. Earlier native APKs/captures retain only their original named source/build provenance.

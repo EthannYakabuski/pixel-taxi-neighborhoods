@@ -46,6 +46,19 @@ var collisions_total: int = 0
 # A saved receipt is the sole authority for the optional once-only double payout.
 var last_receipt: Dictionary = {}
 var receipt_open: bool = false
+var dispatch_wait_remaining: float = 0.0
+
+static func dispatch_delay(completed_fares: int) -> float:
+	# Stable per-completion variety survives saving without a wall-clock shortcut.
+	return float(5 + posmod(completed_fares * 7 + 3, 16))
+
+func tick_dispatch(delta: float) -> bool:
+	if not is_finite(delta) or delta <= 0.0 or dispatch_wait_remaining <= 0.0:
+		return false
+	if not active_job.is_empty() or has_unsaved_fare() or has_pending_double_reward():
+		return false
+	dispatch_wait_remaining = maxf(0.0, dispatch_wait_remaining - delta)
+	return dispatch_wait_remaining == 0.0
 
 func _init(today: String = "") -> void:
 	if today == "":
@@ -106,7 +119,7 @@ func choose_car(index: int) -> bool:
 	return true
 
 func current_offer() -> Dictionary:
-	if not active_job.is_empty(): return {}
+	if not active_job.is_empty() or dispatch_wait_remaining > 0.0: return {}
 	if offered_job.is_empty(): offered_job=make_job(0)
 	return offered_job.duplicate(true)
 
@@ -132,6 +145,10 @@ func make_job(slot: int) -> Dictionary:
 		"district":district(destination),"metres":metres}
 
 func accept_job(job: Dictionary) -> bool:
+	if dispatch_wait_remaining > 0.0 or has_unsaved_fare() or has_pending_double_reward(): return false
+	return _install_job(job)
+
+func _install_job(job: Dictionary) -> bool:
 	if not active_job.is_empty() or not job.has_all(["pickup","destination","passenger","base_fare","rare"]): return false
 	var pickup_node: int = int(job.pickup)
 	var destination: int = int(job.destination)
@@ -152,9 +169,12 @@ func tick_fare(delta: float) -> void:
 	if active_job.is_empty() or not bool(active_job.picked_up) or not is_finite(delta): return
 	active_job.elapsed=minf(10000000.0,float(active_job.elapsed)+maxf(0.0,delta))
 
-func note_collision() -> void:
+func note_collision(passenger_in_car: bool = true) -> bool:
 	collisions_total=mini(10000000,collisions_total+1)
-	if not active_job.is_empty(): active_job.collisions=mini(10000000,int(active_job.collisions)+1)
+	if not active_job.is_empty() and bool(active_job.picked_up) and passenger_in_car:
+		active_job.collisions=mini(10000000,int(active_job.collisions)+1)
+		return true
+	return false
 
 func objective() -> int:
 	if active_job.is_empty(): return player_node
@@ -163,6 +183,7 @@ func objective() -> int:
 func pickup() -> bool:
 	if active_job.is_empty() or bool(active_job.picked_up) or player_node != int(active_job.pickup): return false
 	active_job.picked_up = true
+	active_job.collisions = 0
 	return true
 
 func complete_job() -> Dictionary:
@@ -183,6 +204,8 @@ func complete_job() -> Dictionary:
 	coins+=payout+tip
 	income+=payout+tip
 	jobs+=1
+	dispatch_wait_remaining = dispatch_delay(jobs)
+	offered_job.clear()
 	daily_jobs+=1
 	visits[district(player_node)]=int(visits[district(player_node)])+1
 	if completed.passenger not in passenger_journal: passenger_journal.append(completed.passenger)
@@ -293,17 +316,18 @@ func stat(key: String) -> int:
 	return 0
 
 func to_data() -> Dictionary:
-	return {"version": 3, "coins": coins, "xp": xp, "jobs": jobs, "distance": distance, "income": income,
+	return {"version": 4, "coins": coins, "xp": xp, "jobs": jobs, "distance": distance, "income": income,
 		"rare": rare_delivered, "player_node": player_node, "car": car, "owned_cars": owned_cars,
 		"upgrades": upgrades, "visits": visits, "active_job": active_job, "unlocked": unlocked,
 		"journal": passenger_journal, "day": day, "daily_jobs": daily_jobs, "daily_distance": daily_distance,
 		"daily_rare": daily_rare, "daily_claimed": daily_claimed, "login_day": login_day, "login_streak": login_streak,
 		"fare_boost": fare_boost, "sound": sound, "driving_position":{"x":driving_position.x,"y":driving_position.y},
-		"driving_heading":driving_heading,"dispatch_sequence":dispatch_sequence,"dispatch_offer":current_offer(),"collisions_total":collisions_total,"last_receipt":last_receipt.duplicate(true),"receipt_open":receipt_open}
+		"driving_heading":driving_heading,"dispatch_sequence":dispatch_sequence,"dispatch_offer":current_offer(),"collisions_total":collisions_total,"last_receipt":last_receipt.duplicate(true),"receipt_open":receipt_open,"dispatch_wait_remaining":dispatch_wait_remaining}
 
 func from_data(data: Dictionary, today: String = "") -> bool:
 	var version: int = int(data.get("version",0))
-	if version not in [1,2,3]: return false
+	if version not in [1,2,3,4]: return false
+	dispatch_wait_remaining = 0.0
 	coins = clampi(int(data.get("coins", 180)), 0, 1000000000)
 	xp = clampi(int(data.get("xp", 0)), 0, 10000000)
 	jobs = clampi(int(data.get("jobs", 0)), 0, 10000000)
@@ -324,7 +348,7 @@ func from_data(data: Dictionary, today: String = "") -> bool:
 	offered_job = {}
 	var stored_job: Variant = data.get("active_job", {})
 	if stored_job is Dictionary and not stored_job.is_empty():
-		if accept_job(stored_job):
+		if _install_job(stored_job):
 			active_job.picked_up=bool(stored_job.get("picked_up",false))
 			# An already accepted fare is an entitlement. Do not reprice it when
 			# upgrading from the former grid to the new street geometry.
@@ -341,7 +365,7 @@ func from_data(data: Dictionary, today: String = "") -> bool:
 				active_job.collisions=clampi(int(stored_job.get("collisions",0)),0,10000000)
 	if version>=2 and active_job.is_empty():
 		var stored_offer: Variant = data.get("dispatch_offer",{})
-		if stored_offer is Dictionary and not stored_offer.is_empty() and accept_job(stored_offer):
+		if stored_offer is Dictionary and not stored_offer.is_empty() and _install_job(stored_offer):
 			offered_job=active_job.duplicate(true)
 			active_job={}
 	unlocked = data.get("unlocked", []).duplicate() if data.get("unlocked", []) is Array else []
@@ -389,6 +413,10 @@ func from_data(data: Dictionary, today: String = "") -> bool:
 			var state := str(stored_receipt.get("reward_state","available"))
 			last_receipt.reward_state = "claimed" if bool(last_receipt.double_claimed) else "earned" if state == "earned" else "available"
 			receipt_open = (bool(data.get("receipt_open",false)) or has_pending_double_reward() or has_unsaved_fare()) and active_job.is_empty()
+	if version >= 4 and active_job.is_empty():
+		var wait: Variant = data.get("dispatch_wait_remaining", 0.0)
+		if (wait is int or wait is float) and is_finite(float(wait)):
+			dispatch_wait_remaining = clampf(float(wait), 0.0, 20.0)
 	if today == "": today = Time.get_date_string_from_system(true)
 	roll_day(today)
 	return true
