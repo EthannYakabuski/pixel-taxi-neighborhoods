@@ -1,4 +1,4 @@
-name: Build and test (Pages held)
+name: Build, test and deploy Web
 
 on:
   push:
@@ -110,6 +110,7 @@ jobs:
           mkdir -p build/android/LICENSES build/web/LICENSES
           cp -a LICENSES/. build/android/LICENSES/
           cp -a LICENSES/. build/web/LICENSES/
+          cp LICENSE NOTICE build/web/
       - uses: actions/upload-artifact@v4
         with:
           name: android-debug-aab
@@ -117,13 +118,17 @@ jobs:
             build/android/*.aab
             build/android/LICENSES/
           retention-days: 7
+      - name: Record deployed Web revision
+        shell: bash
+        run: |
+          python3 -c 'import json, os; from pathlib import Path; Path("build/web/build-info.json").write_text(json.dumps({"source_commit": os.environ["GITHUB_SHA"], "repository": os.environ["GITHUB_REPOSITORY"]}) + "\n")'
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build/web
 
   deploy:
-    # Live Pages activation is held pending separate authorization.
-    if: false
+    # Publish only the tested main-branch artifact authorized for this game.
+    if: github.ref == 'refs/heads/main'
     needs: validate-and-build
     runs-on: ubuntu-latest
     permissions:
@@ -133,6 +138,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
       - name: Deploy playable Web build
         id: deployment
         uses: actions/deploy-pages@v4

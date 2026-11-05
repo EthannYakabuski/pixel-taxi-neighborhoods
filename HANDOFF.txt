@@ -1,3 +1,9 @@
+GITHUB PAGES WEB HOSTING - 2026-11-05
+The requested repository-scoped CI update deploys the tested main-branch Web artifact to https://ethannyakabuski.github.io/pixel-taxi-neighborhoods/. Existing strict import/service/game/Web/Android gates remain; deployment depends on their successful build job. build-info.json exposes only repository and source_commit for exact HTTP provenance. See docs/WEB_PAGES.md for the embedding example, controls and Web service/storage limitations.
+
+This workflow change does not itself assert a completed live deployment, browser interaction or iframe acceptance; verify its exact Actions/deployment and served build-info SHA. No owner website, gameplay, Android release signing/store publication or genuine save is changed. Older artifact/test evidence below keeps its named source/build scope; old Pages-held statements are historical and superseded only for this explicitly requested site.
+
+PRESERVED PRE-PAGES HANDOFF
 ROUND FIVE SOURCE UPDATE — 2026-10-29
 Dispatch breaks, physical-onboard tip penalties, banner layout and ten-completed-fare interstitial opportunities are implemented. See docs/ROUND_FIVE.md for exact behavior, fixtures and remaining runtime/device checks. Historical binary and genuine-fare evidence below applies only to its recorded builds. No genuine reserved Taxi profile was changed by this source update.
 

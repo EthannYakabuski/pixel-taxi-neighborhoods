@@ -1,5 +1,9 @@
 # Pixel Taxi Neighborhoods
 
+## Web hosting
+
+The CI deployment target is [Pixel Taxi Neighborhoods](https://ethannyakabuski.github.io/pixel-taxi-neighborhoods/). After a successful main-branch build/deployment, `build-info.json` at that URL identifies the served source commit. See [hosting, controls and iframe notes](docs/WEB_PAGES.md); successful exports are separate from browser/gameplay acceptance.
+
 ## Round 4 build continuation (2026-10-24)
 
 The Android preset now defaults to **AAB** with Gradle, minimum API **24** and target API **35**. ARM64, x86 and x86_64 are selected; the [Round 4 Android guide](docs/ROUND_FOUR_ANDROID.md) explains the native ABI-pair validator and release-owner steps. These are current preset choices, not permanent engine restrictions.
@@ -48,7 +52,7 @@ Marketing text, icons, feature art and screenshot provenance are in marketing/. 
 
 ## CI and Web
 
-GitHub Actions imports resources, runs game/service tests with strict error checks, exports Web and validates an Android debug AAB, and uploads artifacts with the accompanying license notices. **Pages deployment is disabled**; this workflow does not publish a live site or submit to Google Play. Current build/test status is recorded below and in `HANDOFF.txt`. A passing run does not verify production services, physical devices or browser interaction.
+GitHub Actions imports resources, runs game/service tests with strict error checks, exports Web and validates an Android debug AAB, and uploads artifacts with the accompanying license notices. The tested `main` Web artifact deploys to GitHub Pages; see [Web hosting and embedding](docs/WEB_PAGES.md). It does not submit to Google Play. Current build/test status is recorded below and in `HANDOFF.txt`. A passing run does not verify production services, physical devices or browser interaction.
 
 ## Continue development
 
