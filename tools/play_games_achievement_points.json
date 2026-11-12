@@ -1,0 +1,22 @@
+{
+  "slug": "pixel-taxi-neighborhoods",
+  "title": "Pixel Taxi Neighborhoods",
+  "points": {
+    "taxi_first_fare": 10,
+    "taxi_regular": 20,
+    "taxi_local_legend": 50,
+    "taxi_century": 100,
+    "taxi_city_miles": 25,
+    "taxi_scenic_route": 75,
+    "taxi_special_guest": 20,
+    "taxi_star_company": 50,
+    "taxi_all_districts": 40,
+    "taxi_good_company": 30,
+    "taxi_first_upgrade": 10,
+    "taxi_pride": 40,
+    "taxi_new_color": 20,
+    "taxi_driver_level_5": 25,
+    "taxi_driver_level_10": 75,
+    "taxi_earned": 50
+  }
+}

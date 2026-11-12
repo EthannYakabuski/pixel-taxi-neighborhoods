@@ -1,0 +1,17 @@
+CatalogKey,Name,ImportDescription,Type,Points,InitialState,SourceIcon,PlayGamesAchievementId,OriginalDescription
+taxi_first_fare,First friendly fare,Deliver your first passenger.,Standard,10,Revealed,marketing/achievements/taxi_first_fare.png,,Deliver your first passenger.
+taxi_regular,Neighborhood regular,Complete 5 fares.,Standard,20,Revealed,marketing/achievements/taxi_regular.png,,Complete 5 fares.
+taxi_local_legend,Local legend,Complete 25 fares.,Standard,50,Revealed,marketing/achievements/taxi_local_legend.png,,Complete 25 fares.
+taxi_century,A hundred stories,Complete 100 fares.,Standard,100,Revealed,marketing/achievements/taxi_century.png,,Complete 100 fares.
+taxi_city_miles,City miles,Drive 5 kilometers.,Standard,25,Revealed,marketing/achievements/taxi_city_miles.png,,Drive 5 kilometers.
+taxi_scenic_route,The scenic route,Drive 25 kilometers.,Standard,75,Revealed,marketing/achievements/taxi_scenic_route.png,,Drive 25 kilometers.
+taxi_special_guest,A special guest,Deliver a rare passenger.,Standard,20,Revealed,marketing/achievements/taxi_special_guest.png,,Deliver a rare passenger.
+taxi_star_company,Star company,Deliver 5 rare passengers.,Standard,50,Revealed,marketing/achievements/taxi_star_company.png,,Deliver 5 rare passengers.
+taxi_all_districts,Across the city,Deliver passengers to all 3 districts.,Standard,40,Revealed,marketing/achievements/taxi_all_districts.png,,Deliver passengers to all 3 districts.
+taxi_good_company,Good company,Meet 6 different passengers.,Standard,30,Revealed,marketing/achievements/taxi_good_company.png,,Meet 6 different passengers.
+taxi_first_upgrade,A little tune-up,Buy a vehicle upgrade.,Standard,10,Revealed,marketing/achievements/taxi_first_upgrade.png,,Buy a vehicle upgrade.
+taxi_pride,Pride of the garage,Purchase 6 upgrade levels.,Standard,40,Revealed,marketing/achievements/taxi_pride.png,,Purchase 6 upgrade levels.
+taxi_new_color,A fresh coat,Own 2 cab colors.,Standard,20,Revealed,marketing/achievements/taxi_new_color.png,,Own 2 cab colors.
+taxi_driver_level_5,Level five driver,Reach driver level 5.,Standard,25,Revealed,marketing/achievements/taxi_driver_level_5.png,,Reach driver level 5.
+taxi_driver_level_10,The city knows you,Reach driver level 10.,Standard,75,Revealed,marketing/achievements/taxi_driver_level_10.png,,Reach driver level 10.
+taxi_earned,Honest work,Earn 10000 coins from fares.,Standard,50,Revealed,marketing/achievements/taxi_earned.png,,"Earn 10,000 coins from fares."
