@@ -2,7 +2,8 @@
 
 Prepared 2026-11-12. Upload only **pixel-taxi-neighborhoods-achievements-google-play.zip** from this directory.
 The ZIP contains two headerless CSVs and 16 original 512 x 512 PNGs at
-its root. Companion files are intentionally outside the ZIP.
+its root. Companion files are intentionally outside the ZIP. The .gdignore marker
+keeps these console CSVs out of Godot translation imports and game resources.
 
 ## Choices to review before import
 

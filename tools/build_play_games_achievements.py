@@ -173,7 +173,8 @@ def run(check=False):
 
 Prepared 2026-11-12. Upload only **{filename}** from this directory.
 The ZIP contains two headerless CSVs and {len(entries)} original 512 x 512 PNGs at
-its root. Companion files are intentionally outside the ZIP.
+its root. Companion files are intentionally outside the ZIP. The .gdignore marker
+keeps these console CSVs out of Godot translation imports and game resources.
 
 ## Choices to review before import
 
@@ -230,7 +231,7 @@ Official references checked 2026-11-12:
 - {SCHEMA}
 - {POINTS_GUIDE}
 """
-    outputs = {filename: archive_bytes,
+    outputs = {".gdignore": b"", filename: archive_bytes,
                "AchievementsMetadata.csv": members["AchievementsMetadata.csv"],
                "AchievementsIconsMappings.csv": members["AchievementsIconsMappings.csv"],
                "achievement-id-mapping-and-points.csv": csv_bytes([["CatalogKey", "Name", "ImportDescription", "Type", "Points", "InitialState", "SourceIcon", "PlayGamesAchievementId", "OriginalDescription"], *worksheet]),
